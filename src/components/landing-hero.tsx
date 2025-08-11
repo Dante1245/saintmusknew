@@ -25,7 +25,7 @@ export function LandingHero() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button asChild size="lg">
-            <Link href="/dashboard">
+            <Link href="/signup">
               Get Started for Free <ArrowRight className="ml-2" />
             </Link>
           </Button>

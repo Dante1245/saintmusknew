@@ -14,7 +14,7 @@ export function LandingHeader() {
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link
-            href="#"
+            href="/#features"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Features
@@ -41,10 +41,10 @@ export function LandingHeader() {
         <div className="flex flex-1 items-center justify-end gap-4">
           <div className="hidden md:flex items-center gap-4">
             <Button variant="outline" asChild>
-              <Link href="/dashboard">Log In</Link>
+              <Link href="/login">Log In</Link>
             </Button>
             <Button asChild>
-              <Link href="/dashboard">Sign Up</Link>
+              <Link href="/signup">Sign Up</Link>
             </Button>
           </div>
           <Sheet>
@@ -63,7 +63,7 @@ export function LandingHeader() {
                   <IconLogo className="h-8 w-8" />
                   <span className="font-bold">elonXchange</span>
                 </Link>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
+                <Link href="/#features" className="text-muted-foreground hover:text-foreground">
                   Features
                 </Link>
                 <Link href="#" className="text-muted-foreground hover:text-foreground">
@@ -77,10 +77,10 @@ export function LandingHeader() {
                 </Link>
                 <div className="flex flex-col gap-4 mt-4">
                   <Button variant="outline" asChild>
-                    <Link href="/dashboard">Log In</Link>
+                    <Link href="/login">Log In</Link>
                   </Button>
                   <Button asChild>
-                    <Link href="/dashboard">Sign Up</Link>
+                    <Link href="/signup">Sign Up</Link>
                   </Button>
                 </div>
               </nav>
