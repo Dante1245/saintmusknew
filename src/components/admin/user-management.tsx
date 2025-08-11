@@ -23,33 +23,9 @@ import type { User } from "@/lib/types";
 import { EditUserDialog } from "./edit-user-dialog";
 
 const mockUsers: User[] = [
-  { 
-    id: "usr_001", 
-    name: "Elon Musk", 
-    email: "elon@tesla.com", 
-    balance: 200.00, 
-    joinDate: "2024-07-29",
-    walletAddress: "bc1qelonmuskxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    walletQrCode: "https://placehold.co/200x200.png"
-  },
-  { 
-    id: "usr_002", 
-    name: "Satoshi Nakamoto", 
-    email: "satoshi@btc.com", 
-    balance: 10500.75, 
-    joinDate: "2024-07-28",
-    walletAddress: "bc1qsatoshiynakamotozzzzzzzzzzzzzzzzz",
-    walletQrCode: "https://placehold.co/200x200.png"
-  },
-  { 
-    id: "usr_003", 
-    name: "Vitalik Buterin", 
-    email: "vitalik@ethereum.org", 
-    balance: 8734.20, 
-    joinDate: "2024-07-27",
-    walletAddress: "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
-    walletQrCode: "https://placehold.co/200x200.png"
-  },
+  { id: "usr_001", name: "Elon Musk", email: "elon@tesla.com", balance: 200.00, joinDate: "2024-07-29" },
+  { id: "usr_002", name: "Satoshi Nakamoto", email: "satoshi@btc.com", balance: 10500.75, joinDate: "2024-07-28" },
+  { id: "usr_003", name: "Vitalik Buterin", email: "vitalik@ethereum.org", balance: 8734.20, joinDate: "2024-07-27" },
 ];
 
 
