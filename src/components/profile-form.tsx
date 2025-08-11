@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const profileSchema = z.object({
@@ -37,6 +37,8 @@ const profileSchema = z.object({
 export function ProfileForm() {
   const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState("https://placehold.co/100x100.png");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -48,6 +50,21 @@ export function ProfileForm() {
       country: "USA"
     },
   });
+
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAvatarButtonClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const onSubmit = (values: z.infer<typeof profileSchema>) => {
     setIsPending(true);
@@ -74,10 +91,17 @@ export function ProfileForm() {
           <CardContent className="space-y-6">
               <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20">
-                  <AvatarImage src="https://placehold.co/100x100.png" alt="Elon Musk" data-ai-hint="man face" />
- <AvatarFallback>EM</AvatarFallback>
+                  <AvatarImage src={avatarPreview} alt={form.watch('name')} data-ai-hint="man face" />
+                  <AvatarFallback>{form.watch('name')?.charAt(0) || 'U'}</AvatarFallback>
                 </Avatar>
-                <Button variant="outline" type="button">Change Avatar</Button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleAvatarChange}
+                  className="hidden"
+                  accept="image/*"
+                />
+                <Button variant="outline" type="button" onClick={handleAvatarButtonClick}>Change Avatar</Button>
               </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <FormField
