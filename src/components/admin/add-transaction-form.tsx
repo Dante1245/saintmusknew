@@ -28,7 +28,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
     defaultValues: {
       type: "Deposit",
       asset: "USDT",
-      amount: undefined,
+      amount: "" as any, // Use empty string to avoid uncontrolled to controlled error
       status: "Completed",
     },
   });
