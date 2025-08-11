@@ -24,6 +24,27 @@ const reviews = [
     image: "https://placehold.co/50x50.png",
     aiHint: "man rocket"
   },
+  {
+    name: "Michael S.",
+    avatar: "MS",
+    review: "The analytics tools are top-notch. I can track my portfolio and market trends with incredible detail. It's a game-changer for serious traders.",
+    image: "https://placehold.co/50x50.png",
+    aiHint: "man suit"
+  },
+  {
+    name: "Cathie W.",
+    avatar: "CW",
+    review: "elonXchange is disrupting the digital asset space. Their innovative features and commitment to user experience sets a new industry standard.",
+    image: "https://placehold.co/50x50.png",
+    aiHint: "woman business"
+  },
+  {
+    name: "Gavin A.",
+    avatar: "GA",
+    review: "I've tried many exchanges, but the speed and reliability of elonXchange are unmatched. My orders execute instantly, which is crucial in a volatile market.",
+    image: "https://placehold.co/50x50.png",
+    aiHint: "man glasses"
+  }
 ];
 
 export function LandingReviews() {
