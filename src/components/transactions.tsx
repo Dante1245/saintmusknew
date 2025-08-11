@@ -1,3 +1,6 @@
+
+"use client";
+
 import {
   Table,
   TableBody,
@@ -15,8 +18,10 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Transaction } from "@/lib/types";
+import { useState, useEffect } from "react";
+import { Button } from "./ui/button";
 
-const transactions: Transaction[] = [
+const transactionsData: Transaction[] = [
   {
     id: "txn_001",
     type: "Bonus",
@@ -44,6 +49,14 @@ const transactions: Transaction[] = [
 ];
 
 export function Transactions() {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  useEffect(() => {
+    // In a real app, you'd fetch this data.
+    // For now, we'll use the mock data.
+    setTransactions(transactionsData);
+  }, []);
+
   const getStatusColor = (status: Transaction["status"]) => {
     switch (status) {
       case "Completed":
@@ -59,7 +72,6 @@ export function Transactions() {
   
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    // Adjust for timezone offset to prevent date changes
     const userTimezoneOffset = date.getTimezoneOffset() * 60000;
     const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
     return adjustedDate.toLocaleDateString('en-US', {
@@ -76,30 +88,57 @@ export function Transactions() {
         <CardDescription>A log of your recent account activity.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Type</TableHead>
-              <TableHead>Asset</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
-              <TableHead className="text-center">Status</TableHead>
-              <TableHead className="text-right">Date</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+        {/* Responsive view for mobile */}
+        <div className="md:hidden">
+          <div className="space-y-4">
             {transactions.map((tx) => (
-              <TableRow key={tx.id}>
-                <TableCell className="font-medium">{tx.type}</TableCell>
-                <TableCell>{tx.asset}</TableCell>
-                <TableCell className="text-right">{tx.amount.toFixed(tx.asset === 'USDT' ? 2 : 6)}</TableCell>
-                <TableCell className="text-center">
+              <div key={tx.id} className="border-b pb-4 last:border-0 last:pb-0">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-medium">{tx.type} - {tx.asset}</p>
+                    <p className="text-sm text-muted-foreground">{formatDate(tx.date)}</p>
+                  </div>
                   <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
-                </TableCell>
-                <TableCell className="text-right">{formatDate(tx.date)}</TableCell>
-              </TableRow>
+                </div>
+                <div className="mt-2 text-right">
+                  <p className="font-mono text-lg">{tx.amount.toFixed(tx.asset === 'USDT' ? 2 : 6)}</p>
+                </div>
+              </div>
             ))}
-          </TableBody>
-        </Table>
+          </div>
+        </div>
+
+        {/* Table view for larger screens */}
+        <div className="hidden md:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Type</TableHead>
+                <TableHead>Asset</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-right">Date</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {transactions.map((tx) => (
+                <TableRow key={tx.id}>
+                  <TableCell className="font-medium">{tx.type}</TableCell>
+                  <TableCell>{tx.asset}</TableCell>
+                  <TableCell className="text-right">{tx.amount.toFixed(tx.asset === 'USDT' ? 2 : 6)}</TableCell>
+                  <TableCell className="text-center">
+                    <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
+                  </TableCell>
+                  <TableCell className="text-right">{formatDate(tx.date)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        <div className="mt-6 text-center">
+            <Button variant="outline">View All Transactions</Button>
+        </div>
       </CardContent>
     </Card>
   );

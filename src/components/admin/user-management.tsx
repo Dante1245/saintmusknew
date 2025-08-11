@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Search, Edit, Trash2 } from "lucide-react";
 import type { User } from "@/lib/types";
 import { EditUserDialog } from "./edit-user-dialog";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 
 const mockUsers: User[] = [
   { 
@@ -90,39 +91,70 @@ export function UserManagement() {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User ID</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead className="text-right">Balance</TableHead>
-                <TableHead>Join Date</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+           {/* Responsive List for Mobile */}
+           <div className="md:hidden space-y-4">
               {filteredUsers.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell className="font-mono text-xs text-muted-foreground">{user.id}</TableCell>
-                  <TableCell className="font-medium">{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell className="text-right">${user.balance.toFixed(2)}</TableCell>
-                  <TableCell>{user.joinDate}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button variant="outline" size="icon" onClick={() => setEditingUser(user)}>
-                        <Edit className="h-4 w-4" />
+                <div key={user.id} className="border-b pb-4 last:border-0 last:pb-0 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                        <Avatar>
+                            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <p className="font-medium">{user.name}</p>
+                            <p className="text-sm text-muted-foreground">{user.email}</p>
+                            <p className="text-sm font-mono">${user.balance.toFixed(2)}</p>
+                        </div>
+                    </div>
+                     <div className="flex flex-col items-end gap-2">
+                      <Button variant="outline" size="sm" onClick={() => setEditingUser(user)}>
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
                       </Button>
-                      <Button variant="destructive" size="icon">
-                        <Trash2 className="h-4 w-4" />
+                      <Button variant="destructive" size="sm">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
                       </Button>
                     </div>
-                  </TableCell>
-                </TableRow>
+                </div>
               ))}
-            </TableBody>
-          </Table>
+           </div>
+          
+           {/* Table for Desktop */}
+          <div className="hidden md:block">
+            <Table>
+                <TableHeader>
+                <TableRow>
+                    <TableHead>User ID</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead className="text-right">Balance</TableHead>
+                    <TableHead>Join Date</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+                </TableHeader>
+                <TableBody>
+                {filteredUsers.map((user) => (
+                    <TableRow key={user.id}>
+                    <TableCell className="font-mono text-xs text-muted-foreground">{user.id}</TableCell>
+                    <TableCell className="font-medium">{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell className="text-right">${user.balance.toFixed(2)}</TableCell>
+                    <TableCell>{user.joinDate}</TableCell>
+                    <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                        <Button variant="outline" size="icon" onClick={() => setEditingUser(user)}>
+                            <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button variant="destructive" size="icon">
+                            <Trash2 className="h-4 w-4" />
+                        </Button>
+                        </div>
+                    </TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
       

@@ -16,7 +16,7 @@ export default function AdminPage() {
   return (
     <AdminLayout>
       <Tabs defaultValue="dashboard">
-        <TabsList className="grid w-full grid-cols-5 mb-4">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 mb-4">
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
