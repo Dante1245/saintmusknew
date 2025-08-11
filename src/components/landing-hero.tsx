@@ -21,7 +21,7 @@ export function LandingHero() {
           The Future of Crypto Trading is Here.
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground">
-          elonXchange is the most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio. Join the revolution.
+          elonXchange is the most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio. We offer institutional-grade security, blazing-fast transactions, and a suite of advanced tools in a single, user-friendly interface. Join the revolution.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button asChild size="lg">
@@ -30,7 +30,7 @@ export function LandingHero() {
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="#">Learn More</Link>
+            <Link href="#features">Explore Features</Link>
           </Button>
         </div>
       </div>
