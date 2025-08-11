@@ -23,7 +23,7 @@ const transactions: Transaction[] = [
     asset: "USDT",
     amount: 200,
     status: "Completed",
-    date: new Date().toLocaleDateString(),
+    date: "2024-07-29",
   },
   {
     id: "txn_002",
@@ -31,7 +31,7 @@ const transactions: Transaction[] = [
     asset: "BTC",
     amount: 0.005,
     status: "Completed",
-    date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+    date: "2024-07-27",
   },
    {
     id: "txn_003",
@@ -39,7 +39,7 @@ const transactions: Transaction[] = [
     asset: "ETH",
     amount: 0.1,
     status: "Pending",
-    date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+    date: "2024-07-28",
   },
 ];
 
@@ -83,7 +83,7 @@ export function Transactions() {
                 <TableCell className="text-center">
                   <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
                 </TableCell>
-                <TableCell className="text-right">{tx.date}</TableCell>
+                <TableCell className="text-right">{new Date(tx.date).toLocaleDateString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
