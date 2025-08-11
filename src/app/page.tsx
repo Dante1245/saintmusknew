@@ -1,94 +1,17 @@
-"use client";
+import { LandingHeader } from "@/components/landing-header";
+import { LandingHero } from "@/components/landing-hero";
+import { LandingReviews } from "@/components/landing-reviews";
+import { LandingFooter } from "@/components/landing-footer";
 
-import { useState, useEffect } from 'react';
-import { DashboardHeader } from '@/components/dashboard-header';
-import { Portfolio } from '@/components/portfolio';
-import { MarketView } from '@/components/market-view';
-import { WalletCard } from '@/components/wallet-card';
-import { Transactions } from '@/components/transactions';
-import { NotificationHandler } from '@/components/notification-handler';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { CheckCircle2, Gift } from 'lucide-react';
-
-export default function Home() {
-  const [showBonusPopup, setShowBonusPopup] = useState(false);
-
-  useEffect(() => {
-    const hasSeenPopup = localStorage.getItem('seenBonusPopup:v1');
-    if (!hasSeenPopup) {
-      // Use a timeout to make the popup feel less abrupt on load
-      const timer = setTimeout(() => {
-        setShowBonusPopup(true);
-        localStorage.setItem('seenBonusPopup:v1', 'true');
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
+export default function LandingPage() {
   return (
-    <>
-      <div className="flex min-h-screen w-full flex-col bg-background">
-        <DashboardHeader />
-        <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Portfolio />
-            <Card className="lg:col-span-1">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Referral Bonus</CardTitle>
-                <Gift className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">$10</div>
-                <p className="text-xs text-muted-foreground">Invite friends and earn rewards!</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-            <div className="xl:col-span-2">
-              <MarketView />
-            </div>
-            <div className="row-start-1 xl:row-start-auto">
-              <WalletCard />
-            </div>
-          </div>
-          
-          <Transactions />
-        </main>
-        <NotificationHandler />
-      </div>
-
-      <AlertDialog open={showBonusPopup} onOpenChange={setShowBonusPopup}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-              <CheckCircle2 className="h-6 w-6 text-accent" />
-              <span className="text-xl">Signup Bonus Awarded!</span>
-            </AlertDialogTitle>
-            <AlertDialogDescription className="py-4 text-center text-base">
-              Congratulations! A welcome bonus of
-              <span className="font-bold text-foreground"> $200.00 USDT </span>
-              has been added to your portfolio.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction className="w-full" onClick={() => setShowBonusPopup(false)}>
-              Start Trading
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+    <div className="flex flex-col min-h-screen bg-background">
+      <LandingHeader />
+      <main className="flex-1">
+        <LandingHero />
+        <LandingReviews />
+      </main>
+      <LandingFooter />
+    </div>
   );
 }
-
-// Dummy components to fill the layout
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

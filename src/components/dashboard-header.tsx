@@ -20,14 +20,14 @@ export function DashboardHeader() {
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href="#"
+          href="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <Package2 className="h-6 w-6 text-primary" />
-          <span className="font-bold">TradeSim</span>
+          <span className="font-bold">elonXchange</span>
         </Link>
         <Link
-          href="#"
+          href="/dashboard"
           className="text-foreground transition-colors hover:text-foreground/80"
         >
           Dashboard
@@ -61,13 +61,13 @@ export function DashboardHeader() {
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="#"
+              href="/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
               <Package2 className="h-6 w-6 text-primary" />
-              <span className="font-bold">TradeSim</span>
+              <span className="font-bold">elonXchange</span>
             </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
+            <Link href="/dashboard" className="hover:text-foreground">
               Dashboard
             </Link>
             <Link href="#" className="text-muted-foreground hover:text-foreground">
