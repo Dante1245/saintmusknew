@@ -20,4 +20,6 @@ export type User = {
     email: string;
     balance: number;
     joinDate: string;
+    walletAddress: string;
+    walletQrCode: string;
 };

@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
 import { AddTransactionForm } from "./add-transaction-form";
+import Image from "next/image";
 
 
 const mockTransactions: Transaction[] = [
@@ -65,6 +66,8 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
   const { toast } = useToast();
   const [balance, setBalance] = useState(user.balance);
   const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions);
+  const [walletAddress, setWalletAddress] = useState(user.walletAddress);
+  const [walletQrCode, setWalletQrCode] = useState(user.walletQrCode);
 
   const handleBalanceSave = () => {
     console.log(`Updating balance for ${user.email} to ${balance}`);
@@ -72,6 +75,15 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
     toast({
       title: "Balance Updated",
       description: `${user.name}'s balance has been updated.`,
+    });
+  };
+
+  const handleWalletSave = () => {
+    console.log(`Updating wallet for ${user.email}`);
+    onUpdate({ ...user, walletAddress, walletQrCode });
+    toast({
+      title: "Wallet Updated",
+      description: `${user.name}'s wallet information has been updated.`,
     });
   };
 
@@ -101,7 +113,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-2xl bg-white">
+      <DialogContent className="sm:max-w-3xl bg-white">
         <DialogHeader>
           <DialogTitle>Edit User: {user.name}</DialogTitle>
           <DialogDescription>
@@ -109,7 +121,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid gap-6 py-4">
+        <div className="grid gap-6 py-4 max-h-[70vh] overflow-y-auto pr-4">
           {/* Balance Management */}
           <div className="space-y-4">
             <h4 className="font-medium text-slate-800">Portfolio Balance</h4>
@@ -126,6 +138,48 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
               </div>
               <Button onClick={handleBalanceSave} className="self-end">Save Balance</Button>
             </div>
+          </div>
+          
+          <Separator />
+
+          {/* Wallet Management */}
+          <div className="space-y-4">
+            <h4 className="font-medium text-slate-800">User Wallet</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <div className="space-y-4">
+                    <div className="grid flex-1 gap-2">
+                        <Label htmlFor="walletAddress">Wallet Address (BTC)</Label>
+                        <Input
+                          id="walletAddress"
+                          value={walletAddress}
+                          onChange={(e) => setWalletAddress(e.target.value)}
+                          className="bg-white font-mono"
+                        />
+                    </div>
+                    <div className="grid flex-1 gap-2">
+                        <Label htmlFor="walletQrCode">QR Code Image URL</Label>
+                        <Input
+                          id="walletQrCode"
+                          value={walletQrCode}
+                          onChange={(e) => setWalletQrCode(e.target.value)}
+                          className="bg-white"
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                    <Label>QR Code Preview</Label>
+                    <div className="p-2 rounded-lg border bg-slate-50 shadow-sm">
+                        <Image
+                            src={walletQrCode || "https://placehold.co/200x200.png"}
+                            alt="User QR Code"
+                            width={150}
+                            height={150}
+                            className="rounded-md"
+                        />
+                    </div>
+                </div>
+            </div>
+             <Button onClick={handleWalletSave}>Save Wallet</Button>
           </div>
           
           <Separator />
