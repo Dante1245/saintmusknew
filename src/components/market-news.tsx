@@ -74,22 +74,22 @@ export function MarketNews() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
             Array.from({ length: 6 }).map((_, index) => (
-                <Card key={index}>
+                <Card key={index} className="flex flex-col">
                     <Skeleton className="aspect-video w-full" />
-                    <CardHeader>
-                        <Skeleton className="h-5 w-5/6" />
+                    <CardHeader className="flex-1">
+                        <Skeleton className="h-5 w-5/6 mb-2" />
                         <Skeleton className="h-5 w-4/6" />
-                         <CardDescription className="flex items-center justify-between pt-2">
+                         <div className="flex items-center justify-between pt-4 text-xs text-muted-foreground">
                            <Skeleton className="h-4 w-1/4" />
                            <Skeleton className="h-4 w-1/4" />
-                        </CardDescription>
+                        </div>
                     </CardHeader>
                 </Card>
             ))
         ) : (
             news.map((article) => (
             <a href={article.url} target="_blank" rel="noopener noreferrer" key={article.id} className="block hover:opacity-80 transition-opacity">
-                <Card className="overflow-hidden h-full">
+                <Card className="overflow-hidden h-full flex flex-col">
                     <div className="aspect-video relative">
                         <Image 
                             src={article.imageurl} 
@@ -98,8 +98,8 @@ export function MarketNews() {
                             className="object-cover"
                         />
                     </div>
-                    <CardHeader>
-                        <CardTitle className="text-base leading-tight">{article.title}</CardTitle>
+                    <CardHeader className="flex-1">
+                        <CardTitle className="text-base leading-tight flex-1">{article.title}</CardTitle>
                         <CardDescription className="flex items-center justify-between pt-2 text-xs">
                             <span>{article.source_info.name}</span>
                             <span>{timeAgo(article.published_on)}</span>
