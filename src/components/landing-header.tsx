@@ -12,7 +12,7 @@ export function LandingHeader() {
           <IconLogo className="h-8 w-8" />
           <span className="font-bold text-lg">elonXchange</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+        <nav className="hidden md:flex items-center gap-6 text-base font-medium">
           <Link
             href="#features"
             className="text-muted-foreground transition-colors hover:text-foreground"
