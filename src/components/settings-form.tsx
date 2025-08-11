@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Switch } from "./ui/switch";
+import { Label } from "./ui/label";
 
 const passwordSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required."),
