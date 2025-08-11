@@ -56,6 +56,18 @@ export function Transactions() {
         return "bg-gray-500/20 text-gray-700 dark:text-gray-400";
     }
   };
+  
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    // Adjust for timezone offset to prevent date changes
+    const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
+    return adjustedDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+  }
 
   return (
     <Card>
@@ -83,7 +95,7 @@ export function Transactions() {
                 <TableCell className="text-center">
                   <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
                 </TableCell>
-                <TableCell className="text-right">{new Date(tx.date).toLocaleDateString()}</TableCell>
+                <TableCell className="text-right">{formatDate(tx.date)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
