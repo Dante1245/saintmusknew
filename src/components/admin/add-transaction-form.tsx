@@ -28,7 +28,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
     defaultValues: {
       type: "Deposit",
       asset: "USDT",
-      amount: "" as any, // Use empty string to avoid uncontrolled to controlled error
+      amount: "" as any,
       status: "Completed",
     },
   });
@@ -49,7 +49,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
               <FormLabel>Type</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="bg-white">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                 </FormControl>
@@ -69,7 +69,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Asset</FormLabel>
-              <Input placeholder="e.g. BTC" {...field} className="bg-white" />
+              <Input placeholder="e.g. BTC" {...field} />
               <FormMessage />
             </FormItem>
           )}
@@ -80,7 +80,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Amount</FormLabel>
-              <Input type="number" step="any" placeholder="e.g. 0.5" {...field} className="bg-white" />
+              <Input type="number" step="any" placeholder="e.g. 0.5" {...field} />
               <FormMessage />
             </FormItem>
           )}
@@ -93,7 +93,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
               <FormLabel>Status</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="bg-white">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                 </FormControl>
