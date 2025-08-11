@@ -32,7 +32,7 @@ export function LandingHeader() {
             About
           </Link>
           <Link
-            href="#"
+            href="#contact"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Contact
@@ -75,7 +75,7 @@ export function LandingHeader() {
                 <Link href="#" className="text-muted-foreground hover:text-foreground">
                   About
                 </Link>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
+                <Link href="#contact" className="text-muted-foreground hover:text-foreground">
                   Contact
                 </Link>
                 <div className="flex flex-col gap-4 mt-4">
