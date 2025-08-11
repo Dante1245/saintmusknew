@@ -3,6 +3,7 @@ import { LandingHero } from "@/components/landing-hero";
 import { LandingFeatures } from "@/components/landing-features";
 import { LandingReviews } from "@/components/landing-reviews";
 import { LandingFooter } from "@/components/landing-footer";
+import { LandingMarketView } from "@/components/landing-market-view";
 
 export default function LandingPage() {
   return (
@@ -11,6 +12,7 @@ export default function LandingPage() {
       <main className="flex-1">
         <LandingHero />
         <LandingFeatures />
+        <LandingMarketView />
         <LandingReviews />
       </main>
       <LandingFooter />
