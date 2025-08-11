@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useTransition } from "react";
@@ -55,9 +56,31 @@ const withdrawalSchema = z.object({
 
 type WithdrawalFormValues = z.infer<typeof withdrawalSchema>;
 
+const depositWallets = {
+  BTC: {
+    name: "Bitcoin",
+    address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+    warning: "Only send BTC to this address.",
+  },
+  ETH: {
+    name: "Ethereum",
+    address: "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
+    warning: "Only send ETH (ERC-20) to this address.",
+  },
+  USDT: {
+    name: "Tether",
+    address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    warning: "Only send USDT (ERC-20) to this address.",
+  },
+};
+
+type DepositAsset = keyof typeof depositWallets;
+
+
 export function WalletCard() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
+  const [selectedDepositAsset, setSelectedDepositAsset] = useState<DepositAsset>("BTC");
 
   const form = useForm<WithdrawalFormValues>({
     resolver: zodResolver(withdrawalSchema),
@@ -68,10 +91,10 @@ export function WalletCard() {
     },
   });
 
-  const walletAddress = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+  const activeWallet = depositWallets[selectedDepositAsset];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(walletAddress);
+    navigator.clipboard.writeText(activeWallet.address);
     toast({
       title: "Copied to clipboard!",
       description: "Wallet address has been copied.",
@@ -110,27 +133,44 @@ export function WalletCard() {
             <TabsTrigger value="deposit">Deposit</TabsTrigger>
             <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
           </TabsList>
-          <TabsContent value="deposit" className="mt-4">
+          <TabsContent value="deposit" className="mt-4 space-y-4">
+             <div className="space-y-2">
+                <Label htmlFor="deposit-asset">Select Asset to Deposit</Label>
+                 <Select
+                    onValueChange={(value) => setSelectedDepositAsset(value as DepositAsset)}
+                    defaultValue={selectedDepositAsset}
+                  >
+                    <SelectTrigger id="deposit-asset">
+                        <SelectValue placeholder="Select an asset" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="BTC">Bitcoin (BTC)</SelectItem>
+                      <SelectItem value="ETH">Ethereum (ETH)</SelectItem>
+                      <SelectItem value="USDT">Tether (USDT)</SelectItem>
+                    </SelectContent>
+                </Select>
+             </div>
+
             <div className="flex flex-col items-center gap-4 text-center">
               <p className="text-sm text-muted-foreground">
-                Scan the QR code or copy the address below to deposit Bitcoin (BTC).
+                Scan the QR code or copy the address below to deposit {activeWallet.name} ({selectedDepositAsset}).
               </p>
               <div className="p-2 rounded-lg border bg-card shadow-sm">
                 <Image
-                  src="https://placehold.co/200x200.png"
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${activeWallet.address}`}
                   alt="QR Code"
                   width={200}
                   height={200}
-                  data-ai-hint="qr code"
+                  key={selectedDepositAsset} // Force re-render on asset change
                   className="rounded-md"
                 />
               </div>
               <div className="relative w-full">
                 <Input
                   type="text"
-                  value={walletAddress}
+                  value={activeWallet.address}
                   readOnly
-                  className="pr-10 text-center sm:text-left"
+                  className="pr-10 text-center sm:text-left font-mono text-xs"
                 />
                 <Button
                   variant="ghost"
@@ -145,7 +185,7 @@ export function WalletCard() {
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Important</AlertTitle>
                 <AlertDescription>
-                  Only send BTC to this address. Sending any other asset may result in permanent loss.
+                  {activeWallet.warning} Sending any other asset may result in permanent loss.
                 </AlertDescription>
               </Alert>
             </div>
