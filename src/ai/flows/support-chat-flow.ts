@@ -72,6 +72,6 @@ const supportChatFlow = ai.defineFlow(
   },
   async input => {
     const {text} = await prompt(input);
-    return text!;
+    return text ?? "I'm sorry, I'm having trouble connecting to my systems. Please try again in a moment.";
   }
 );
