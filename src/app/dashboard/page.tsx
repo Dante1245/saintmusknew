@@ -38,8 +38,8 @@ export default function DashboardPage() {
     <>
       <div className="flex min-h-screen w-full flex-col bg-background">
         <DashboardHeader />
-        <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <main className="flex flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
             <Portfolio />
             <Card className="lg:col-span-1">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -53,7 +53,7 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 xl:grid-cols-3">
             <div className="xl:col-span-2">
               <MarketView />
             </div>

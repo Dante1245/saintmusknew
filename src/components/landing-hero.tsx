@@ -5,7 +5,7 @@ import { ArrowRight, Star } from "lucide-react";
 
 export function LandingHero() {
   return (
-    <section className="container grid lg:grid-cols-2 gap-12 items-center py-20 md:py-32">
+    <section className="container grid lg:grid-cols-2 gap-10 items-center py-16 md:py-24">
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
             <div className="flex text-yellow-400">
@@ -17,7 +17,7 @@ export function LandingHero() {
             </div>
             <p className="text-sm text-muted-foreground">Loved by 10,000+ traders</p>
         </div>
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter">
           The Future of Crypto Trading is Here.
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground">
