@@ -72,6 +72,26 @@ const depositWallets = {
     address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     warning: "Only send USDT (ERC-20) to this address.",
   },
+  XRP: {
+    name: "Ripple",
+    address: "rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh",
+    warning: "Only send XRP to this address. Destination Tag may be required.",
+  },
+  ADA: {
+    name: "Cardano",
+    address: "addr1q8s4s9xrmucrkqczf99ft6zgh2g2vcf5phpsg0jdc4r8gln5z7f0g2f7k5h2j...",
+    warning: "Only send ADA to this address.",
+  },
+  SOL: {
+    name: "Solana",
+    address: "So11111111111111111111111111111111111111112",
+    warning: "Only send SOL to this address.",
+  },
+  DOGE: {
+    name: "Dogecoin",
+    address: "D7bA4w4zL1N7k1M3fQ5cZ6eP9aB8iGfT3k",
+    warning: "Only send DOGE to this address.",
+  },
 };
 
 type DepositAsset = keyof typeof depositWallets;
@@ -147,6 +167,10 @@ export function WalletCard() {
                       <SelectItem value="BTC">Bitcoin (BTC)</SelectItem>
                       <SelectItem value="ETH">Ethereum (ETH)</SelectItem>
                       <SelectItem value="USDT">Tether (USDT)</SelectItem>
+                      <SelectItem value="XRP">Ripple (XRP)</SelectItem>
+                      <SelectItem value="ADA">Cardano (ADA)</SelectItem>
+                      <SelectItem value="SOL">Solana (SOL)</SelectItem>
+                      <SelectItem value="DOGE">Dogecoin (DOGE)</SelectItem>
                     </SelectContent>
                 </Select>
              </div>
@@ -226,6 +250,10 @@ export function WalletCard() {
                           <SelectItem value="BTC">Bitcoin (BTC)</SelectItem>
                           <SelectItem value="ETH">Ethereum (ETH)</SelectItem>
                           <SelectItem value="USDT">Tether (USDT)</SelectItem>
+                          <SelectItem value="XRP">Ripple (XRP)</SelectItem>
+                          <SelectItem value="ADA">Cardano (ADA)</SelectItem>
+                          <SelectItem value="SOL">Solana (SOL)</SelectItem>
+                          <SelectItem value="DOGE">Dogecoin (DOGE)</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
