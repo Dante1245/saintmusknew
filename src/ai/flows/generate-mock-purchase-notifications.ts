@@ -21,13 +21,27 @@ export async function generateMockPurchaseNotification(): Promise<GenerateMockPu
   return generateMockPurchaseNotificationFlow({});
 }
 
-const wealthyCountries = ['USA', 'Switzerland', 'UAE', 'Norway', 'Germany'];
+const wealthyCountries = ['USA', 'Switzerland', 'UAE', 'Norway', 'Germany', 'Singapore', 'Japan', 'Australia', 'Canada', 'Qatar'];
+const cryptoAssets = ['Bitcoin', 'Ethereum', 'USDT', 'XRP', 'Cardano', 'Solana', 'Dogecoin'];
 
 const prompt = ai.definePrompt({
   name: 'generateMockPurchaseNotificationPrompt',
   input: {schema: GenerateMockPurchaseNotificationInputSchema},
   output: {schema: GenerateMockPurchaseNotificationOutputSchema},
-  prompt: `Generate a mock purchase notification from one of the following wealthy countries: {{{wealthyCountries}}}. The notification should sound realistic.`, 
+  prompt: `Generate a realistic, mock crypto purchase notification.
+
+Instructions:
+1.  **Select a Country:** Choose one country from this list: {{{wealthyCountries}}}.
+2.  **Select an Asset:** Choose one cryptocurrency from this list: {{{cryptoAssets}}}.
+3.  **Generate an Amount:** Create a random, substantial-looking purchase amount suitable for the chosen asset (e.g., 0.5-2 for BTC, 10-50 for ETH, 50,000-250,000 for USDT/DOGE).
+4.  **Create a Message:** Combine the information into a short notification message.
+
+Example Format: "A new purchase of [AMOUNT] [ASSET] was just made from [COUNTRY]."
+
+Example 1: "A new purchase of 1.25 BTC was just made from Switzerland."
+Example 2: "A new purchase of 150,000 DOGE was just made from USA."
+Example 3: "A new purchase of 75,000 USDT was just made from UAE."
+`, 
   config: {
     safetySettings: [
       {
@@ -57,7 +71,7 @@ const generateMockPurchaseNotificationFlow = ai.defineFlow(
     outputSchema: GenerateMockPurchaseNotificationOutputSchema,
   },
   async () => {
-    const {text} = await prompt({wealthyCountries});
+    const {text} = await prompt({wealthyCountries, cryptoAssets});
     return text!;
   }
 );
