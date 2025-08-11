@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -64,6 +65,9 @@ export function SettingsForm() {
       confirmPassword: "",
     },
   });
+
+  // A dummy form for the appearance section to satisfy the Form context
+  const appearanceForm = useForm();
 
   const onProfileSubmit = (values: z.infer<typeof profileSchema>) => {
     setIsProfilePending(true);
@@ -222,23 +226,27 @@ export function SettingsForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-            <div className="flex items-center justify-between">
-                <div>
-                    <FormLabel>Theme</FormLabel>
-                    <FormDescription>
-                        Select between light and dark mode.
-                    </FormDescription>
-                </div>
-                <div className="flex items-center gap-2">
-                    <FormLabel htmlFor="theme-switch" className="text-sm">Light</FormLabel>
-                    <Switch
-                        id="theme-switch"
-                        checked={isDarkMode}
-                        onCheckedChange={handleThemeToggle}
-                    />
-                    <FormLabel htmlFor="theme-switch" className="text-sm">Dark</FormLabel>
-                </div>
-            </div>
+          <Form {...appearanceForm}>
+            <FormItem className="flex items-center justify-between">
+              <div>
+                <FormLabel>Theme</FormLabel>
+                <FormDescription>
+                  Select between light and dark mode.
+                </FormDescription>
+              </div>
+              <div className="flex items-center gap-2">
+                <FormLabel htmlFor="theme-switch" className="text-sm font-normal">Light</FormLabel>
+                <FormControl>
+                   <Switch
+                      id="theme-switch"
+                      checked={isDarkMode}
+                      onCheckedChange={handleThemeToggle}
+                  />
+                </FormControl>
+                <FormLabel htmlFor="theme-switch" className="text-sm font-normal">Dark</FormLabel>
+              </div>
+            </FormItem>
+          </Form>
         </CardContent>
       </Card>
     </div>
