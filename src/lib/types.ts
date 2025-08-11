@@ -1,3 +1,4 @@
+
 export type CryptoData = {
   [key: string]: {
     usd: number;
@@ -20,4 +21,6 @@ export type User = {
     email: string;
     balance: number;
     joinDate: string;
+    walletAddress?: string;
 };
+
