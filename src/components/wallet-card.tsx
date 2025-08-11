@@ -185,7 +185,7 @@ export function WalletCard() {
                   alt="QR Code"
                   width={200}
                   height={200}
-                  key={selectedDepositAsset} // Force re-render on asset change
+ key={selectedDepositAsset} // Force re-render on asset change
                   className="rounded-md"
                 />
               </div>

@@ -75,7 +75,7 @@ export function ProfileForm() {
               <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20">
                   <AvatarImage src="https://placehold.co/100x100.png" alt="Elon Musk" data-ai-hint="man face" />
-                  <AvatarFallback>EM</AvatarFallback>
+ <AvatarFallback>EM</AvatarFallback>
                 </Avatar>
                 <Button variant="outline" type="button">Change Avatar</Button>
               </div>
