@@ -44,18 +44,6 @@ const transactions: Transaction[] = [
 ];
 
 export function Transactions() {
-  const getStatusVariant = (status: Transaction["status"]) => {
-    switch (status) {
-      case "Completed":
-        return "default";
-      case "Pending":
-        return "secondary";
-      case "Processing":
-        return "outline";
-      default:
-        return "default";
-    }
-  };
   const getStatusColor = (status: Transaction["status"]) => {
     switch (status) {
       case "Completed":
