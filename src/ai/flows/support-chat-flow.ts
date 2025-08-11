@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A conversational AI flow for the elonXchange support bot.
@@ -77,6 +78,7 @@ const supportChatFlow = ai.defineFlow(
   },
   async (input) => {
     const {text} = await prompt(input);
-    return text!;
+    return text ?? "Sorry, I am unable to answer that at the moment. Please try again.";
   }
 );
+
