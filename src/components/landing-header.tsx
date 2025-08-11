@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Package2, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import { IconLogo } from "./icons";
 
 export function LandingHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="flex items-center gap-2 mr-6">
-          <Package2 className="h-6 w-6 text-primary" />
+          <IconLogo className="h-8 w-8" />
           <span className="font-bold text-lg">elonXchange</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -59,7 +60,7 @@ export function LandingHeader() {
                   href="/"
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
-                  <Package2 className="h-6 w-6 text-primary" />
+                  <IconLogo className="h-8 w-8" />
                   <span className="font-bold">elonXchange</span>
                 </Link>
                 <Link href="#" className="text-muted-foreground hover:text-foreground">

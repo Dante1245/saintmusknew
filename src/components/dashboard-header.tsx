@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CircleUser, Menu, Package2, Search } from "lucide-react";
+import { CircleUser, Menu, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { IconLogo } from "./icons";
 
 export function DashboardHeader() {
   return (
@@ -23,7 +24,7 @@ export function DashboardHeader() {
           href="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <Package2 className="h-6 w-6 text-primary" />
+          <IconLogo className="h-8 w-8" />
           <span className="font-bold">elonXchange</span>
         </Link>
         <Link
@@ -64,7 +65,7 @@ export function DashboardHeader() {
               href="/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <Package2 className="h-6 w-6 text-primary" />
+              <IconLogo className="h-8 w-8" />
               <span className="font-bold">elonXchange</span>
             </Link>
             <Link href="/dashboard" className="hover:text-foreground">
