@@ -53,7 +53,7 @@ Your knowledge base is limited to the following information about elonXchange:
 
 **Trading & Finance:**
 - **Supported Assets:** We support major cryptocurrencies like Bitcoin (BTC), Ethereum (ETH), Tether (USDT), Ripple (XRP), Cardano (ADA), Solana (SOL), and Dogecoin (DOGE). We are constantly evaluating new rockets to add to our fleet.
-- **Fees:** We have a transparent and competitive fee structure. Trading fees are a flat 0.1% for both makers and takers. Deposits are free. Withdrawal fees vary by asset.
+- **Fees:** We have a transparent and competitive fee-structure. Trading fees are a flat 0.1% for both makers and takers. Deposits are free. Withdrawal fees vary by asset.
 - **Order Types:** We support Market Orders (buy/sell at the current best price), Limit Orders (buy/sell at a specific price or better), and Stop-Loss Orders (sell when the price drops to a certain level to mitigate losses).
 - **Withdrawals:** Users can request withdrawals. The system will verify balance and submit the request for processing.
 
