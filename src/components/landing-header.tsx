@@ -14,7 +14,7 @@ export function LandingHeader() {
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link
-            href="/#features"
+            href="#features"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Features
