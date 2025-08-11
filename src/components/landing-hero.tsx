@@ -34,13 +34,14 @@ export function LandingHero() {
           </Button>
         </div>
       </div>
-      <div className="hidden lg:block">
+      <div className="hidden lg:block relative">
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
         <Image
           src="https://placehold.co/600x400.png"
           alt="Crypto dashboard screenshot"
           width={600}
           height={400}
-          className="rounded-xl shadow-2xl"
+          className="rounded-xl shadow-2xl relative"
           data-ai-hint="crypto dashboard"
         />
       </div>

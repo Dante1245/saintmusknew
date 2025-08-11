@@ -23,13 +23,14 @@ import { cn } from "@/lib/utils";
 import {
   IconBitcoin,
   IconCardano,
+  IconDogecoin,
   IconEthereum,
   IconRipple,
   IconSolana,
   IconTether,
 } from "./icons";
 
-const COIN_IDS = "bitcoin,ethereum,tether,ripple,cardano,solana";
+const COIN_IDS = "bitcoin,ethereum,tether,ripple,cardano,solana,dogecoin";
 
 const cryptoDetails: {
   [key: string]: { name: string; symbol: string; icon: React.ElementType };
@@ -40,6 +41,7 @@ const cryptoDetails: {
   ripple: { name: "Ripple", symbol: "XRP", icon: IconRipple },
   cardano: { name: "Cardano", symbol: "ADA", icon: IconCardano },
   solana: { name: "Solana", symbol: "SOL", icon: IconSolana },
+  dogecoin: { name: "Dogecoin", symbol: "DOGE", icon: IconDogecoin },
 };
 
 export function MarketView() {
@@ -72,7 +74,7 @@ export function MarketView() {
   const renderPriceChange = (change: number) => {
     const isPositive = change >= 0;
     return (
-      <span className={cn(isPositive ? "text-green-500" : "text-red-500")}>
+      <span className={cn(isPositive ? "text-green-400" : "text-red-400")}>
         {isPositive ? "▲" : "▼"} {change.toFixed(2)}%
       </span>
     );
@@ -98,7 +100,7 @@ export function MarketView() {
           </TableHeader>
           <TableBody>
             {loading
-              ? Array.from({ length: 6 }).map((_, i) => (
+              ? Array.from({ length: 7 }).map((_, i) => (
                   <TableRow key={i}>
                     <TableCell>
                       <div className="flex items-center gap-3">
@@ -129,7 +131,7 @@ export function MarketView() {
                     <TableRow key={coinId}>
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          {Icon && <Icon className="h-8 w-8" />}
+                          {Icon && <Icon className="h-8 w-8 text-muted-foreground" />}
                           <div>
                             <div className="font-medium">{details?.name}</div>
                             <div className="text-sm text-muted-foreground">
@@ -147,7 +149,7 @@ export function MarketView() {
                       <TableCell className="text-right">
                         <Badge
                           variant="outline"
-                          className="cursor-pointer bg-accent/20 text-accent-foreground/80 hover:bg-accent/40"
+                          className="cursor-pointer bg-primary/10 text-primary-foreground/80 hover:bg-primary/20"
                         >
                           Trade
                         </Badge>

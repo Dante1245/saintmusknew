@@ -115,13 +115,14 @@ export function WalletCard() {
               <p className="text-sm text-muted-foreground">
                 Scan the QR code or copy the address below to deposit Bitcoin (BTC).
               </p>
-              <div className="rounded-lg border bg-card p-2 shadow-sm">
+              <div className="p-2 rounded-lg border bg-card shadow-sm">
                 <Image
                   src="https://placehold.co/200x200.png"
                   alt="QR Code"
                   width={200}
                   height={200}
                   data-ai-hint="qr code"
+                  className="rounded-md"
                 />
               </div>
               <div className="relative w-full">
@@ -205,7 +206,7 @@ export function WalletCard() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={isPending}>
+                <Button type="submit" className="w-full" disabled={isPending}>
                   {isPending ? "Submitting..." : "Request Withdrawal"}
                 </Button>
               </form>
