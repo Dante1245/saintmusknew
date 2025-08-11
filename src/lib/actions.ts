@@ -1,7 +1,9 @@
+
 "use server";
 
 import { z } from "zod";
 import { generateMockPurchaseNotification } from "@/ai/flows/generate-mock-purchase-notifications";
+import { supportChat } from "@/ai/flows/support-chat-flow";
 
 const withdrawalSchema = z.object({
   amount: z.coerce.number().positive(),
@@ -34,4 +36,22 @@ export async function getMockNotification() {
     console.error("Error generating mock notification:", error);
     return { success: false, error: "Failed to generate notification." };
   }
+}
+
+const supportChatSchema = z.object({
+    message: z.string(),
+});
+
+export async function submitSupportMessage(values: z.infer<typeof supportChatSchema>) {
+    const parsed = supportChatSchema.safeParse(values);
+    if (!parsed.success) {
+        return { success: false, error: "Invalid message" };
+    }
+    try {
+        const response = await supportChat(parsed.data);
+        return { success: true, response };
+    } catch (error) {
+        console.error("Error getting support response:", error);
+        return { success: false, error: "Failed to get response from support bot." };
+    }
 }

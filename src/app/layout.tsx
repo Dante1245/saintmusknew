@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
+import { SupportBot } from '@/components/support-bot';
 
 export const metadata: Metadata = {
   title: 'elonXchange',
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         {children}
         <Toaster />
+        <SupportBot />
       </body>
     </html>
   );
