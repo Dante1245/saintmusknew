@@ -11,7 +11,7 @@ export function LandingFooter() {
             <span className="font-bold text-lg">elonXchange</span>
           </Link>
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            © {new Date().getFullYear()} elonXchange. All rights reserved.
+            © 2022 elonXchange.
           </p>
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm font-medium">
