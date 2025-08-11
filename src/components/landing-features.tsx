@@ -38,20 +38,20 @@ export function LandingFeatures() {
   return (
     <section id="features" className="py-20 md:py-32">
       <div className="container">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">
             The Ultimate Crypto Trading Experience
           </h2>
-          <p className="text-lg text-muted-foreground mt-2 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto">
             elonXchange provides everything you need to navigate the world of digital assets with confidence.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="flex flex-col items-center text-center p-6 bg-card/80">
-                <div className="mb-4">{feature.icon}</div>
+            <Card key={index} className="flex flex-col items-center text-center p-8 bg-card/50 backdrop-blur-sm border-primary/10 hover:border-primary/30 transition-all duration-300 hover:bg-card/70">
+                <div className="mb-4 p-4 rounded-full bg-primary/10">{feature.icon}</div>
                 <CardHeader className="p-0 mb-2">
-                    <CardTitle>{feature.title}</CardTitle>
+                    <CardTitle className="text-xl">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardDescription>
                     {feature.description}

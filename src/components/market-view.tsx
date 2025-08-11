@@ -75,7 +75,7 @@ export function MarketView() {
     const isPositive = change >= 0;
     return (
       <span className={cn(isPositive ? "text-green-400" : "text-red-400")}>
-        {isPositive ? "▲" : "▼"} {change.toFixed(2)}%
+        {isPositive ? "▲" : "▼"} {Math.abs(change).toFixed(2)}%
       </span>
     );
   };
@@ -149,7 +149,7 @@ export function MarketView() {
                       <TableCell className="text-right">
                         <Badge
                           variant="outline"
-                          className="cursor-pointer bg-primary/10 text-primary-foreground/80 hover:bg-primary/20"
+                          className="cursor-pointer border-primary/50 text-primary hover:bg-primary/10 hover:text-primary"
                         >
                           Trade
                         </Badge>

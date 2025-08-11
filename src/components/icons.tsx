@@ -8,30 +8,50 @@ export const IconLogo = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <defs>
-      <linearGradient id="logo-gradient" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-        <stop stopColor="hsl(var(--primary))" />
-        <stop offset="1" stopColor="hsl(var(--accent))" />
-      </linearGradient>
-      <linearGradient id="face-gradient" x1="50" y1="20" x2="50" y2="70" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#4ddbff" />
-        <stop offset="1" stopColor="#0077ff" />
+      <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="hsl(var(--primary))" />
+        <stop offset="100%" stopColor="hsl(var(--accent))" />
       </linearGradient>
     </defs>
-    <circle cx="50" cy="50" r="48" stroke="url(#logo-gradient)" strokeWidth="3" />
-    
-    {/* Stylized Face */}
-    <path d="M50 30 C 55 25, 65 30, 68 40 C 72 55, 60 75, 50 75 C 40 75, 28 55, 32 40 C 35 30, 45 25, 50 30 Z" fill="url(#face-gradient)" opacity="0.8" />
-    <path d="M45,45 Q50,50 55,45" stroke="white" strokeWidth="1.5" fill="none" />
-    <path d="M40 60 C 45 65, 55 65, 60 60" stroke="white" strokeWidth="1.5" fill="none" />
-
-    {/* Tech Lines */}
-    <path d="M25 40 L 35 40 L 38 35" stroke="url(#logo-gradient)" strokeWidth="1.5" />
-    <path d="M28 50 L 40 50" stroke="url(#logo-gradient)" strokeWidth="1.5" />
-    <path d="M30 60 L 38 60 L 41 65" stroke="url(#logo-gradient)" strokeWidth="1.5" />
-    
-    <path d="M75 40 L 65 40 L 62 35" stroke="url(#logo-gradient)" strokeWidth="1.5" />
-    <path d="M72 50 L 60 50" stroke="url(#logo-gradient)" strokeWidth="1.5" />
-    <path d="M70 60 L 62 60 L 59 65" stroke="url(#logo-gradient)" strokeWidth="1.5" />
+    <path
+      d="M50 2.5C23.76 2.5 2.5 23.76 2.5 50C2.5 76.24 23.76 97.5 50 97.5C76.24 97.5 97.5 76.24 97.5 50C97.5 23.76 76.24 2.5 50 2.5Z"
+      stroke="url(#logo-gradient)"
+      strokeWidth="5"
+    />
+    <path
+      d="M35 35 L45 35 L50 30 L50 20"
+      stroke="hsl(var(--primary))"
+      strokeWidth="4"
+    />
+    <path
+      d="M65 35 L55 35 L50 30"
+      stroke="hsl(var(--primary))"
+      strokeWidth="4"
+    />
+    <path
+      d="M35 65 L45 65 L50 70 L50 80"
+      stroke="hsl(var(--accent))"
+      strokeWidth="4"
+    />
+     <path
+      d="M65 65 L55 65 L50 70"
+      stroke="hsl(var(--accent))"
+      strokeWidth="4"
+    />
+    <path
+      d="M25 50 L40 50"
+      stroke="url(#logo-gradient)"
+      strokeWidth="3"
+      strokeDasharray="4 4"
+    />
+    <path
+      d="M75 50 L60 50"
+      stroke="url(#logo-gradient)"
+      strokeWidth="3"
+      strokeDasharray="4 4"
+    />
+    <circle cx="50" cy="50" r="12" fill="url(#logo-gradient)" opacity="0.2" />
+    <circle cx="50" cy="50" r="8" stroke="white" strokeWidth="2" strokeOpacity="0.8" />
   </svg>
 );
 

@@ -85,7 +85,7 @@ export function SupportBot({ open, onOpenChange }: SupportBotProps) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="flex flex-col">
+      <SheetContent className="flex flex-col bg-background/80 backdrop-blur-sm border-l-primary/20">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <Bot className="h-6 w-6 text-primary" />

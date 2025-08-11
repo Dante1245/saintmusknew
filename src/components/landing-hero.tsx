@@ -17,8 +17,12 @@ export function LandingHero() {
             </div>
             <p className="text-sm text-muted-foreground">Loved by 10,000+ traders</p>
         </div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter">
-          The Future of Crypto Trading is Here.
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter !leading-[1.2]">
+          Trade the Future.
+          <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+            Today.
+          </span>
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground">
           elonXchange is the most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio. We offer institutional-grade security, blazing-fast transactions, and a suite of advanced tools in a single, user-friendly interface. Join the revolution.
@@ -35,14 +39,14 @@ export function LandingHero() {
         </div>
       </div>
       <div className="hidden lg:block relative">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        <div className="absolute -inset-4 bg-gradient-to-r from-primary to-accent rounded-full blur-3xl opacity-30"></div>
         <Image
           src="https://placehold.co/600x400.png"
-          alt="Elon Musk"
+          alt="Cyberpunk trading interface"
           width={600}
           height={400}
-          className="rounded-xl shadow-2xl relative"
-          data-ai-hint="man futuristic"
+          className="rounded-xl shadow-2xl relative z-10 border-2 border-primary/20"
+          data-ai-hint="cyberpunk trading"
         />
       </div>
     </section>

@@ -85,7 +85,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   
   return (
     <AuthLayout>
-      <Card>
+      <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
         <CardHeader>
           <CardTitle className="text-2xl">
             {isLogin ? "Welcome Back" : "Create an Account"}
@@ -170,7 +170,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
           </Form>
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t"></span>
+                <span className="w-full border-t border-border/50"></span>
             </div>
             <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-card px-2 text-muted-foreground">
