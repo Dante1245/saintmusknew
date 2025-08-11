@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import type { User, Transaction } from "@/lib/types";
+import type { User } from "@/lib/types";
 import { Copy } from "lucide-react";
 import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
@@ -55,7 +55,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-3xl bg-slate-50">
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>Edit User: {user.name}</DialogTitle>
           <DialogDescription>
@@ -66,7 +66,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
         <div className="grid gap-6 py-4 max-h-[70vh] overflow-y-auto pr-4">
           
           {/* User Details Management */}
-          <div className="space-y-4 p-4 rounded-lg bg-white border border-slate-200">
+          <div className="space-y-4 p-4 rounded-lg border border-slate-200">
             <h4 className="font-medium text-slate-800">User Details</h4>
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="grid flex-1 gap-2">
@@ -99,17 +99,14 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                     </div>
                 </div>
             </div>
-             <div className="flex justify-end">
-                <Button onClick={handleSave}>Save User Details</Button>
-            </div>
           </div>
 
 
           {/* Wallet QR Code */}
-          <div className="space-y-4 p-4 rounded-lg bg-white border border-slate-200">
+          <div className="space-y-4 p-4 rounded-lg border border-slate-200">
              <h4 className="font-medium text-slate-800">Wallet QR Code</h4>
              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div className="p-2 rounded-lg border bg-white shadow-sm">
+                <div className="p-2 rounded-lg border bg-card shadow-sm">
                     {walletAddress && (
                         <Image
                             src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${walletAddress}`}
@@ -136,9 +133,9 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>
+           <Button onClick={handleSave}>Save User Details</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
-

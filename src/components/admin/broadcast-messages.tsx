@@ -48,7 +48,7 @@ export function BroadcastMessages() {
           <Textarea
             id="broadcast-message"
             placeholder="Type your announcement here..."
-            className="bg-white min-h-[120px]"
+            className="min-h-[120px]"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />

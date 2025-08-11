@@ -40,7 +40,7 @@ export function SiteSettings() {
                 id="deposit-address"
                 value={depositAddress}
                 onChange={(e) => setDepositAddress(e.target.value)}
-                className="bg-white font-mono"
+                className="font-mono"
             />
             <p className="text-xs text-slate-500">
                 This is the primary address displayed for all user deposits. Changing this will affect the entire site.
