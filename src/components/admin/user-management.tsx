@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -23,9 +24,36 @@ import type { User } from "@/lib/types";
 import { EditUserDialog } from "./edit-user-dialog";
 
 const mockUsers: User[] = [
-  { id: "usr_001", name: "Elon Musk", email: "elon@tesla.com", balance: 200.00, joinDate: "2024-07-29" },
-  { id: "usr_002", name: "Satoshi Nakamoto", email: "satoshi@btc.com", balance: 10500.75, joinDate: "2024-07-28" },
-  { id: "usr_003", name: "Vitalik Buterin", email: "vitalik@ethereum.org", balance: 8734.20, joinDate: "2024-07-27" },
+  { 
+    id: "usr_001", 
+    name: "Elon Musk", 
+    email: "elon@tesla.com", 
+    balance: 200.00, 
+    joinDate: "2024-07-29",
+    transactions: [
+      { id: "txn_001", type: "Bonus", asset: "USDT", amount: 200, status: "Completed", date: "2024-07-29" },
+    ]
+  },
+  { 
+    id: "usr_002", 
+    name: "Satoshi Nakamoto", 
+    email: "satoshi@btc.com", 
+    balance: 10500.75, 
+    joinDate: "2024-07-28",
+    transactions: [
+       { id: "txn_002", type: "Deposit", asset: "BTC", amount: 0.5, status: "Completed", date: "2024-07-28" },
+    ]
+  },
+  { 
+    id: "usr_003", 
+    name: "Vitalik Buterin", 
+    email: "vitalik@ethereum.org", 
+    balance: 8734.20, 
+    joinDate: "2024-07-27",
+    transactions: [
+      { id: "txn_003", type: "Withdrawal", asset: "ETH", amount: 10, status: "Pending", date: "2024-07-27" },
+    ]
+  },
 ];
 
 
@@ -55,7 +83,7 @@ export function UserManagement() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search by name or email..."
-              className="pl-8 w-full sm:w-1/3"
+              className="pl-8 w-full sm:w-1/3 bg-white"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

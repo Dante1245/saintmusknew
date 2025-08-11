@@ -14,11 +14,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import type { User } from "@/lib/types";
-import { Copy } from "lucide-react";
+import type { User, Transaction } from "@/lib/types";
+import { Copy, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-
+import { AddTransactionForm } from "./add-transaction-form";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "../ui/badge";
 
 interface EditUserDialogProps {
   user: User;
@@ -31,9 +40,10 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
   const { toast } = useToast();
   const [balance, setBalance] = useState(user.balance);
   const [walletAddress, setWalletAddress] = useState(user.walletAddress ?? `0x${Math.random().toString(16).substr(2, 40)}`);
+  const [transactions, setTransactions] = useState<Transaction[]>(user.transactions ?? []);
 
   const handleSave = () => {
-    onUpdate({ ...user, balance: Number(balance), walletAddress });
+    onUpdate({ ...user, balance: Number(balance), walletAddress, transactions });
     toast({
       title: "User Updated",
       description: `${user.name}'s details have been updated.`,
@@ -49,13 +59,26 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
       });
     }
   };
+  
+  const handleAddTransaction = (newTx: Omit<Transaction, 'id' | 'date'>) => {
+    const transactionToAdd: Transaction = {
+      ...newTx,
+      id: `txn_${Math.random().toString(36).substr(2, 9)}`,
+      date: new Date().toISOString().split('T')[0],
+    };
+    setTransactions(prev => [transactionToAdd, ...prev]);
+  };
+
+  const handleRemoveTransaction = (txId: string) => {
+    setTransactions(prev => prev.filter(tx => tx.id !== txId));
+  };
 
 
   if (!isOpen) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="sm:max-w-3xl bg-slate-100">
         <DialogHeader>
           <DialogTitle>Edit User: {user.name}</DialogTitle>
           <DialogDescription>
@@ -65,8 +88,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
         
         <div className="grid gap-6 py-4 max-h-[70vh] overflow-y-auto pr-4">
           
-          {/* User Details Management */}
-          <div className="space-y-4 p-4 rounded-lg border border-slate-200">
+          <div className="space-y-4 p-4 rounded-lg border border-slate-200 bg-white">
             <h4 className="font-medium text-slate-800">User Details</h4>
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="grid flex-1 gap-2">
@@ -76,6 +98,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                         type="number"
                         value={balance}
                         onChange={(e) => setBalance(parseFloat(e.target.value) || 0)}
+                        className="bg-slate-50"
                     />
                 </div>
                 <div className="grid flex-1 gap-2">
@@ -86,7 +109,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                             type="text"
                             value={walletAddress}
                             onChange={(e) => setWalletAddress(e.target.value)}
-                            className="font-mono text-xs pr-10"
+                            className="font-mono text-xs pr-10 bg-slate-50"
                         />
                         <Button
                             variant="ghost"
@@ -100,13 +123,11 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                 </div>
             </div>
           </div>
-
-
-          {/* Wallet QR Code */}
-          <div className="space-y-4 p-4 rounded-lg border border-slate-200">
+          
+          <div className="space-y-4 p-4 rounded-lg border border-slate-200 bg-white">
              <h4 className="font-medium text-slate-800">Wallet QR Code</h4>
              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div className="p-2 rounded-lg border bg-card shadow-sm">
+                <div className="p-2 rounded-lg border bg-white shadow-sm">
                     {walletAddress && (
                         <Image
                             src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${walletAddress}`}
@@ -127,9 +148,47 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                 </div>
              </div>
           </div>
+
+           <div className="space-y-4 p-4 rounded-lg border border-slate-200 bg-white">
+            <h4 className="font-medium text-slate-800">Manage Transactions</h4>
+             <AddTransactionForm onSubmit={handleAddTransaction} />
+              <div className="mt-6">
+                <h5 className="font-medium text-slate-800 mb-2">Transaction History</h5>
+                <div className="max-h-60 overflow-y-auto border rounded-md">
+                   <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Asset</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Status</TableHead>
+                         <TableHead>Date</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {transactions.map((tx) => (
+                        <TableRow key={tx.id}>
+                          <TableCell>{tx.type}</TableCell>
+                          <TableCell>{tx.asset}</TableCell>
+                          <TableCell>{tx.amount}</TableCell>
+                          <TableCell><Badge variant="outline">{tx.status}</Badge></TableCell>
+                           <TableCell>{tx.date}</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="destructive" size="icon" onClick={() => handleRemoveTransaction(tx.id)}>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+           </div>
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="bg-slate-200 p-4 rounded-b-lg -m-6 mt-6">
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>
