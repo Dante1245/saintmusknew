@@ -46,7 +46,7 @@ export function DashboardHeader() {
           Portfolio
         </Link>
         <Link
-          href="#"
+          href="/history"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           History
@@ -77,7 +77,7 @@ export function DashboardHeader() {
             <Link href="#" className="text-muted-foreground hover:text-foreground">
               Portfolio
             </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
+            <Link href="/history" className="text-muted-foreground hover:text-foreground">
               History
             </Link>
           </nav>
