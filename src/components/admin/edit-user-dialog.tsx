@@ -78,7 +78,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-3xl bg-slate-100">
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>Edit User: {user.name}</DialogTitle>
           <DialogDescription>
@@ -88,8 +88,8 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
         
         <div className="grid gap-6 py-4 max-h-[70vh] overflow-y-auto pr-4">
           
-          <div className="space-y-4 p-4 rounded-lg border border-slate-200 bg-white">
-            <h4 className="font-medium text-slate-800">User Details</h4>
+          <div className="space-y-4 p-4 rounded-lg border bg-card/50">
+            <h4 className="font-medium text-foreground">User Details</h4>
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="grid flex-1 gap-2">
                     <Label htmlFor="balance">Balance (USD)</Label>
@@ -98,7 +98,6 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                         type="number"
                         value={balance}
                         onChange={(e) => setBalance(parseFloat(e.target.value) || 0)}
-                        className="bg-slate-50"
                     />
                 </div>
                 <div className="grid flex-1 gap-2">
@@ -109,12 +108,12 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                             type="text"
                             value={walletAddress}
                             onChange={(e) => setWalletAddress(e.target.value)}
-                            className="font-mono text-xs pr-10 bg-slate-50"
+                            className="font-mono text-xs pr-10"
                         />
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2"
+                            className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground"
                             onClick={handleCopy}
                             >
                             <Copy className="h-4 w-4" />
@@ -124,10 +123,10 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
             </div>
           </div>
           
-          <div className="space-y-4 p-4 rounded-lg border border-slate-200 bg-white">
-             <h4 className="font-medium text-slate-800">Wallet QR Code</h4>
+          <div className="space-y-4 p-4 rounded-lg border bg-card/50">
+             <h4 className="font-medium text-foreground">Wallet QR Code</h4>
              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div className="p-2 rounded-lg border bg-white shadow-sm">
+                <div className="p-2 rounded-lg border bg-background shadow-sm">
                     {walletAddress && (
                         <Image
                             src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${walletAddress}`}
@@ -149,11 +148,11 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
              </div>
           </div>
 
-           <div className="space-y-4 p-4 rounded-lg border border-slate-200 bg-white">
-            <h4 className="font-medium text-slate-800">Manage Transactions</h4>
+           <div className="space-y-4 p-4 rounded-lg border bg-card/50">
+            <h4 className="font-medium text-foreground">Manage Transactions</h4>
              <AddTransactionForm onSubmit={handleAddTransaction} />
               <div className="mt-6">
-                <h5 className="font-medium text-slate-800 mb-2">Transaction History</h5>
+                <h5 className="font-medium text-foreground mb-2">Transaction History</h5>
                 <div className="max-h-60 overflow-y-auto border rounded-md">
                    <Table>
                     <TableHeader>
@@ -188,7 +187,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
            </div>
         </div>
 
-        <DialogFooter className="bg-slate-200 p-4 rounded-b-lg -m-6 mt-6">
+        <DialogFooter className="bg-background p-4 rounded-b-lg -m-6 mt-6 border-t">
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>

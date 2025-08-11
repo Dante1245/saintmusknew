@@ -44,19 +44,19 @@ import {
             <TableBody>
               {mockWithdrawals.map((req) => (
                 <TableRow key={req.id}>
-                  <TableCell className="font-mono text-xs">{req.id}</TableCell>
-                  <TableCell className="font-mono text-xs">{req.userId}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{req.id}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{req.userId}</TableCell>
                   <TableCell>{req.asset}</TableCell>
                   <TableCell className="text-right">{req.amount}</TableCell>
                   <TableCell className="font-mono text-xs">{req.address}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800">{req.status}</Badge>
+                    <Badge variant="outline" className="bg-yellow-400/10 text-yellow-400 border-yellow-400/30">{req.status}</Badge>
                     </TableCell>
                   <TableCell>{req.requestDate}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                        <Button variant="outline" size="sm" className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200">Approve</Button>
-                        <Button variant="outline" size="sm" className="bg-red-100 text-red-800 border-red-300 hover:bg-red-200">Decline</Button>
+                        <Button variant="outline" size="sm" className="bg-green-400/10 text-green-400 border-green-400/30 hover:bg-green-400/20">Approve</Button>
+                        <Button variant="outline" size="sm" className="bg-red-400/10 text-red-400 border-red-400/30 hover:bg-red-400/20">Decline</Button>
                     </div>
                   </TableCell>
                 </TableRow>

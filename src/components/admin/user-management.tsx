@@ -83,7 +83,7 @@ export function UserManagement() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search by name or email..."
-              className="pl-8 w-full sm:w-1/3 bg-white"
+              className="pl-8 w-full sm:w-1/3"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -104,7 +104,7 @@ export function UserManagement() {
             <TableBody>
               {filteredUsers.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell className="font-mono text-xs">{user.id}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{user.id}</TableCell>
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell className="text-right">${user.balance.toFixed(2)}</TableCell>

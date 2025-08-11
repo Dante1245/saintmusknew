@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -42,7 +43,7 @@ export function SiteSettings() {
                 onChange={(e) => setDepositAddress(e.target.value)}
                 className="font-mono"
             />
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-muted-foreground">
                 This is the primary address displayed for all user deposits. Changing this will affect the entire site.
             </p>
         </div>
