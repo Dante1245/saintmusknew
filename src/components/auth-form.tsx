@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { AuthLayout } from "./auth-layout";
 import { Eye, EyeOff } from "lucide-react";
+import { IconGoogle } from "./icons";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -65,6 +66,15 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = (values: FormValues) => {
+    setIsLoading(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push("/dashboard");
+    }, 1500);
+  };
+  
+  const onGoogleSubmit = () => {
     setIsLoading(true);
     // Simulate API call
     setTimeout(() => {
@@ -158,6 +168,26 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
               </Button>
             </form>
           </Form>
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t"></span>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">
+                Or continue with
+                </span>
+            </div>
+          </div>
+          <Button variant="outline" className="w-full" onClick={onGoogleSubmit} disabled={isLoading}>
+            {isLoading ? (
+                "Redirecting..."
+            ) : (
+              <>
+                <IconGoogle className="mr-2 h-5 w-5" />
+                {isLogin ? "Sign in with Google" : "Sign up with Google"}
+              </>
+            )}
+           </Button>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <div className="text-center text-sm text-muted-foreground">
