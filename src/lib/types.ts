@@ -13,3 +13,11 @@ export type Transaction = {
   status: "Completed" | "Pending" | "Processing";
   date: string;
 };
+
+export type User = {
+    id: string;
+    name: string;
+    email: string;
+    balance: number;
+    joinDate: string;
+};
