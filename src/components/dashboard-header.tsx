@@ -16,6 +16,15 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { IconLogo } from "./icons";
 
+const navLinks = [
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/markets", label: "Markets" },
+    { href: "/history", label: "History" },
+    { href: "/profile", label: "Profile" },
+    { href: "/settings", label: "Settings" },
+];
+
+
 export function DashboardHeader() {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border/50 bg-background/80 backdrop-blur-sm px-4 sm:px-6">
@@ -27,30 +36,15 @@ export function DashboardHeader() {
           <IconLogo className="h-8 w-8" />
           <span className="font-bold">elonXchange</span>
         </Link>
-        <Link
-          href="/dashboard"
-          className="text-foreground transition-colors hover:text-foreground/80"
-        >
-          Dashboard
-        </Link>
-        <Link
-          href="#"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Markets
-        </Link>
-        <Link
-          href="#"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Portfolio
-        </Link>
-        <Link
-          href="/history"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          History
-        </Link>
+        {navLinks.map(({ href, label }) => (
+            <Link
+            key={href}
+            href={href}
+            className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+            {label}
+            </Link>
+        ))}
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -68,18 +62,15 @@ export function DashboardHeader() {
               <IconLogo className="h-8 w-8" />
               <span className="font-bold">elonXchange</span>
             </Link>
-            <Link href="/dashboard" className="hover:text-foreground">
-              Dashboard
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              Markets
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              Portfolio
-            </Link>
-            <Link href="/history" className="text-muted-foreground hover:text-foreground">
-              History
-            </Link>
+            {navLinks.map(({ href, label }) => (
+                <Link
+                key={href}
+                href={href}
+                className="text-muted-foreground hover:text-foreground"
+                >
+                {label}
+                </Link>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>
