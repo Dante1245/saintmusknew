@@ -15,7 +15,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -59,22 +58,21 @@ export function ProfileForm() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-4">
-          <Avatar className="h-16 w-16">
-            <AvatarImage src="https://placehold.co/100x100.png" alt="Elon Musk" data-ai-hint="man face" />
-            <AvatarFallback>EM</AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle className="text-2xl">Elon Musk</CardTitle>
-            <CardDescription>
-              Joined on July 29, 2024
-            </CardDescription>
-          </div>
-        </div>
+        <CardTitle>Profile</CardTitle>
+        <CardDescription>
+        This information will be displayed publicly so be careful what you share.
+        </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
+              <div className="flex items-center gap-4">
+                <Avatar className="h-20 w-20">
+                  <AvatarImage src="https://placehold.co/100x100.png" alt="Elon Musk" data-ai-hint="man face" />
+                  <AvatarFallback>EM</AvatarFallback>
+                </Avatar>
+                <Button variant="outline" type="button">Change Avatar</Button>
+              </div>
             <FormField
               control={form.control}
               name="name"
@@ -95,11 +93,8 @@ export function ProfileForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Your email address" {...field} disabled />
+                    <Input type="email" placeholder="Your email address" {...field} />
                   </FormControl>
-                   <FormDescription>
-                      You cannot change your email address.
-                    </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -107,7 +102,7 @@ export function ProfileForm() {
           </CardContent>
           <CardFooter className="border-t px-6 py-4">
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? "Saving..." : "Save"}
             </Button>
           </CardFooter>
         </form>
