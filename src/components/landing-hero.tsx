@@ -46,7 +46,7 @@ export function LandingHero() {
           width={600}
           height={400}
           className="rounded-xl shadow-2xl relative z-10 border-2 border-primary/20"
-          data-ai-hint="cyberpunk trading"
+          data-ai-hint="trading interface"
         />
       </div>
     </section>
