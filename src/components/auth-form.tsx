@@ -169,7 +169,6 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
               </Button>
             </form>
           </Form>
-          <div className="relative my-4">
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <div className="text-center text-sm text-muted-foreground">
