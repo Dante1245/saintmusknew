@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -169,25 +170,6 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
             </form>
           </Form>
           <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-border/50"></span>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
-                </span>
-            </div>
-          </div>
-          <Button variant="outline" className="w-full" onClick={onGoogleSubmit} disabled={isLoading}>
-            {isLoading ? (
-                "Redirecting..."
-            ) : (
-              <>
-                <IconGoogle className="mr-2 h-5 w-5" />
-                {isLogin ? "Sign in with Google" : "Sign up with Google"}
-              </>
-            )}
-           </Button>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <div className="text-center text-sm text-muted-foreground">
