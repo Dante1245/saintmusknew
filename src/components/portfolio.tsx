@@ -1,4 +1,4 @@
-import { DollarSign, TrendingUp, Wallet } from "lucide-react";
+import { DollarSign, Wallet } from "lucide-react";
 import {
   Card,
   CardContent,
