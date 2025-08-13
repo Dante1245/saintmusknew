@@ -46,7 +46,7 @@ export function LandingFeatures() {
             elonXchange provides everything you need to navigate the world of digital assets with confidence.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {features.map((feature, index) => (
             <Card key={index} className="flex flex-col items-center text-center p-8 bg-card/50 backdrop-blur-sm border-primary/10 hover:border-primary/30 transition-all duration-300 hover:bg-card/70">
                 <div className="mb-6 p-4 rounded-full bg-primary/10">{feature.icon}</div>

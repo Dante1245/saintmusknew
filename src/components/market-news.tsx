@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import type { CryptoNewsArticle } from "@/lib/types";
 import { Skeleton } from "./ui/skeleton";
 
+
 function timeAgo(timestamp: number): string {
     const now = new Date();
     const seconds = Math.floor((now.getTime() - (timestamp * 1000)) / 1000);
@@ -63,23 +64,32 @@ export function MarketNews() {
             }
         };
 
-        fetchNews();
-    }, []);
+ fetchNews();
+    }, []); // Empty dependency array means this effect runs once on mount
 
     if (error) {
-        return <div className="text-center text-destructive">Failed to load news: {error}</div>;
+        return (
+            <div className="flex flex-col items-center justify-center py-10 text-red-500 dark:text-red-400">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-xl font-semibold mb-2">Failed to load news</p>
+                <p className="text-sm text-muted-foreground">Error: {error}</p>
+            </div>
+        );
+
     }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
         {loading ? (
             Array.from({ length: 6 }).map((_, index) => (
                 <Card key={index} className="flex flex-col">
                     <Skeleton className="aspect-video w-full" />
-                    <CardHeader className="flex-1">
-                        <Skeleton className="h-5 w-5/6 mb-2" />
+                    <CardHeader className="flex flex-col flex-1">
+                        <Skeleton className="h-5 w-5/6 mb-3" />
                         <Skeleton className="h-5 w-4/6" />
-                         <div className="flex items-center justify-between pt-4 text-xs text-muted-foreground">
+                         <div className="flex items-center justify-between pt-6 text-xs text-muted-foreground mt-auto">
                            <Skeleton className="h-4 w-1/4" />
                            <Skeleton className="h-4 w-1/4" />
                         </div>
@@ -99,15 +109,15 @@ export function MarketNews() {
                         />
                     </div>
                     <CardHeader className="flex-1">
-                        <CardTitle className="text-base leading-tight flex-1">{article.title}</CardTitle>
+                        <CardTitle className="text-base leading-tight mb-2">{article.title}</CardTitle>
                         <CardDescription className="flex items-center justify-between pt-2 text-xs">
                             <span>{article.source_info.name}</span>
                             <span>{timeAgo(article.published_on)}</span>
                         </CardDescription>
                     </CardHeader>
                 </Card>
-            </a>
-        )))}
+            </a>))
+        )}
     </div>
   );
 }

@@ -14,25 +14,54 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
+
 export function BroadcastMessages() {
     const { toast } = useToast();
     const [message, setMessage] = useState("");
+    const [isSending, setIsSending] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
-    const handleSend = () => {
+    const initiateSend = () => {
         if (!message.trim()) {
             toast({
                 title: "Error",
                 description: "Message cannot be empty.",
                 variant: "destructive",
             });
-            return;
+            return; // Prevent showing confirmation for empty message
         }
+        setError(null); // Clear previous errors
+        setShowConfirmation(true);
+    };
+
+    const confirmSend = async () => {
+        setShowConfirmation(false); // Close confirmation
+        setIsSending(true);
+        setError(null); // Clear previous errors
+
+        // Simulate sending delay and potential error
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        const success = Math.random() > 0.2; // 80% chance of success
+
         console.log("Sending broadcast:", message);
-        toast({
-            title: "Broadcast Sent",
-            description: "Your message has been sent to all users.",
-        });
+
+        if (success) {
+            toast({
+                title: "Broadcast Sent",
+                description: "Your message has been sent to all users.",
+            });
+        } else {
+            setError("Failed to send broadcast message. Please try again.");
+            toast({
+                title: "Error",
+                description: "Failed to send broadcast message.",
+                variant: "destructive",
+            });
+        }
         setMessage("");
+        setIsSending(false);
     }
 
   return (
@@ -44,6 +73,9 @@ export function BroadcastMessages() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {error && (
+            <div className="text-red-500 text-sm">{error}</div>
+        )}
         <div className="space-y-2">
           <Label htmlFor="broadcast-message">Message</Label>
           <Textarea
@@ -54,7 +86,22 @@ export function BroadcastMessages() {
             onChange={(e) => setMessage(e.target.value)}
           />
         </div>
-        <Button onClick={handleSend}>Send Broadcast</Button>
+        <Button onClick={initiateSend} disabled={isSending || !message.trim()}>
+            {isSending ? "Sending..." : "Send Broadcast"}
+        </Button>
+
+        {showConfirmation && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-background p-6 rounded-md shadow-lg">
+                    <h3 className="text-lg font-semibold mb-4">Confirm Broadcast</h3>
+                    <p>Are you sure you want to send this message to all users?</p>
+                    <div className="mt-6 flex justify-end gap-2">
+                        <Button variant="outline" onClick={() => setShowConfirmation(false)}>Cancel</Button>
+                        <Button onClick={confirmSend} disabled={isSending}>Confirm</Button>
+                    </div>
+                </div>
+            </div>
+        )}
       </CardContent>
     </Card>
   );

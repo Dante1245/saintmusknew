@@ -7,7 +7,7 @@ export default function HistoryPage() {
     <div className="flex min-h-screen w-full flex-col bg-background">
       <DashboardHeader />
       <main className="flex-1 p-4 sm:p-6">
-        <div className="mx-auto max-w-6xl space-y-6">
+        <div className="mx-auto w-full max-w-6xl space-y-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Transaction History</h1>
             <p className="text-muted-foreground">

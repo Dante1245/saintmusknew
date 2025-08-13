@@ -15,7 +15,7 @@ export function LandingContact() {
             We are here to help and answer any question you might have.
           </p>
         </div>
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center px-4 sm:px-6 lg:px-8">
             <div className="space-y-6">
                 <div className="flex items-start gap-6">
                     <Image 

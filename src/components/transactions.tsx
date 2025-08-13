@@ -15,11 +15,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+ CardContent
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Transaction } from "@/lib/types";
 import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 
 const transactionsData: Transaction[] = [
   {
@@ -50,11 +51,21 @@ const transactionsData: Transaction[] = [
 
 export function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // In a real app, you'd fetch this data.
     // For now, we'll use the mock data.
-    setTransactions(transactionsData);
+    setTimeout(() => {
+      // Simulate a random error
+      if (Math.random() > 0.8) { // 20% chance of error
+        setError("Failed to fetch transactions.");
+      } else {
+        setTransactions(transactionsData);
+      }
+      setIsLoading(false); // Set loading to false regardless of success/failure
+    }, 1000); // Simulate fetching delay
   }, []);
 
   const getStatusColor = (status: Transaction["status"]) => {
@@ -71,7 +82,7 @@ export function Transactions() {
   };
   
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+    const date = new Date(dateString + 'T00:00:00'); // Add time to ensure correct date interpretation
     const userTimezoneOffset = date.getTimezoneOffset() * 60000;
     const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
     return adjustedDate.toLocaleDateString('en-US', {
@@ -81,25 +92,40 @@ export function Transactions() {
     });
   }
 
+  const formatAmount = (amount: number, asset: string) => {
+    const fixedDecimalPlaces = asset === 'USDT' ? 2 : 6;
+    const formattedAmount = amount.toFixed(fixedDecimalPlaces);
+    if (asset === 'USDT') {
+      return `$${formattedAmount}`;
+    }
+    return formattedAmount;
+  };
+
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Transaction History</CardTitle>
         <CardDescription>A log of your recent account activity.</CardDescription>
       </CardHeader>
+      {error && (
+        <div className="px-6 pb-4 text-center text-sm text-red-500">
+          {error}
+        </div>
+      )}
       <CardContent>
         {/* Responsive view for mobile */}
         <div className="md:hidden">
           <div className="space-y-4">
-            {transactions.map((tx) => (
-              <div key={tx.id} className="border-b pb-4 last:border-0 last:pb-0">
+            {transactions.map((tx, index) => (
+              <div key={tx.id} className={`border-b pb-4 ${index === transactions.length - 1 ? 'border-0 pb-0' : ''} space-y-2`}>
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="font-medium">{tx.type} - {tx.asset}</p>
                     <p className="text-sm text-muted-foreground">{formatDate(tx.date)}</p>
                   </div>
                   <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
-                </div>
+                 </div>
                 <div className="mt-2 text-right">
                   <p className="font-mono text-lg">{tx.amount.toFixed(tx.asset === 'USDT' ? 2 : 6)}</p>
                 </div>
@@ -114,10 +140,10 @@ export function Transactions() {
             <TableHeader>
               <TableRow>
                 <TableHead>Type</TableHead>
-                <TableHead>Asset</TableHead>
+                <TableHead className="w-[100px]">Asset</TableHead>
                 <TableHead className="text-right">Amount</TableHead>
                 <TableHead className="text-center">Status</TableHead>
-                <TableHead className="text-right">Date</TableHead>
+                <TableHead className="text-right w-[120px]">Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -125,7 +151,7 @@ export function Transactions() {
                 <TableRow key={tx.id}>
                   <TableCell className="font-medium">{tx.type}</TableCell>
                   <TableCell>{tx.asset}</TableCell>
-                  <TableCell className="text-right">{tx.amount.toFixed(tx.asset === 'USDT' ? 2 : 6)}</TableCell>
+                  <TableCell className="text-right font-mono">{formatAmount(tx.amount, tx.asset)}</TableCell>
                   <TableCell className="text-center">
                     <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
                   </TableCell>
@@ -139,6 +165,13 @@ export function Transactions() {
         <div className="mt-6 text-center">
             <Button variant="outline">View All Transactions</Button>
         </div>
+       </CardContent>
+       {isLoading && (
+           <div className="px-6 pb-4 text-center text-sm text-muted-foreground">
+                Loading transactions...
+            </div>
+       )}
+      
       </CardContent>
     </Card>
   );

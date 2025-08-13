@@ -22,9 +22,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { useState, useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -37,7 +37,10 @@ const profileSchema = z.object({
 export function ProfileForm() {
   const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
-  const [avatarPreview, setAvatarPreview] = useState("https://placehold.co/100x100.png");
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [initialError, setInitialError] = useState<string | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState("/placeholder-avatar.png"); // Using a local placeholder
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof profileSchema>>({
@@ -50,6 +53,21 @@ export function ProfileForm() {
       country: "USA"
     },
   });
+
+  // Simulate fetching initial profile data
+  useState(() => {
+    setTimeout(() => {
+      // Simulate a random error
+      const shouldError = Math.random() < 0.2; // 20% chance of error
+      if (shouldError) {
+        setInitialError("Failed to load profile.");
+      } else {
+        form.reset(form.defaultValues); // Reset with default values as simulated fetched data
+        setInitialError(null);
+      }
+      setIsInitialLoading(false);
+    }, 1500); // 1500ms delay
+  }, []);
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -67,36 +85,66 @@ export function ProfileForm() {
   };
 
   const onSubmit = (values: z.infer<typeof profileSchema>) => {
-    setIsPending(true);
+    setIsPending(true); // Moved setIsPending here
     console.log("Updating profile:", values);
+    setSaveError(null); // Clear previous save errors
     setTimeout(() => {
-       toast({
+      const shouldError = Math.random() < 0.3; // 30% chance of simulated error
+      if (shouldError) {
+        setSaveError("Failed to save profile. Please try again.");
+        toast({
+          title: "Error",
+          description: "Failed to save profile.",
+          variant: "destructive",
+        });
+      } else {
+        setSaveError(null);
+        toast({
         title: "Profile Updated",
         description: "Your profile information has been saved.",
       });
-      setIsPending(false);
+      setIsPending(false); // Moved setIsPending here
     }, 1000);
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Profile</CardTitle>
+        <CardTitle className="text-2xl font-bold">Profile</CardTitle>
         <CardDescription>
         This information will be displayed publicly so be careful what you share.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
+         {!isInitialLoading && saveError && (
+          <CardContent>
+            <div className="text-center text-red-500 dark:text-red-400">
+              {saveError}
+            </div>
+          </CardContent>
+        )}
+        {isInitialLoading && (
+          <CardContent>
+            <p className="text-center text-muted-foreground">Loading profile...</p>
+          </CardContent>
+        )}
+        {!isInitialLoading && initialError && (
+          <CardContent>
+            <div className="text-center text-red-500">
+              {initialError}
+            </div>
+          </CardContent>
+        )}
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="space-y-6">
               <div className="flex items-center gap-4">
-                <Avatar className="h-20 w-20">
+                <Avatar className="h-20 w-20 flex-shrink-0">
                   <AvatarImage src={avatarPreview} alt={form.watch('name')} data-ai-hint="man face" />
                   <AvatarFallback>{form.watch('name')?.charAt(0) || 'U'}</AvatarFallback>
                 </Avatar>
                 <input
                   type="file"
-                  ref={fileInputRef}
+ ref={fileInputRef}
                   onChange={handleAvatarChange}
                   className="hidden"
                   accept="image/*"
@@ -104,7 +152,7 @@ export function ProfileForm() {
                 <Button variant="outline" type="button" onClick={handleAvatarButtonClick}>Change Avatar</Button>
               </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <FormField
+ <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
@@ -117,7 +165,7 @@ export function ProfileForm() {
                     </FormItem>
                   )}
                 />
-                <FormField
+ <FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
@@ -130,7 +178,7 @@ export function ProfileForm() {
                     </FormItem>
                   )}
                 />
-                 <FormField
+ <FormField
                   control={form.control}
                   name="phoneNumber"
                   render={({ field }) => (
@@ -156,7 +204,7 @@ export function ProfileForm() {
                     </FormItem>
                   )}
                 />
-                <FormField
+ <FormField
                   control={form.control}
                   name="country"
                   render={({ field }) => (
@@ -171,7 +219,7 @@ export function ProfileForm() {
                 />
             </div>
           </CardContent>
-          <CardFooter className="border-t px-6 py-4">
+          <CardFooter className="border-t px-6 py-4 flex justify-end">
             <Button type="submit" disabled={isPending}>
               {isPending ? "Saving..." : "Save"}
             </Button>

@@ -17,13 +17,45 @@ import { useToast } from "@/hooks/use-toast";
 export function SiteSettings() {
     const { toast } = useToast();
     const [depositAddress, setDepositAddress] = useState("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleSave = () => {
+    const handleSave = async () => {
+        setError(null); // Clear previous errors
+
+        if (!depositAddress.trim()) {
+            toast({
+                title: "Validation Error",
+                description: "Deposit address cannot be empty.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        setIsLoading(true);
+
         console.log("Saving new deposit address:", depositAddress);
-        toast({
-            title: "Settings Saved",
-            description: "The main wallet deposit address has been updated.",
-        });
+        // Simulate an API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Simulate success or error
+        const success = Math.random() > 0.2; // 80% success rate
+
+        if (success) {
+            toast({
+                title: "Settings Saved",
+                description: "The main wallet deposit address has been updated.",
+            });
+        } else {
+            setError("Failed to save settings. Please try again.");
+            toast({
+                title: "Error",
+                description: "Failed to save settings.",
+                variant: "destructive",
+            });
+        }
+
+        setIsLoading(false);
     };
 
   return (
@@ -35,6 +67,9 @@ export function SiteSettings() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {error && (
+            <div className="text-red-500 text-sm">{error}</div>
+        )}
         <div className="space-y-2">
             <Label htmlFor="deposit-address">Main Wallet Deposit Address (BTC)</Label>
             <Input 

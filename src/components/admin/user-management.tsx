@@ -62,6 +62,8 @@ export function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -73,10 +75,27 @@ export function UserManagement() {
     setEditingUser(null);
   };
 
+  const handleDeleteUser = (userId: string) => {
+    setDeletingUserId(userId);
+    setError(null); // Clear previous errors
+
+    // Simulate a delay and potential error for demonstration
+    setTimeout(() => {
+      const shouldError = Math.random() < 0.2; // 20% chance of error
+      if (shouldError) {
+        setError(`Failed to delete user ${userId}.`);
+      } else {
+        setUsers(currentUsers => currentUsers.filter(user => user.id !== userId));
+      }
+      setDeletingUserId(null);
+    }, 1000); // Simulate network request time
+
+  };
+
 
   return (
-    <>
-      <Card>
+    <Card>
+
         <CardHeader>
           <CardTitle>User Management</CardTitle>
           <CardDescription>View, search, and edit user information.</CardDescription>
@@ -90,6 +109,9 @@ export function UserManagement() {
             />
           </div>
         </CardHeader>
+        {error && (
+          <div className="p-4 text-red-500">{error}</div>
+        )}
         <CardContent>
            {/* Responsive List for Mobile */}
            <div className="md:hidden space-y-4">
@@ -110,8 +132,11 @@ export function UserManagement() {
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </Button>
-                      <Button variant="destructive" size="sm">
-                        <Trash2 className="h-4 w-4 mr-2" />
+                      <Button
+                        variant=\"destructive\"
+                        size=\"sm\"
+                        onClick={() => handleDeleteUser(user.id)}
+                        disabled={deletingUserId === user.id}>
                         Delete
                       </Button>
                     </div>
@@ -145,8 +170,11 @@ export function UserManagement() {
                         <Button variant="outline" size="icon" onClick={() => setEditingUser(user)}>
                             <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="destructive" size="icon">
-                            <Trash2 className="h-4 w-4" />
+                        <Button
+                          variant=\"destructive\"
+                          size=\"icon\"
+                          onClick={() => handleDeleteUser(user.id)}
+                          disabled={deletingUserId === user.id} >
                         </Button>
                         </div>
                     </TableCell>
@@ -166,6 +194,6 @@ export function UserManagement() {
           onUpdate={handleUpdateUser}
         />
       )}
-    </>
+    </Card>
   );
 }

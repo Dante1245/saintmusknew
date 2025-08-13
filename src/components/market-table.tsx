@@ -9,7 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge";
 import type { CryptoData } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,7 +22,8 @@ import {
   IconRipple,
   IconSolana,
   IconTether,
-} from "./icons";
+} from "./icons"
+import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react";
 
 const COIN_IDS = "bitcoin,ethereum,tether,ripple,cardano,solana,dogecoin";
@@ -80,6 +81,7 @@ export function MarketTable() {
   };
 
   return (
+    <div className="overflow-x-auto w-full"> {/* Add overflow container for horizontal scrolling on small screens and ensure full width */}
     <Table>
       <TableHeader>
         <TableRow>
@@ -102,11 +104,11 @@ export function MarketTable() {
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-right py-4 px-2"> {/* Adjust padding for smaller screens */}
                 <Skeleton className="h-4 w-24 ml-auto" />
               </TableCell>
-              <TableCell className="text-right">
-                <Skeleton className="h-4 w-16 ml-auto" />
+              <TableCell className="text-right py-4 px-2"> {/* Adjust padding for smaller screens */}
+                <Skeleton className="h-4 w-16 ml-auto" /> {/* Adjust width for better mobile fit */}
               </TableCell>
               <TableCell className="text-right">
                 <Skeleton className="h-8 w-20 ml-auto rounded-md" />
@@ -144,16 +146,17 @@ export function MarketTable() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="text-right font-medium">
+                <TableCell className="text-right font-medium py-4 px-2"> {/* Adjust padding for smaller screens */}
                   ${coin.usd.toLocaleString()}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right whitespace-nowrap py-4 px-2"> {/* Prevent wrapping of change percentage and adjust padding */}
                   {renderPriceChange(coin.usd_24h_change)}
                 </TableCell>
                 <TableCell className="text-right">
                   <Badge
                     variant="outline"
                     className="cursor-pointer border-primary/50 text-primary hover:bg-primary/10 hover:text-primary"
+                    onClick={() => console.log("Trade clicked for:", coinId)} // Added onClick handler
                   >
                     Trade
                   </Badge>
@@ -163,5 +166,6 @@ export function MarketTable() {
           })}
       </TableBody>
     </Table>
+    </div>
   );
 }
