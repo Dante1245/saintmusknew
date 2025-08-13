@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -22,6 +23,7 @@ import {
   IconSolana,
   IconTether,
 } from "./icons";
+import { AlertTriangle } from "lucide-react";
 
 const COIN_IDS = "bitcoin,ethereum,tether,ripple,cardano,solana,dogecoin";
 
@@ -40,10 +42,12 @@ const cryptoDetails: {
 export function MarketTable() {
   const [data, setData] = useState<CryptoData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchData = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await fetch(
         `https://api.coingecko.com/api/v3/simple/price?ids=${COIN_IDS}&vs_currencies=usd&include_24hr_change=true`
       );
@@ -54,6 +58,7 @@ export function MarketTable() {
       setData(result);
     } catch (error) {
       console.error("Failed to fetch crypto data:", error);
+      setError("Could not load market data. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -85,64 +90,77 @@ export function MarketTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {loading
-          ? Array.from({ length: 7 }).map((_, i) => (
-              <TableRow key={i}>
+        {loading &&
+          Array.from({ length: 7 }).map((_, i) => (
+            <TableRow key={i}>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  <Skeleton className="h-8 w-8 rounded-full" />
+                  <div className="flex flex-col gap-1">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-3 w-10" />
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-right">
+                <Skeleton className="h-4 w-24 ml-auto" />
+              </TableCell>
+              <TableCell className="text-right">
+                <Skeleton className="h-4 w-16 ml-auto" />
+              </TableCell>
+              <TableCell className="text-right">
+                <Skeleton className="h-8 w-20 ml-auto rounded-md" />
+              </TableCell>
+            </TableRow>
+          ))}
+        {!loading && error && (
+          <TableRow>
+            <TableCell colSpan={4} className="text-center py-10">
+              <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                <AlertTriangle className="h-8 w-8" />
+                <p className="font-medium">Error loading data</p>
+                <p className="text-sm">{error}</p>
+              </div>
+            </TableCell>
+          </TableRow>
+        )}
+        {!loading &&
+          !error &&
+          data &&
+          Object.keys(data).map((coinId) => {
+            const coin = data[coinId];
+            const details = cryptoDetails[coinId];
+            const Icon = details?.icon;
+            return (
+              <TableRow key={coinId}>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <Skeleton className="h-8 w-8 rounded-full" />
-                    <div className="flex flex-col gap-1">
-                      <Skeleton className="h-4 w-20" />
-                      <Skeleton className="h-3 w-10" />
+                    {Icon && <Icon className="h-8 w-8 text-muted-foreground" />}
+                    <div>
+                      <div className="font-medium">{details?.name}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {details?.symbol}
+                      </div>
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="text-right">
-                  <Skeleton className="h-4 w-24 ml-auto" />
+                <TableCell className="text-right font-medium">
+                  ${coin.usd.toLocaleString()}
                 </TableCell>
                 <TableCell className="text-right">
-                  <Skeleton className="h-4 w-16 ml-auto" />
+                  {renderPriceChange(coin.usd_24h_change)}
                 </TableCell>
                 <TableCell className="text-right">
-                  <Skeleton className="h-8 w-20 ml-auto rounded-md" />
+                  <Badge
+                    variant="outline"
+                    className="cursor-pointer border-primary/50 text-primary hover:bg-primary/10 hover:text-primary"
+                  >
+                    Trade
+                  </Badge>
                 </TableCell>
               </TableRow>
-            ))
-          : data &&
-            Object.keys(data).map((coinId) => {
-              const coin = data[coinId];
-              const details = cryptoDetails[coinId];
-              const Icon = details?.icon;
-              return (
-                <TableRow key={coinId}>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      {Icon && <Icon className="h-8 w-8 text-muted-foreground" />}
-                      <div>
-                        <div className="font-medium">{details?.name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {details?.symbol}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right font-medium">
-                    ${coin.usd.toLocaleString()}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {renderPriceChange(coin.usd_24h_change)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Badge
-                      variant="outline"
-                      className="cursor-pointer border-primary/50 text-primary hover:bg-primary/10 hover:text-primary"
-                    >
-                      Trade
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            );
+          })}
       </TableBody>
     </Table>
   );
