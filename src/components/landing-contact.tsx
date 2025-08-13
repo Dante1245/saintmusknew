@@ -60,7 +60,7 @@ export function LandingContact() {
              <div className="hidden lg:block relative">
                 <div className="absolute -inset-8 bg-gradient-to-br from-primary to-accent rounded-full blur-3xl opacity-20 animate-pulse-slow"></div>
                 <Image
-                src="https://placehold.co/600x400.png"
+                src="https://images.unsplash.com/photo-1621739165914-7155e5d4816e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxlbG9uJTIwbXVzayUyMGNyeXB0b3xlbnwwfHx8fDE3NTUwOTk0MDR8MA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Contact illustration"
                 width={600}
                 height={400}
