@@ -16,36 +16,18 @@ export const IconLogo = (props: SVGProps<SVGSVGElement>) => (
     <path
       d="M50 2.5C23.76 2.5 2.5 23.76 2.5 50C2.5 76.24 23.76 97.5 50 97.5C76.24 97.5 97.5 76.24 97.5 50C97.5 23.76 76.24 2.5 50 2.5Z"
       stroke="url(#logo-gradient)"
-      strokeWidth="6"
+      strokeWidth="5"
     />
-    <path
-        d="M30 50 L70 50"
-        stroke="url(#logo-gradient)"
-        strokeWidth="6"
-        strokeLinecap="round"
-    />
-    <path
-        d="M50 30 L50 70"
-        stroke="url(#logo-gradient)"
-        strokeWidth="6"
-        strokeLinecap="round"
-    />
-    <path
-      d="M35,35 L65,65"
-      stroke="white"
-      strokeWidth="3"
-      strokeOpacity="0.5"
-      strokeDasharray="4 4"
-    />
-     <path
-      d="M65,35 L35,65"
-      stroke="white"
-      strokeWidth="3"
-      strokeOpacity="0.5"
-      strokeDasharray="4 4"
-    />
-    <circle cx="50" cy="50" r="10" fill="hsl(var(--background))" />
-    <circle cx="50" cy="50" r="5" fill="url(#logo-gradient)" />
+     <path d="M35 35 L45 35 L50 30 L50 20" stroke="hsl(var(--primary))" strokeWidth="4" />
+    <path d="M65 35 L55 35 L50 30" stroke="hsl(var(--primary))" strokeWidth="4" />
+    <path d="M35 65 L45 65 L50 70 L50 80" stroke="hsl(var(--accent))" strokeWidth="4" />
+    <path d="M65 65 L55 65 L50 70" stroke="hsl(var(--accent))" strokeWidth="4" />
+    
+    <path d="M25 50 L40 50" stroke="url(#logo-gradient)" strokeWidth="3" strokeDasharray="4 4" />
+    <path d="M75 50 L60 50" stroke="url(#logo-gradient)" strokeWidth="3" strokeDasharray="4 4" />
+    
+    <circle cx="50" cy="50" r="12" fill="url(#logo-gradient)" opacity="0.2" />
+    <circle cx="50" cy="50" r="8" stroke="white" strokeWidth="2" strokeOpacity="0.8" />
   </svg>
 );
 
