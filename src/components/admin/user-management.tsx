@@ -92,10 +92,8 @@ export function UserManagement() {
 
   };
 
-
   return (
     <Card>
-
         <CardHeader>
           <CardTitle>User Management</CardTitle>
           <CardDescription>View, search, and edit user information.</CardDescription>
@@ -133,8 +131,8 @@ export function UserManagement() {
                         Edit
                       </Button>
                       <Button
-                        variant=\"destructive\"
-                        size=\"sm\"
+                        variant="destructive"
+                        size="sm"
                         onClick={() => handleDeleteUser(user.id)}
                         disabled={deletingUserId === user.id}>
                         Delete
@@ -171,10 +169,11 @@ export function UserManagement() {
                             <Edit className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant=\"destructive\"
-                          size=\"icon\"
+                          variant="destructive"
+                          size="icon"
                           onClick={() => handleDeleteUser(user.id)}
                           disabled={deletingUserId === user.id} >
+                            <Trash2 className="h-4 w-4" />
                         </Button>
                         </div>
                     </TableCell>
@@ -184,8 +183,6 @@ export function UserManagement() {
             </Table>
           </div>
         </CardContent>
-      </Card>
-      
       {editingUser && (
         <EditUserDialog
           user={editingUser}
