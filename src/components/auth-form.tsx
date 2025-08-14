@@ -27,7 +27,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { AuthLayout } from "./auth-layout";
 import { Eye, EyeOff } from "lucide-react";
-import { IconGoogle } from "./icons";
+import { Alert, AlertDescription } from "./ui/alert";
 
 // Zod schema for login form validation
 const loginSchema = z.object({
@@ -39,7 +39,10 @@ const loginSchema = z.object({
 
 // Zod schema for signup form validation
 const signupSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
+  phoneNumber: z.string().optional(),
+  country: z.string().optional(),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long." }),
@@ -59,22 +62,20 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      email: "",
-      password: "",
-      ...(isLogin ? {} : { confirmPassword: "" }),
-    },
+    defaultValues: isLogin 
+      ? { email: "", password: "" } 
+      : { name: "", email: "", phoneNumber: "", country: "", password: "", confirmPassword: "" },
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [googleError, setGoogleError] = useState<string | null>(null);
-
+  
   const onSubmit = (values: FormValues) => {
     setIsLoading(true);
     setError(null); // Clear previous errors
     // Simulate API call
+    console.log("Form submitted with values:", values);
     setTimeout(() => {
       setIsLoading(false);
       if (Math.random() > 0.5) { // Simulate a 50% chance of error
@@ -85,19 +86,9 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
     }, 1500);
   };
   
-  const onGoogleSubmit = () => {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push("/dashboard");
-    }, 1500);
-    setGoogleError("Google sign-in failed. Please try again."); // Simulate Google sign-in error
-  };
-  
   return (
     <AuthLayout>
-      <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
+      <Card className="bg-card/80 backdrop-blur-sm border-primary/20 w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">
             {isLogin ? "Welcome Back" : "Create an Account"}
@@ -108,7 +99,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
               : "Enter your details to get started."}
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4"> {/* Use grid for potentially better spacing on smaller screens */}
+        <CardContent className="grid gap-4">
           {/* Display general form error */}
           {error && (
             <Alert variant="destructive">
@@ -117,6 +108,51 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
           )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {!isLogin && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Elon Musk" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                     <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone Number (Optional)</FormLabel>
+                            <FormControl>
+                              <Input placeholder="+1 234 567 890" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="country"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Country (Optional)</FormLabel>
+                            <FormControl>
+                              <Input placeholder="USA" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                  </div>
+                </>
+              )}
               <FormField
                 control={form.control}
                 name="email"
@@ -124,7 +160,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input // Ensure appropriate padding and width on smaller screens
+                      <Input
                         placeholder="elon@tesla.com"
                         type="email"
                         {...field}
@@ -141,7 +177,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <div className="relative"> {/* Ensure the relative container scales correctly */}
+                      <div className="relative">
                         <Input
                            type={showPassword ? "text" : "password"}
                            placeholder="••••••••"
@@ -170,7 +206,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
-                        <Input // Ensure appropriate padding and width
+                        <Input
                           type="password"
                           placeholder="••••••••"
                           {...field}
@@ -180,20 +216,12 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                     </FormItem>
                   )}
                 />
-              )} {/* Close conditional rendering for confirm password */}
-              <Button type="submit" className="w-full" disabled={isLoading}> {/* Full width button for better mobile UX */}
-                {isLoading ? (isLogin ? "Signing In..." : "Creating Account...") : (isLogin ? "Sign In" : "Sign Up")}
+              )}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? (isLogin ? "Signing In..." : "Creating Account...") : (isLogin ? "Sign In" : "Create Account")}
               </Button>
             </form>
           </Form>
-
-           {/* Display Google sign-in error */}
-          {googleError && (
-            <Alert variant="destructive" className="mt-4"> {/* Add margin top for spacing */}
-              <AlertDescription>{googleError}</AlertDescription>
-            </Alert>
-          )}
-
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <div className="text-center text-sm text-muted-foreground">
