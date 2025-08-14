@@ -28,6 +28,9 @@ import { Input } from "@/components/ui/input";
 import { AuthLayout } from "./auth-layout";
 import { Eye, EyeOff } from "lucide-react";
 import { Alert, AlertDescription } from "./ui/alert";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { countries } from "@/lib/countries";
+import { ScrollArea } from "./ui/scroll-area";
 
 // Zod schema for login form validation
 const loginSchema = z.object({
@@ -41,8 +44,8 @@ const loginSchema = z.object({
 const signupSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  phoneNumber: z.string().optional(),
-  country: z.string().optional(),
+  phoneNumber: z.string().min(1, { message: "Phone number is required." }),
+  country: z.string().min(1, { message: "Please select a country." }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long." }),
@@ -129,7 +132,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                         name="phoneNumber"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Phone Number (Optional)</FormLabel>
+                            <FormLabel>Phone Number</FormLabel>
                             <FormControl>
                               <Input placeholder="+1 234 567 890" {...field} />
                             </FormControl>
@@ -142,10 +145,23 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                         name="country"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Country (Optional)</FormLabel>
-                            <FormControl>
-                              <Input placeholder="USA" {...field} />
-                            </FormControl>
+                            <FormLabel>Country</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a country" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <ScrollArea className="h-72">
+                                  {countries.map((country) => (
+                                    <SelectItem key={country.code} value={country.name}>
+                                      {country.name}
+                                    </SelectItem>
+                                  ))}
+                                </ScrollArea>
+                              </SelectContent>
+                            </Select>
                             <FormMessage />
                           </FormItem>
                         )}
