@@ -19,7 +19,7 @@ export function LandingContact() {
             <div className="space-y-6">
                 <div className="flex items-start gap-6">
                     <Image 
-                        src="https://placehold.co/150x150.png"
+                        src="/images/elon-musk-contact.png"
                         alt="Elon Musk"
                         width={150}
                         height={150}
@@ -30,7 +30,7 @@ export function LandingContact() {
                         <h3 className="text-2xl font-bold">Elon Musk</h3>
                         <p className="text-primary font-medium">Visionary & Founder</p>
                         <p className="mt-2 text-muted-foreground">
-                            The driving force behind elonXchange, Elon's vision is to create a decentralized, transparent, and accessible financial future for everyone. His leadership guides our mission to innovate and push the boundaries of what's possible in the crypto space.
+                            The driving force behind ElonTradeX, Elon's vision is to create a decentralized, transparent, and accessible financial future for everyone. His leadership guides our mission to innovate and push the boundaries of what's possible in the crypto space.
                         </p>
                     </div>
                 </div>

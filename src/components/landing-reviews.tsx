@@ -7,14 +7,14 @@ const reviews = [
   {
     name: "Vitalik B.",
     avatar: "VB",
-    review: "elonXchange made it ridiculously easy to get into crypto. The interface is clean and the fees are transparent. Two thumbs up!",
+    review: "ElonTradeX made it ridiculously easy to get into crypto. The interface is clean and the fees are transparent. Two thumbs up!",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
     rating: 5,
   },
   {
     name: "Satoshi N.",
     avatar: "SN",
-    review: "As someone who values security above all, elonXchange's multi-layered protection gives me peace of mind. A truly decentralized experience.",
+    review: "As someone who values security above all, ElonTradeX's multi-layered protection gives me peace of mind. A truly decentralized experience.",
     image: "https://randomuser.me/api/portraits/lego/1.jpg",
     rating: 5,
   },
@@ -35,14 +35,14 @@ const reviews = [
   {
     name: "Cathie W.",
     avatar: "CW",
-    review: "elonXchange is disrupting the digital asset space. Their innovative features and commitment to user experience sets a new industry standard.",
+    review: "ElonTradeX is disrupting the digital asset space. Their innovative features and commitment to user experience sets a new industry standard.",
     image: "https://randomuser.me/api/portraits/women/44.jpg",
     rating: 5,
   },
   {
     name: "Gavin A.",
     avatar: "GA",
-    review: "I've tried many exchanges, but the speed and reliability of elonXchange are unmatched. My orders execute instantly, which is crucial in a volatile market.",
+    review: "I've tried many exchanges, but the speed and reliability of ElonTradeX are unmatched. My orders execute instantly, which is crucial in a volatile market.",
     image: "https://placehold.co/100x100.png",
     rating: 4,
   }

@@ -26,7 +26,7 @@ export function SupportBot() {
   useEffect(() => {
     if (isOpen && messages.length === 0) {
         setMessages([
-            { role: "bot", text: "Hello! I'm Xavier, your AI assistant for elonXchange. How can I help you today?" }
+            { role: "bot", text: "Hello! I'm Xavier, your AI assistant for ElonTradeX. How can I help you today?" }
         ]);
     }
   }, [isOpen, messages.length]);
@@ -81,7 +81,7 @@ export function SupportBot() {
           <DialogHeader className="p-4 border-b">
             <DialogTitle className="flex items-center gap-2">
                 <Bot className="h-6 w-6 text-primary" />
-                <span>elonXchange Support</span>
+                <span>ElonTradeX Support</span>
             </DialogTitle>
              <Button
                 variant="ghost"

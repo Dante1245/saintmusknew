@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { SupportBot } from '@/components/support-bot';
 
 export const metadata: Metadata = {
-  title: 'elonXchange',
+  title: 'ElonTradeX',
   description: 'The future of crypto trading.',
 };
 

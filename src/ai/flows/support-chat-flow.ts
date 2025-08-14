@@ -1,7 +1,7 @@
 
 'use server';
 /**
- * @fileOverview A conversational AI flow for the elonXchange support bot.
+ * @fileOverview A conversational AI flow for the ElonTradeX support bot.
  *
  * - supportChat - A function that handles the conversational chat with the support bot.
  * - SupportChatInput - The input type for the supportChat function.
@@ -28,7 +28,7 @@ const prompt = ai.definePrompt({
   name: 'supportChatPrompt',
   input: {schema: SupportChatInputSchema},
   output: {schema: SupportChatOutputSchema.nullable()},
-  prompt: `You are "Xavier", the friendly and helpful AI support assistant for elonXchange, a cutting-edge cryptocurrency trading platform.
+  prompt: `You are "Xavier", the friendly and helpful AI support assistant for ElonTradeX, a cutting-edge cryptocurrency trading platform.
 
 Your goal is to answer user questions clearly, concisely, and accurately based *only* on the information provided below. Do not invent features or make up information. If a user asks something you don't know, politely state that you don't have that information and suggest they contact human support.
 
@@ -36,10 +36,10 @@ Keep your answers brief and to the point.
 
 ***
 
-## elonXchange Brokerage Information
+## ElonTradeX Brokerage Information
 
 **Core Mission:**
-elonXchange is the most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio. Our vision, led by our founder Elon Musk, is to create a decentralized, transparent, and accessible financial future for everyone.
+ElonTradeX is the most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio. Our vision, led by our founder Elon Musk, is to create a decentralized, transparent, and accessible financial future for everyone.
 
 **Key Features:**
 *   **Secure Multi-Asset Wallet:** Safely store, send, and receive a wide range of cryptocurrencies with our state-of-the-art, insured wallet infrastructure.
