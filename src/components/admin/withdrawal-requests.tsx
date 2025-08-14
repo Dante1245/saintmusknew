@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -26,33 +27,32 @@ import { useState } from "react";
   ];
   
   export function WithdrawalRequests() {
-  const [withdrawalRequests, setWithdrawalRequests] = useState(mockWithdrawals);
-  const [processingId, setProcessingId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+    const [withdrawalRequests, setWithdrawalRequests] = useState(mockWithdrawals);
+    const [processingId, setProcessingId] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    const updateRequestStatus = (id: string, status: "Approved" | "Declined") => {
+      setError(null);
+      setProcessingId(id);
+      // Simulate API call
+      setTimeout(() => {
+        setWithdrawalRequests(currentRequests =>
+          currentRequests.map(req =>
+            req.id === id ? { ...req, status: status } : req
+          )
+        );
+        setProcessingId(null);
+        // Simulate potential error - Uncomment to test error state
+        // if (Math.random() > 0.8) {
+        //   setError(`Failed to update request ${id}`);
+        // }
+      }, 1000);
+    };
+
+    const handleApprove = (id: string) => updateRequestStatus(id, "Approved");
+    const handleDecline = (id: string) => updateRequestStatus(id, "Declined");
 
     return (
-  const updateRequestStatus = (id: string, status: "Approved" | "Declined") => {
-    setError(null);
-    // Simulate API call
-    setTimeout(() => {
-      setWithdrawalRequests(currentRequests =>
-        currentRequests.map(req =>
-          req.id === id ? { ...req, status: status } : req
-        )
-      );
-      setProcessingId(null);
-      // Simulate potential error - Uncomment to test error state
-      // if (Math.random() > 0.8) {
-      //   setError(`Failed to update request ${id}`);
-      // }
-    }, 1000);
-    // Set processing state immediately
-    setProcessingId(id);
-  };
-
-  const handleApprove = (id: string) => updateRequestStatus(id, "Approved");
-  const handleDecline = (id: string) => updateRequestStatus(id, "Declined");
-
       <Card>
         <CardHeader>
           <CardTitle>Withdrawal Requests</CardTitle>
