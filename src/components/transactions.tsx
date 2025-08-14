@@ -15,7 +15,6 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
- CardContent
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Transaction } from "@/lib/types";
@@ -171,8 +170,6 @@ export function Transactions() {
                 Loading transactions...
             </div>
        )}
-      
-      </CardContent>
     </Card>
   );
 }
