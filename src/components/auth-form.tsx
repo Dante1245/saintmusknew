@@ -31,6 +31,7 @@ import { Alert, AlertDescription } from "./ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { countries } from "@/lib/countries";
 import { ScrollArea } from "./ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Zod schema for login form validation
 const loginSchema = z.object({
@@ -38,6 +39,7 @@ const loginSchema = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long." }),
+  rememberMe: z.boolean().default(false).optional(),
 });
 
 // Zod schema for signup form validation
@@ -66,7 +68,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: isLogin 
-      ? { email: "", password: "" } 
+      ? { email: "", password: "", rememberMe: false } 
       : { name: "", email: "", phoneNumber: "", country: "", password: "", confirmPassword: "" },
   });
 
@@ -229,6 +231,27 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                         />
                       </FormControl>
                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+              {isLogin && (
+                <FormField
+                  control={form.control}
+                  name="rememberMe"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>
+                          Remember me
+                        </FormLabel>
+                      </div>
                     </FormItem>
                   )}
                 />
