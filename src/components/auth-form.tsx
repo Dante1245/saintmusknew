@@ -257,6 +257,11 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
               </>
             )}
           </div>
+           <div className="text-center text-sm">
+            <Link href="/" className="text-muted-foreground hover:underline">
+                Cancel
+            </Link>
+          </div>
         </CardFooter>
       </Card>
     </AuthLayout>
