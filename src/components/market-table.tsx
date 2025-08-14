@@ -122,6 +122,9 @@ export function MarketTable() {
                 <AlertTriangle className="h-8 w-8" />
                 <p className="font-medium">Error loading data</p>
                 <p className="text-sm">{error}</p>
+                 <Button variant="outline" size="sm" onClick={fetchData} className="mt-4">
+                  Try Again
+                </Button>
               </div>
             </TableCell>
           </TableRow>
