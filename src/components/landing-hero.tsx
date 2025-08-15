@@ -5,7 +5,7 @@ import { ArrowRight, Star } from "lucide-react";
 
 export function LandingHero() {
   return (
-    <section className="container grid lg:grid-cols-2 gap-12 items-center py-16 md:py-24">
+    <section className="container grid lg:grid-cols-2 gap-12 items-center py-20 md:py-32">
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
             <div className="flex text-yellow-400">
