@@ -73,3 +73,8 @@
     color: hsl(var(--primary-foreground));
   }
 }
+
+.container {
+  padding-left: calc(env(safe-area-inset-left) + clamp(1rem, 5vw, 2rem));
+  padding-right: calc(env(safe-area-inset-right) + clamp(1rem, 5vw, 2rem));
+}
