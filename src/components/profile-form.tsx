@@ -67,7 +67,7 @@ export function ProfileForm() {
       }
       setIsInitialLoading(false);
     }, 1500); // 1500ms delay
-  }, []);
+  });
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -85,7 +85,7 @@ export function ProfileForm() {
   };
 
   const onSubmit = (values: z.infer<typeof profileSchema>) => {
-    setIsPending(true); // Moved setIsPending here
+    setIsPending(true);
     console.log("Updating profile:", values);
     setSaveError(null); // Clear previous save errors
     setTimeout(() => {
@@ -100,10 +100,11 @@ export function ProfileForm() {
       } else {
         setSaveError(null);
         toast({
-        title: "Profile Updated",
-        description: "Your profile information has been saved.",
-      });
-      setIsPending(false); // Moved setIsPending here
+          title: "Profile Updated",
+          description: "Your profile information has been saved.",
+        });
+      }
+      setIsPending(false);
     }, 1000);
   };
 
