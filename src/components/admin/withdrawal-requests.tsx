@@ -42,10 +42,6 @@ import { useState } from "react";
           )
         );
         setProcessingId(null);
-        // Simulate potential error - Uncomment to test error state
-        // if (Math.random() > 0.8) {
-        //   setError(`Failed to update request ${id}`);
-        // }
       }, 1000);
     };
 
@@ -59,14 +55,14 @@ import { useState } from "react";
           <CardDescription>Review and process pending withdrawal requests.</CardDescription>
         </CardHeader>
         <CardContent>
+          {error && <div className="text-red-500 mb-4">{error}</div>}
           {/* Responsive List for Mobile */}
           <div className="md:hidden space-y-4">
-             {error && <div className="text-red-500 mb-4">{error}</div>}
               {withdrawalRequests.map((req) => (
                 <div key={req.id} className="border-b pb-4 last:border-0 last:pb-0">
                     <div className="flex justify-between items-center mb-2">
                         <span className="font-mono text-xs text-muted-foreground">{req.id}</span>
-                         <Badge variant="outline" className="bg-yellow-400/10 text-yellow-400 border-yellow-400/30">{req.status}</Badge>
+                         <Badge variant={req.status === 'Pending' ? 'default' : 'outline'} className={req.status === 'Pending' ? "bg-yellow-400/10 text-yellow-400 border-yellow-400/30" : ""}>{req.status}</Badge>
                     </div>
                     <p className="font-semibold">{req.amount} {req.asset}</p>
                     <p className="text-sm text-muted-foreground font-mono truncate">{req.address}</p>
@@ -122,11 +118,11 @@ import { useState } from "react";
                     <TableCell className="text-right">{req.amount}</TableCell>
                     <TableCell className="font-mono text-xs">{req.address}</TableCell>
                     <TableCell>
-                        <Badge variant="outline" className="bg-yellow-400/10 text-yellow-400 border-yellow-400/30">{req.status}</Badge>
-                        </TableCell>
+                        <Badge variant={req.status === 'Pending' ? 'default' : 'outline'} className={req.status === 'Pending' ? "bg-yellow-400/10 text-yellow-400 border-yellow-400/30" : ""}>{req.status}</Badge>
+                    </TableCell>
                     <TableCell>{req.requestDate}</TableCell>
                     <TableCell className="text-right">
- <div className="flex justify-end gap-2">
+                       <div className="flex justify-end gap-2">
                             <Button
                               variant="outline"
                               size="sm"
@@ -156,4 +152,3 @@ import { useState } from "react";
       </Card>
     );
   }
-  

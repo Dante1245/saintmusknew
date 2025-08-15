@@ -51,7 +51,7 @@ const reviews = [
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex text-yellow-400 mt-1">
-      {[...Array(5)].map((_, i) => (<Star key={i} className={cn("w-4 h-4 fill-current", i < rating ? "text-yellow-400" : "text-gray-300")} />))}\
+      {[...Array(5)].map((_, i) => (<Star key={i} className={cn("w-4 h-4 fill-current", i < rating ? "text-yellow-400" : "text-gray-300")} />))}
     </div>
   )
 }
@@ -67,7 +67,7 @@ export function LandingReviews() {
             We're trusted by traders worldwide. Here's why.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">\
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {reviews.map((review, index) => (
             <Card key={index}>
               <CardHeader>
@@ -83,7 +83,7 @@ export function LandingReviews() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground text-sm md:text-base leading-relaxed">"{review.review}"</p>\
+                <p className="text-muted-foreground text-sm md:text-base leading-relaxed">"{review.review}"</p>
               </CardContent>
             </Card>
           ))}

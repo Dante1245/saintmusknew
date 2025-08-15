@@ -38,9 +38,11 @@ export default function DashboardPage() {
     <>
       <div className="flex min-h-screen w-full flex-col bg-background">
         <DashboardHeader />
-        <main className="flex flex-1 flex-col gap-6 p-4 sm:gap-8 sm:p-8">
-          <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-4 items-start w-full">
-            <Portfolio />
+        <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 md:p-8">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-3">
+            <div className="xl:col-span-2">
+                <Portfolio />
+            </div>
             <Card className="lg:col-span-1 h-full">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Referral Bonus</CardTitle>
@@ -53,10 +55,10 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:gap-8 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
             <div className="xl:col-span-2">
               <MarketView />
-            </div> {/* Added closing div tag */}
+            </div>
             <div className="row-start-1 xl:row-start-auto">
               <WalletCard />
             </div>
