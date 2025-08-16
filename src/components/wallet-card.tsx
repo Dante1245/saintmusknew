@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import Image from "next/image";
+import { IconBitcoin, IconEthereum, IconTether, IconRipple, IconCardano, IconSolana, IconDogecoin } from "./icons";
 
 const withdrawalSchema = z.object({
   amount: z.coerce
@@ -61,36 +62,43 @@ const depositWallets = {
     name: "Bitcoin",
     address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
     warning: "Only send BTC to this address.",
+    icon: IconBitcoin,
   },
   ETH: {
     name: "Ethereum",
     address: "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
     warning: "Only send ETH (ERC-20) to this address.",
+    icon: IconEthereum,
   },
   USDT: {
     name: "Tether",
     address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     warning: "Only send USDT (ERC-20) to this address.",
+    icon: IconTether,
   },
   XRP: {
     name: "Ripple",
     address: "rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh",
     warning: "Only send XRP to this address. Destination Tag may be required.",
+    icon: IconRipple,
   },
   ADA: {
     name: "Cardano",
     address: "addr1q8s4s9xrmucrkqczf99ft6zgh2g2vcf5phpsg0jdc4r8gln5z7f0g2f7k5h2j...",
     warning: "Only send ADA to this address.",
+    icon: IconCardano,
   },
   SOL: {
     name: "Solana",
     address: "So11111111111111111111111111111111111111112",
     warning: "Only send SOL to this address.",
+    icon: IconSolana,
   },
   DOGE: {
     name: "Dogecoin",
     address: "D7bA4w4zL1N7k1M3fQ5cZ6eP9aB8iGfT3k",
     warning: "Only send DOGE to this address.",
+    icon: IconDogecoin,
   },
 };
 
@@ -140,6 +148,19 @@ export function WalletCard() {
       }
     });
   };
+  
+  const renderSelectItem = (asset: DepositAsset) => {
+    const { name, icon: Icon } = depositWallets[asset];
+    return (
+        <SelectItem value={asset} key={asset}>
+            <div className="flex items-center gap-2">
+                <Icon className="h-5 w-5" />
+                <span>{name} ({asset})</span>
+            </div>
+        </SelectItem>
+    );
+  };
+
 
   return (
     <Card>
@@ -164,13 +185,7 @@ export function WalletCard() {
                         <SelectValue placeholder="Select an asset" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="BTC">Bitcoin (BTC)</SelectItem>
-                      <SelectItem value="ETH">Ethereum (ETH)</SelectItem>
-                      <SelectItem value="USDT">Tether (USDT)</SelectItem>
-                      <SelectItem value="XRP">Ripple (XRP)</SelectItem>
-                      <SelectItem value="ADA">Cardano (ADA)</SelectItem>
-                      <SelectItem value="SOL">Solana (SOL)</SelectItem>
-                      <SelectItem value="DOGE">Dogecoin (DOGE)</SelectItem>
+                      {Object.keys(depositWallets).map(asset => renderSelectItem(asset as DepositAsset))}
                     </SelectContent>
                 </Select>
              </div>
@@ -247,13 +262,7 @@ export function WalletCard() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="BTC">Bitcoin (BTC)</SelectItem>
-                          <SelectItem value="ETH">Ethereum (ETH)</SelectItem>
-                          <SelectItem value="USDT">Tether (USDT)</SelectItem>
-                          <SelectItem value="XRP">Ripple (XRP)</SelectItem>
-                          <SelectItem value="ADA">Cardano (ADA)</SelectItem>
-                          <SelectItem value="SOL">Solana (SOL)</SelectItem>
-                          <SelectItem value="DOGE">Dogecoin (DOGE)</SelectItem>
+                          {Object.keys(depositWallets).map(asset => renderSelectItem(asset as DepositAsset))}
                         </SelectContent>
                       </Select>
                       <FormMessage />

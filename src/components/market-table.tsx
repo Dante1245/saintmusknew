@@ -79,7 +79,7 @@ export function MarketTable() {
   };
 
   return (
-    <div className="overflow-x-auto w-full"> {/* Add overflow container for horizontal scrolling on small screens and ensure full width */}
+    <div className="overflow-x-auto w-full">
     <Table>
       <TableHeader>
         <TableRow>
@@ -102,11 +102,11 @@ export function MarketTable() {
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-right py-4 px-2"> {/* Adjust padding for smaller screens */}
+              <TableCell className="text-right py-4 px-2">
                 <Skeleton className="h-4 w-24 ml-auto" />
               </TableCell>
-              <TableCell className="text-right py-4 px-2"> {/* Adjust padding for smaller screens */}
-                <Skeleton className="h-4 w-16 ml-auto" /> {/* Adjust width for better mobile fit */}
+              <TableCell className="text-right py-4 px-2">
+                <Skeleton className="h-4 w-16 ml-auto" />
               </TableCell>
               <TableCell className="text-right">
                 <Skeleton className="h-8 w-20 ml-auto rounded-md" />
@@ -138,7 +138,7 @@ export function MarketTable() {
               <TableRow key={coinId}>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    {Icon && <Icon className="h-8 w-8 text-muted-foreground" />}
+                    {Icon && <Icon className="h-6 w-6" />}
                     <div>
                       <div className="font-medium">{details?.name}</div>
                       <div className="text-sm text-muted-foreground">
@@ -147,17 +147,16 @@ export function MarketTable() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="text-right font-medium py-4 px-2"> {/* Adjust padding for smaller screens */}
+                <TableCell className="text-right font-medium py-4 px-2">
                   ${coin.usd.toLocaleString()}
                 </TableCell>
-                <TableCell className="text-right whitespace-nowrap py-4 px-2"> {/* Prevent wrapping of change percentage and adjust padding */}
+                <TableCell className="text-right whitespace-nowrap py-4 px-2">
                   {renderPriceChange(coin.usd_24h_change)}
                 </TableCell>
                 <TableCell className="text-right">
                   <Badge
                     variant="outline"
                     className="cursor-pointer border-primary/50 text-primary hover:bg-primary/10 hover:text-primary"
-                    onClick={() => console.log("Trade clicked for:", coinId)} // Added onClick handler
                   >
                     Trade
                   </Badge>

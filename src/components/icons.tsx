@@ -1,3 +1,4 @@
+
 import type { SVGProps } from 'react';
 
 export const IconLogo = (props: SVGProps<SVGSVGElement>) => (
@@ -31,12 +32,9 @@ export const IconLogo = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-
 export const IconBitcoin = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -56,8 +54,6 @@ export const IconBitcoin = (props: SVGProps<SVGSVGElement>) => (
 export const IconEthereum = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -75,8 +71,6 @@ export const IconEthereum = (props: SVGProps<SVGSVGElement>) => (
 export const IconTether = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -94,8 +88,6 @@ export const IconTether = (props: SVGProps<SVGSVGElement>) => (
 export const IconRipple = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -113,8 +105,6 @@ export const IconRipple = (props: SVGProps<SVGSVGElement>) => (
 export const IconCardano = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -132,8 +122,6 @@ export const IconCardano = (props: SVGProps<SVGSVGElement>) => (
 export const IconSolana = (props: SVGProps<SVGSVGElement>) => (
     <svg 
     xmlns="http://www.w3.org/2000/svg" 
-    width="24" 
-    height="24" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -151,8 +139,6 @@ export const IconSolana = (props: SVGProps<SVGSVGElement>) => (
 export const IconDogecoin = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
