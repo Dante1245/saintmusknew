@@ -1,3 +1,6 @@
+
+"use client";
+
 import {
   Card,
   CardContent,
@@ -5,15 +8,29 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Users, BarChart, ExternalLink, Activity } from "lucide-react";
+import { useEffect, useState } from "react";
+import type { User } from "@/lib/types";
 
-const metrics = [
-  { title: "Total Users", value: "0", icon: <Users className="h-6 w-6" /> },
-  { title: "Total Signups (24h)", value: "0", icon: <BarChart className="h-6 w-6" /> },
-  { title: "Pending Withdrawals", value: "0", icon: <ExternalLink className="h-6 w-6" /> },
-  { title: "Total Transactions", value: "0", icon: <Activity className="h-6 w-6" /> },
-];
 
 export function DashboardMetrics() {
+    const [userCount, setUserCount] = useState(0);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('loggedInUser');
+        if(storedUser) {
+            setUserCount(1);
+        } else {
+            setUserCount(0)
+        }
+    }, [])
+
+    const metrics = [
+        { title: "Total Users", value: userCount.toString(), icon: <Users className="h-6 w-6" /> },
+        { title: "Total Signups (24h)", value: userCount.toString(), icon: <BarChart className="h-6 w-6" /> },
+        { title: "Pending Withdrawals", value: "0", icon: <ExternalLink className="h-6 w-6" /> },
+        { title: "Total Transactions", value: userCount.toString(), icon: <Activity className="h-6 w-6" /> },
+      ];
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {metrics.map((metric, index) => (
