@@ -24,7 +24,7 @@ export async function sendWelcomeEmail(input: WelcomeEmailInput) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'ElonTradeX <noreply@elontradex.live>',
+      from: 'ElonTradeX <onboarding@resend.dev>',
       to: [email],
       subject: 'Welcome to ElonTradeX!',
       html: `
