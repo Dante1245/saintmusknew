@@ -4,24 +4,24 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'assets.coingecko.com',
+        hostname: 'coin-images.coingecko.com',
       },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
-       {
+      {
         protocol: 'https',
         hostname: 'randomuser.me',
       },
       {
         protocol: 'https',
-        hostname: 'min-api.cryptocompare.com',
+        hostname: 'images.cryptocompare.com',
       },
-      {
+       {
         protocol: 'https',
         hostname: 'api.qrserver.com',
-      }
+      },
     ],
   },
 };
