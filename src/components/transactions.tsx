@@ -58,10 +58,8 @@ export function Transactions() {
   useEffect(() => {
     // In a real app, you'd fetch this data.
     // For now, we'll use the mock data.
-    setTimeout(() => {
-      setTransactions(transactionsData);
-      setIsLoading(false); // Set loading to false regardless of success/failure
-    }, 1000); // Simulate fetching delay
+    setTransactions(transactionsData);
+    setIsLoading(false);
   }, []);
 
   const getStatusColor = (status: Transaction["status"]) => {

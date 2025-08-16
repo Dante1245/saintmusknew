@@ -61,17 +61,15 @@ export function ProfileForm() {
       setIsLoading(true);
       setError(null);
       // Simulate fetching data
-      setTimeout(() => {
-        form.reset({
-          name: "Elon Musk",
-          email: "elon@tesla.com",
-          phoneNumber: "+1-202-555-0104",
-          age: 53,
-          country: "USA"
-        });
-        setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
-        setIsLoading(false);
-      }, 500);
+      form.reset({
+        name: "Elon Musk",
+        email: "elon@tesla.com",
+        phoneNumber: "+1-202-555-0104",
+        age: 53,
+        country: "USA"
+      });
+      setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
+      setIsLoading(false);
     };
     fetchProfile();
   }, [form]);
@@ -96,13 +94,11 @@ export function ProfileForm() {
     setError(null);
     console.log("Updating profile:", values);
     
-    setTimeout(() => {
-        toast({
-          title: "Profile Updated",
-          description: "Your profile information has been saved.",
-        });
-      setIsSubmitting(false);
-    }, 500);
+    toast({
+      title: "Profile Updated",
+      description: "Your profile information has been saved.",
+    });
+    setIsSubmitting(false);
   };
 
   if (isLoading) {

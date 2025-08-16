@@ -37,9 +37,6 @@ export function BroadcastMessages() {
         setShowConfirmation(false); // Close confirmation
         setIsSending(true);
 
-        // Simulate sending delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
         console.log("Sending broadcast:", message);
 
         toast({

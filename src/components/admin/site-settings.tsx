@@ -34,8 +34,7 @@ export function SiteSettings() {
 
         console.log("Saving new deposit address:", depositAddress);
         // In a real app, you'd save this to a database
-        await new Promise(resolve => setTimeout(resolve, 500)); // Simulate async operation
-
+        
         toast({
             title: "Settings Saved",
             description: "The main wallet deposit address has been updated.",
