@@ -36,13 +36,10 @@ export function UserManagement() {
   const { toast } = useToast();
 
   useEffect(() => {
-    // This is a mock way of checking for a new user from localStorage.
-    // In a real app, this would be fetched from a database.
     const storedUser = localStorage.getItem('loggedInUser');
     if (storedUser) {
       try {
         const newUser: User = JSON.parse(storedUser);
-        // Avoid adding the user if they already exist in the list
         if (!users.find(u => u.id === newUser.id || u.email === newUser.email)) {
           setUsers(prevUsers => [newUser, ...prevUsers]);
         }
@@ -50,8 +47,7 @@ export function UserManagement() {
         console.error("Failed to parse user from localStorage", e);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [users]);
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -109,7 +105,7 @@ export function UserManagement() {
                                         <p className="text-sm font-mono">${user.balance.toFixed(2)}</p>
                                     </div>
                                 </div>
-                                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 shrink-0">
+                                <div className="flex items-center gap-2 shrink-0">
                                 <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setEditingUser(user)}>
                                     <Edit className="h-4 w-4" />
                                 </Button>

@@ -26,7 +26,6 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "./ui/skeleton";
 import type { User } from "@/lib/types";
 
 const profileSchema = z.object({
@@ -128,8 +127,8 @@ export function ProfileForm() {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-6">
-              <div className="flex items-center gap-4 pt-6">
+          <CardContent className="space-y-8">
+              <div className="flex items-center gap-4 pt-2">
                 <Avatar className="h-20 w-20 flex-shrink-0">
                   <AvatarImage src={avatarPreview} alt={form.watch('name')} data-ai-hint="man face" />
                   <AvatarFallback>{form.watch('name')?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>

@@ -23,7 +23,7 @@ export function LandingContact() {
                       alt="Elon Musk"
                       width={80}
                       height={80}
-                      className='rounded-full'
+                      className='rounded-full object-cover'
                       data-ai-hint="elon musk"
                       />
                     <div>

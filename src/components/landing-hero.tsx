@@ -46,7 +46,7 @@ export function LandingHero() {
           fill
           priority
           className="rounded-xl shadow-2xl relative z-10 border-2 border-primary/20 object-cover"
-          data-ai-hint="futuristic crypto"
+          data-ai-hint="elon musk"
         />
       </div>
     </section>
