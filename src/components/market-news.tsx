@@ -46,26 +46,54 @@ export function MarketNews() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchNews = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status}`);
-                }
-                const data = await response.json();
-                setNews(data.Data.slice(0, 12)); // Get first 12 articles
-            } catch (err: any) {
-                setError(err.message);
-                console.error("Failed to fetch news:", err);
-            } finally {
-                setLoading(false);
+    const fetchNews = async () => {
+        try {
+            // No need to set loading to true on refetch, to avoid UI flicker
+            const response = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
             }
-        };
+            const data = await response.json();
+            setNews(data.Data.slice(0, 12)); // Get first 12 articles
+        } catch (err: any) {
+            setError(err.message);
+            console.error("Failed to fetch news:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
- fetchNews();
+    useEffect(() => {
+        setLoading(true);
+        fetchNews();
+
+        // Set up an interval to refetch news every 60 seconds
+        const intervalId = setInterval(fetchNews, 60000);
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(intervalId);
     }, []); // Empty dependency array means this effect runs once on mount
+
+    if (loading) {
+      return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
+              {Array.from({ length: 6 }).map((_, index) => (
+                  <Card key={index} className="flex flex-col">
+                      <Skeleton className="aspect-video w-full" />
+                      <CardHeader className="flex flex-col flex-1">
+                          <Skeleton className="h-5 w-5/6 mb-3" />
+                          <Skeleton className="h-5 w-4/6" />
+                           <div className="flex items-center justify-between pt-6 text-xs text-muted-foreground mt-auto">
+                             <Skeleton className="h-4 w-1/4" />
+                             <Skeleton className="h-4 w-1/4" />
+                          </div>
+                      </CardHeader>
+                  </Card>
+              ))}
+          </div>
+      );
+    }
+
 
     if (error) {
         return (
@@ -82,42 +110,27 @@ export function MarketNews() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
-        {loading ? (
-            Array.from({ length: 6 }).map((_, index) => (
-                <Card key={index} className="flex flex-col">
-                    <Skeleton className="aspect-video w-full" />
-                    <CardHeader className="flex flex-col flex-1">
-                        <Skeleton className="h-5 w-5/6 mb-3" />
-                        <Skeleton className="h-5 w-4/6" />
-                         <div className="flex items-center justify-between pt-6 text-xs text-muted-foreground mt-auto">
-                           <Skeleton className="h-4 w-1/4" />
-                           <Skeleton className="h-4 w-1/4" />
-                        </div>
-                    </CardHeader>
-                </Card>
-            ))
-        ) : (
-            news.map((article) => (
-            <a href={article.url} target="_blank" rel="noopener noreferrer" key={article.id} className="block hover:opacity-80 transition-opacity">
-                <Card className="overflow-hidden h-full flex flex-col">
-                    <div className="aspect-video relative">
-                        <Image 
-                            src={article.imageurl} 
-                            alt={article.title}
-                            fill
-                            className="object-cover"
-                        />
-                    </div>
-                    <CardHeader className="flex-1">
-                        <CardTitle className="text-base leading-tight mb-2">{article.title}</CardTitle>
-                        <CardDescription className="flex items-center justify-between pt-2 text-xs">
-                            <span>{article.source_info.name}</span>
-                            <span>{timeAgo(article.published_on)}</span>
-                        </CardDescription>
-                    </CardHeader>
-                </Card>
-            </a>))
-        )}
+        {news.map((article) => (
+        <a href={article.url} target="_blank" rel="noopener noreferrer" key={article.id} className="block hover:opacity-80 transition-opacity">
+            <Card className="overflow-hidden h-full flex flex-col">
+                <div className="aspect-video relative">
+                    <Image 
+                        src={article.imageurl} 
+                        alt={article.title}
+                        fill
+                        className="object-cover"
+                    />
+                </div>
+                <CardHeader className="flex-1">
+                    <CardTitle className="text-base leading-tight mb-2">{article.title}</CardTitle>
+                    <CardDescription className="flex items-center justify-between pt-2 text-xs">
+                        <span>{article.source_info.name}</span>
+                        <span>{timeAgo(article.published_on)}</span>
+                    </CardDescription>
+                </CardHeader>
+            </Card>
+        </a>))
+        }
     </div>
   );
 }
