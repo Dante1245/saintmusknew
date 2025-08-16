@@ -33,6 +33,7 @@ import { countries } from "@/lib/countries";
 import { ScrollArea } from "./ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { User } from "@/lib/types";
+import { sendWelcomeEmail } from "@/lib/email";
 
 // Zod schema for login form validation
 const loginSchema = z.object({
@@ -125,7 +126,8 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
         walletAddress: `0x${Math.random().toString(16).substr(2, 40)}`,
       };
       
-      console.log("New user signed up:", newUser.email);
+      // We don't await this so it doesn't block the UI
+      sendWelcomeEmail({ to: newUser.email, name: newUser.name });
       
       const userJson = JSON.stringify(newUser);
       localStorage.setItem('loggedInUser', userJson);
