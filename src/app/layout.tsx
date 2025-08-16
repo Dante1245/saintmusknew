@@ -30,8 +30,8 @@ export default function RootLayout({
         >
             {children}
             <Toaster />
-            <SupportBot />
         </ThemeProvider>
+        <SupportBot />
       </body>
     </html>
   );

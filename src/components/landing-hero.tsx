@@ -45,7 +45,7 @@ export function LandingHero() {
           alt="Elon Musk"
           fill
           className="rounded-xl shadow-2xl relative z-10 border-2 border-primary/20 object-cover"
-          data-ai-hint="elon musk"
+          data-ai-hint="futuristic crypto"
         />
       </div>
     </section>

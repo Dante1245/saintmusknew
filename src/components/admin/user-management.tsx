@@ -103,17 +103,17 @@ export function UserManagement() {
                             <p className="text-sm font-mono">${user.balance.toFixed(2)}</p>
                         </div>
                     </div>
-                     <div className="flex flex-col items-end gap-2 shrink-0">
-                      <Button variant="outline" size="sm" onClick={() => setEditingUser(user)}>
-                        <Edit className="h-4 w-4 md:mr-2" />
-                        <span className="hidden md:inline">Edit</span>
+                     <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 shrink-0">
+                      <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setEditingUser(user)}>
+                        <Edit className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="destructive"
-                        size="sm"
+                        size="icon"
+                        className="h-8 w-8"
                         onClick={() => handleDeleteUser(user.id)}
                         disabled={deletingUserId === user.id}>
-                        {deletingUserId === user.id ? "..." : "Delete"}
+                        {deletingUserId === user.id ? "..." : <Trash2 className="h-4 w-4" />}
                       </Button>
                     </div>
                 </div>

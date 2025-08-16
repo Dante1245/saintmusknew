@@ -125,7 +125,7 @@ export function ProfileForm() {
           <Skeleton className="h-4 w-2/4" />
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 pt-6">
             <Skeleton className="h-20 w-20 rounded-full" />
             <Skeleton className="h-10 w-24" />
           </div>
@@ -180,7 +180,7 @@ export function ProfileForm() {
               {error && (
                 <div className="text-sm text-destructive">{error}</div>
               )}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 pt-6">
                 <Avatar className="h-20 w-20 flex-shrink-0">
                   <AvatarImage src={avatarPreview} alt={form.watch('name')} data-ai-hint="man face" />
                   <AvatarFallback>{form.watch('name')?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
