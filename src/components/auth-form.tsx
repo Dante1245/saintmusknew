@@ -40,7 +40,7 @@ const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters long." }),
+    .min(1, { message: "Password is required." }), // Login doesn't need min 8 chars
   rememberMe: z.boolean().default(false).optional(),
 });
 
@@ -103,15 +103,45 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     setError(null);
-    
-    // Clear previous user data for this prototype's logic
-    if (typeof window !== 'undefined') {
-        localStorage.removeItem('loggedInUser');
-    }
 
+    // In this prototype, we'll use localStorage to manage a list of users.
+    const getUsers = (): User[] => {
+      if (typeof window === 'undefined') return [];
+      const usersJson = localStorage.getItem('users');
+      return usersJson ? JSON.parse(usersJson) : [];
+    };
 
-    if (!isLogin) {
+    const saveUsers = (users: User[]) => {
+      localStorage.setItem('users', JSON.stringify(users));
+    };
+
+    const users = getUsers();
+
+    if (isLogin) {
+      // Login logic
+      const loginValues = values as z.infer<typeof loginSchema>;
+      const user = users.find(u => u.email === loginValues.email);
+
+      // In a real app, you would verify the hashed password. Here we just check for existence.
+      if (user) {
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        setCookie('loggedInUser', JSON.stringify(user), loginValues.rememberMe ? 7 : 0);
+        router.push("/dashboard");
+      } else {
+        setError("Invalid email or password.");
+        setIsLoading(false);
+      }
+    } else {
+      // Signup logic
       const signupValues = values as z.infer<typeof signupSchema>;
+
+      // Check if email already exists
+      if (users.some(u => u.email === signupValues.email)) {
+        setError("An account with this email already exists.");
+        setIsLoading(false);
+        return;
+      }
+
       const newUser: User = {
         id: `usr_${Math.random().toString(36).substr(2, 9)}`,
         name: signupValues.name,
@@ -124,31 +154,23 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
           { id: "txn_bonus_001", type: "Bonus", asset: "USDT", amount: 200, status: "Completed", date: new Date().toISOString().split('T')[0] },
         ],
         walletAddress: `0x${Math.random().toString(16).substr(2, 40)}`,
+        // In a real app, you MUST hash the password before saving.
+        // For this prototype, we are omitting the password field for security.
       };
       
       // We don't await this so it doesn't block the UI
       sendWelcomeEmail({ to: newUser.email, name: newUser.name });
-      
-      const userJson = JSON.stringify(newUser);
-      localStorage.setItem('loggedInUser', userJson);
-      setCookie('loggedInUser', userJson, 7); // Set cookie for server-side access
-      localStorage.setItem('showBonusPopup', 'true'); // Flag to show popup
-    } else {
-      // For login, we can mock-find a user or use a default one if none exists from signup
-      const storedUser = localStorage.getItem('loggedInUser');
-      if (storedUser) {
-        // In a real app, you would verify the password here.
-        // For this prototype, we'll just log in the existing user.
-        setCookie('loggedInUser', storedUser, 7);
-      } else {
-        // No user found, show an error. In a real app, this would come from the server.
-        setError("No account found with this email. Please sign up.");
-        setIsLoading(false);
-        return;
-      }
-    }
 
-    router.push("/dashboard");
+      // Add the new user to our list and save
+      const updatedUsers = [...users, newUser];
+      saveUsers(updatedUsers);
+
+      // Log the user in
+      localStorage.setItem('loggedInUser', JSON.stringify(newUser));
+      setCookie('loggedInUser', JSON.stringify(newUser), 7); // Set cookie for server-side access
+      localStorage.setItem('showBonusPopup', 'true'); // Flag to show popup
+      router.push("/dashboard");
+    }
   };
   
   return (
@@ -296,25 +318,30 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                 />
               )}
               {isLogin && (
-                <FormField
-                  control={form.control}
-                  name="rememberMe"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>
-                          Remember me
-                        </FormLabel>
-                      </div>
-                    </FormItem>
-                  )}
-                />
+                <div className="flex items-center justify-between">
+                  <FormField
+                    control={form.control}
+                    name="rememberMe"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>
+                            Remember me
+                          </FormLabel>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                   <Link href="#" className="text-sm text-primary hover:underline">
+                      Forgot password?
+                    </Link>
+                </div>
               )}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? (isLogin ? "Signing In..." : "Creating Account...") : (isLogin ? "Sign In" : "Create Account")}

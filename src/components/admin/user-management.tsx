@@ -25,29 +25,28 @@ import { EditUserDialog } from "./edit-user-dialog";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 
-const initialMockUsers: User[] = [];
+const getUsersFromStorage = (): User[] => {
+  if (typeof window === 'undefined') return [];
+  const usersJson = localStorage.getItem('users');
+  return usersJson ? JSON.parse(usersJson) : [];
+};
 
+const saveUsersToStorage = (users: User[]) => {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+};
 
 export function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState<User[]>(initialMockUsers);
+  const [users, setUsers] = useState<User[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('loggedInUser');
-    if (storedUser) {
-      try {
-        const newUser: User = JSON.parse(storedUser);
-        if (!users.find(u => u.id === newUser.id || u.email === newUser.email)) {
-          setUsers(prevUsers => [newUser, ...prevUsers]);
-        }
-      } catch (e) {
-        console.error("Failed to parse user from localStorage", e);
-      }
-    }
-  }, [users]);
+    setUsers(getUsersFromStorage());
+  }, []);
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -55,13 +54,17 @@ export function UserManagement() {
   );
   
   const handleUpdateUser = (updatedUser: User) => {
-    setUsers(currentUsers => currentUsers.map(u => u.id === updatedUser.id ? updatedUser : u));
+    const updatedUsers = users.map(u => u.id === updatedUser.id ? updatedUser : u);
+    setUsers(updatedUsers);
+    saveUsersToStorage(updatedUsers);
     setEditingUser(null);
   };
 
   const handleDeleteUser = (userId: string) => {
     setDeletingUserId(userId);
-    setUsers(currentUsers => currentUsers.filter(user => user.id !== userId));
+    const updatedUsers = users.filter(user => user.id !== userId);
+    setUsers(updatedUsers);
+    saveUsersToStorage(updatedUsers);
     toast({
       title: "User Deleted",
       description: `User ${userId} has been successfully deleted.`,
