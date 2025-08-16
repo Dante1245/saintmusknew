@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Transaction } from "@/lib/types";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const transactionsData: Transaction[] = [
   {
@@ -49,6 +50,7 @@ const transactionsData: Transaction[] = [
 ];
 
 export function Transactions() {
+  const router = useRouter();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -162,7 +164,7 @@ export function Transactions() {
         </div>
 
         <div className="mt-6 text-center">
-            <Button variant="outline">View All Transactions</Button>
+            <Button variant="outline" onClick={() => router.push('/history')}>View All Transactions</Button>
         </div>
        </CardContent>
        {isLoading && (

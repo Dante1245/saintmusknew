@@ -23,8 +23,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "./ui/skeleton";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -34,40 +35,50 @@ const profileSchema = z.object({
   country: z.string().optional(),
 });
 
+type ProfileFormValues = z.infer<typeof profileSchema>;
+
 export function ProfileForm() {
   const { toast } = useToast();
-  const [isPending, setIsPending] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [initialError, setInitialError] = useState<string | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState("/placeholder-avatar.png"); // Using a local placeholder
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState("/placeholder-avatar.png");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const form = useForm<z.infer<typeof profileSchema>>({
+  const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "Elon Musk",
-      email: "elon@tesla.com",
-      phoneNumber: "+1-202-555-0104",
-      age: 53,
-      country: "USA"
+      name: "",
+      email: "",
+      phoneNumber: "",
+      age: '',
+      country: ""
     },
   });
 
-  // Simulate fetching initial profile data
-  useState(() => {
-    setTimeout(() => {
-      // Simulate a random error
-      const shouldError = Math.random() < 0.2; // 20% chance of error
-      if (shouldError) {
-        setInitialError("Failed to load profile.");
-      } else {
-        form.reset(form.defaultValues); // Reset with default values as simulated fetched data
-        setInitialError(null);
-      }
-      setIsInitialLoading(false);
-    }, 1500); // 1500ms delay
-  });
+  useEffect(() => {
+    const fetchProfile = () => {
+      setIsLoading(true);
+      setError(null);
+      setTimeout(() => {
+        const shouldError = Math.random() < 0.2;
+        if (shouldError) {
+          setError("Failed to load profile. Please try again.");
+        } else {
+          form.reset({
+            name: "Elon Musk",
+            email: "elon@tesla.com",
+            phoneNumber: "+1-202-555-0104",
+            age: 53,
+            country: "USA"
+          });
+          setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
+        }
+        setIsLoading(false);
+      }, 1500);
+    };
+    fetchProfile();
+  }, [form]);
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -84,68 +95,105 @@ export function ProfileForm() {
     fileInputRef.current?.click();
   };
 
-  const onSubmit = (values: z.infer<typeof profileSchema>) => {
-    setIsPending(true);
+  const onSubmit = (values: ProfileFormValues) => {
+    setIsSubmitting(true);
+    setError(null);
     console.log("Updating profile:", values);
-    setSaveError(null); // Clear previous save errors
+    
     setTimeout(() => {
-      const shouldError = Math.random() < 0.3; // 30% chance of simulated error
+      const shouldError = Math.random() < 0.3;
       if (shouldError) {
-        setSaveError("Failed to save profile. Please try again.");
+        setError("Failed to save profile. Please try again.");
         toast({
           title: "Error",
           description: "Failed to save profile.",
           variant: "destructive",
         });
       } else {
-        setSaveError(null);
         toast({
           title: "Profile Updated",
           description: "Your profile information has been saved.",
         });
       }
-      setIsPending(false);
+      setIsSubmitting(false);
     }, 1000);
   };
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-8 w-1/4" />
+          <Skeleton className="h-4 w-2/4" />
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-20 w-20 rounded-full" />
+            <Skeleton className="h-10 w-24" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+             <div className="space-y-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </div>
+        </CardContent>
+        <CardFooter className="border-t px-6 py-4 flex justify-end">
+          <Skeleton className="h-10 w-20" />
+        </CardFooter>
+      </Card>
+    );
+  }
+
+  if (error && !form.formState.isDirty) {
+      return (
+          <Card>
+              <CardContent className="py-10 text-center">
+                  <p className="text-destructive mb-4">{error}</p>
+                  <Button onClick={() => window.location.reload()}>Retry</Button>
+              </CardContent>
+          </Card>
+      )
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Profile</CardTitle>
+        <CardTitle>Profile</CardTitle>
         <CardDescription>
         This information will be displayed publicly so be careful what you share.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
-         {!isInitialLoading && saveError && (
-          <CardContent>
-            <div className="text-center text-red-500 dark:text-red-400">
-              {saveError}
-            </div>
-          </CardContent>
-        )}
-        {isInitialLoading && (
-          <CardContent>
-            <p className="text-center text-muted-foreground">Loading profile...</p>
-          </CardContent>
-        )}
-        {!isInitialLoading && initialError && (
-          <CardContent>
-            <div className="text-center text-red-500">
-              {initialError}
-            </div>
-          </CardContent>
-        )}
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="space-y-6">
+              {error && (
+                <div className="text-sm text-destructive">{error}</div>
+              )}
               <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20 flex-shrink-0">
                   <AvatarImage src={avatarPreview} alt={form.watch('name')} data-ai-hint="man face" />
-                  <AvatarFallback>{form.watch('name')?.charAt(0) || 'U'}</AvatarFallback>
+                  <AvatarFallback>{form.watch('name')?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
                 </Avatar>
                 <input
                   type="file"
- ref={fileInputRef}
+                  ref={fileInputRef}
                   onChange={handleAvatarChange}
                   className="hidden"
                   accept="image/*"
@@ -153,7 +201,7 @@ export function ProfileForm() {
                 <Button variant="outline" type="button" onClick={handleAvatarButtonClick}>Change Avatar</Button>
               </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- <FormField
+              <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
@@ -166,7 +214,7 @@ export function ProfileForm() {
                     </FormItem>
                   )}
                 />
- <FormField
+                <FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
@@ -179,7 +227,7 @@ export function ProfileForm() {
                     </FormItem>
                   )}
                 />
- <FormField
+                <FormField
                   control={form.control}
                   name="phoneNumber"
                   render={({ field }) => (
@@ -205,7 +253,7 @@ export function ProfileForm() {
                     </FormItem>
                   )}
                 />
- <FormField
+                <FormField
                   control={form.control}
                   name="country"
                   render={({ field }) => (
@@ -221,8 +269,8 @@ export function ProfileForm() {
             </div>
           </CardContent>
           <CardFooter className="border-t px-6 py-4 flex justify-end">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : "Save"}
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "Save Changes"}
             </Button>
           </CardFooter>
         </form>

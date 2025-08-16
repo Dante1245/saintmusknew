@@ -27,6 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
+import { useTheme } from "next-themes";
 
 const passwordSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required."),
@@ -41,7 +42,7 @@ const passwordSchema = z.object({
 export function SettingsForm() {
   const { toast } = useToast();
   const [isPasswordPending, setIsPasswordPending] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const { theme, setTheme } = useTheme();
 
   const passwordForm = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
@@ -51,9 +52,6 @@ export function SettingsForm() {
       confirmPassword: "",
     },
   });
-
-  // A dummy form for the appearance section to satisfy the Form context
-  const appearanceForm = useForm();
 
   const onPasswordSubmit = (values: z.infer<typeof passwordSchema>) => {
     setIsPasswordPending(true);
@@ -67,16 +65,6 @@ export function SettingsForm() {
       setIsPasswordPending(false);
     }, 1000);
   };
-
-  const handleThemeToggle = (checked: boolean) => {
-    setIsDarkMode(checked);
-    document.documentElement.classList.toggle('dark', checked);
-    document.documentElement.classList.toggle('light', !checked);
-     toast({
-        title: "Theme Updated",
-        description: `Switched to ${checked ? 'dark' : 'light'} mode.`,
-      });
-  }
 
   return (
     <div className="space-y-8">
@@ -147,29 +135,22 @@ export function SettingsForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...appearanceForm}>
-            <form>
-                <FormItem className="flex items-center justify-between">
-                <div>
-                    <FormLabel>Theme</FormLabel>
-                    <FormDescription>
-                    Select between light and dark mode.
-                    </FormDescription>
-                </div>
-                <div className="flex items-center gap-2">
-                    <Label htmlFor="theme-switch" className="text-sm font-normal">Light</Label>
-                    <FormControl>
-                    <Switch
-                        id="theme-switch"
-                        checked={isDarkMode}
-                        onCheckedChange={handleThemeToggle}
-                    />
-                    </FormControl>
-                    <Label htmlFor="theme-switch" className="text-sm font-normal">Dark</Label>
-                </div>
-                </FormItem>
-            </form>
-          </Form>
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="theme-switch-label" className="text-sm font-medium">Theme</Label>
+              <p id="theme-switch-label" className="text-sm text-muted-foreground">Select between light and dark mode.</p>
+            </div>
+            <div className="flex items-center gap-2">
+                <Label htmlFor="theme-switch" className="text-sm font-normal">Light</Label>
+                <Switch
+                    id="theme-switch"
+                    checked={theme === 'dark'}
+                    onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+                    aria-labelledby="theme-switch-label"
+                />
+                <Label htmlFor="theme-switch" className="text-sm font-normal">Dark</Label>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
