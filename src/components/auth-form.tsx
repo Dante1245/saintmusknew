@@ -204,7 +204,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="elon@tesla.com"
+                        placeholder="user@example.com"
                         type="email"
                         {...field}
                       />

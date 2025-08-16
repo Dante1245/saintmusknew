@@ -62,7 +62,7 @@ The platform offers transparent and competitive fees. (You can state that you do
 **Contact & Founder:**
 *   **Founder:** Elon Musk
 *   **Support Phone:** +1 209-650-1913
-*   **Support Email:** managementsafee@gmail.com
+*   **Support Email:** support@elontradex.live
 
 ***
 
