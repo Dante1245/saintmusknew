@@ -25,38 +25,7 @@ import { EditUserDialog } from "./edit-user-dialog";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 
-const initialMockUsers: User[] = [
-  { 
-    id: "usr_001", 
-    name: "Elon Musk", 
-    email: "elon@tesla.com", 
-    balance: 200.00, 
-    joinDate: "2024-07-29",
-    transactions: [
-      { id: "txn_001", type: "Bonus", asset: "USDT", amount: 200, status: "Completed", date: "2024-07-29" },
-    ]
-  },
-  { 
-    id: "usr_002", 
-    name: "Satoshi Nakamoto", 
-    email: "satoshi@btc.com", 
-    balance: 10500.75, 
-    joinDate: "2024-07-28",
-    transactions: [
-       { id: "txn_002", type: "Deposit", asset: "BTC", amount: 0.5, status: "Completed", date: "2024-07-28" },
-    ]
-  },
-  { 
-    id: "usr_003", 
-    name: "Vitalik Buterin", 
-    email: "vitalik@ethereum.org", 
-    balance: 8734.20, 
-    joinDate: "2024-07-27",
-    transactions: [
-      { id: "txn_003", type: "Withdrawal", asset: "ETH", amount: 10, status: "Pending", date: "2024-07-27" },
-    ]
-  },
-];
+const initialMockUsers: User[] = [];
 
 
 export function UserManagement() {
@@ -71,10 +40,14 @@ export function UserManagement() {
     // In a real app, this would be fetched from a database.
     const storedUser = localStorage.getItem('loggedInUser');
     if (storedUser) {
-      const newUser: User = JSON.parse(storedUser);
-      // Avoid adding the user if they already exist in the list
-      if (!users.find(u => u.id === newUser.id || u.email === newUser.email)) {
-         setUsers(prevUsers => [newUser, ...prevUsers]);
+      try {
+        const newUser: User = JSON.parse(storedUser);
+        // Avoid adding the user if they already exist in the list
+        if (!users.find(u => u.id === newUser.id || u.email === newUser.email)) {
+          setUsers(prevUsers => [newUser, ...prevUsers]);
+        }
+      } catch (e) {
+        console.error("Failed to parse user from localStorage", e);
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

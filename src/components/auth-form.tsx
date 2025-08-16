@@ -100,17 +100,17 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
       localStorage.setItem('loggedInUser', JSON.stringify(newUser));
     } else {
       // For login, we can mock-find a user or use a default one if none exists from signup
-      const mockUser: User = { 
-        id: "usr_001", 
-        name: "Elon Musk", 
-        email: "elon@tesla.com", 
-        balance: 200.00, 
-        joinDate: "2024-07-29",
-        transactions: [
-          { id: "txn_001", type: "Bonus", asset: "USDT", amount: 200, status: "Completed", date: "2024-07-29" },
-        ]
-      };
-      localStorage.setItem('loggedInUser', JSON.stringify(mockUser));
+      const storedUser = localStorage.getItem('loggedInUser');
+      if (storedUser) {
+        // In a real app, you would verify the password here.
+        // For this prototype, we'll just log in the existing user.
+        console.log("Logging in existing user.");
+      } else {
+        // No user found, show an error. In a real app, this would come from the server.
+        setError("No account found with this email. Please sign up.");
+        setIsLoading(false);
+        return;
+      }
     }
 
     router.push("/dashboard");

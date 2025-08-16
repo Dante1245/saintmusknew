@@ -21,10 +21,7 @@ import {
 import { Check, X } from "lucide-react";
 import { useState } from "react";
 
-  const mockWithdrawals = [
-    { id: "wd_001", userId: "usr_003", asset: "ETH", amount: 0.1, address: "0x123...abc", status: "Pending", requestDate: "2024-07-28" },
-    { id: "wd_002", userId: "usr_002", asset: "BTC", amount: 0.05, address: "bc1q...xyz", status: "Pending", requestDate: "2024-07-29" },
-  ];
+  const mockWithdrawals: { id: string; userId: string; asset: string; amount: number; address: string; status: "Pending" | "Approved" | "Declined"; requestDate: string; }[] = [];
   
   export function WithdrawalRequests() {
     const [withdrawalRequests, setWithdrawalRequests] = useState(mockWithdrawals);

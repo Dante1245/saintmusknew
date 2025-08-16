@@ -7,10 +7,10 @@ import {
 import { Users, BarChart, ExternalLink, Activity } from "lucide-react";
 
 const metrics = [
-  { title: "Total Users", value: "3", icon: <Users className="h-6 w-6" /> },
-  { title: "Total Signups (24h)", value: "1", icon: <BarChart className="h-6 w-6" /> },
-  { title: "Pending Withdrawals", value: "1", icon: <ExternalLink className="h-6 w-6" /> },
-  { title: "Total Transactions", value: "3", icon: <Activity className="h-6 w-6" /> },
+  { title: "Total Users", value: "0", icon: <Users className="h-6 w-6" /> },
+  { title: "Total Signups (24h)", value: "0", icon: <BarChart className="h-6 w-6" /> },
+  { title: "Pending Withdrawals", value: "0", icon: <ExternalLink className="h-6 w-6" /> },
+  { title: "Total Transactions", value: "0", icon: <Activity className="h-6 w-6" /> },
 ];
 
 export function DashboardMetrics() {
