@@ -12,15 +12,15 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'images.cryptocompare.com',
+        hostname: 'placehold.co',
       },
       {
         protocol: 'https',
         hostname: 'api.qrserver.com',
       },
       {
-        protocol: 'https',
-        hostname: 'placehold.co',
+          protocol: 'https',
+          hostname: 'resources.cryptocompare.com',
       }
     ],
   },
