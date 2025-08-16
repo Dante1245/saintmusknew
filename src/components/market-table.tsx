@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -11,11 +12,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button"
 import type { CryptoMarketData } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react";
 
 const COIN_IDS = "bitcoin,ethereum,tether,ripple,cardano,solana,dogecoin";
@@ -131,12 +131,9 @@ export function MarketTable() {
                   {renderPriceChange(coin.price_change_percentage_24h)}
                 </TableCell>
                 <TableCell className="text-right">
-                  <Badge
-                    variant="outline"
-                    className="cursor-pointer border-primary/50 text-primary hover:bg-primary/10 hover:text-primary"
-                  >
-                    Trade
-                  </Badge>
+                  <Button asChild variant="outline" size="sm" className="border-primary/50 text-primary hover:bg-primary/10 hover:text-primary">
+                      <Link href="/dashboard">Trade</Link>
+                  </Button>
                 </TableCell>
               </TableRow>
             );
