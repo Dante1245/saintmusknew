@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -23,14 +24,10 @@ export default function DashboardPage() {
   const [showBonusPopup, setShowBonusPopup] = useState(false);
 
   useEffect(() => {
-    const hasSeenPopup = localStorage.getItem('seenBonusPopup:v1');
-    if (!hasSeenPopup) {
-      // Use a timeout to make the popup feel less abrupt on load
-      const timer = setTimeout(() => {
-        setShowBonusPopup(true);
-        localStorage.setItem('seenBonusPopup:v1', 'true');
-      }, 1000);
-      return () => clearTimeout(timer);
+    const shouldShowPopup = localStorage.getItem('showBonusPopup');
+    if (shouldShowPopup === 'true') {
+      setShowBonusPopup(true);
+      localStorage.removeItem('showBonusPopup'); // Remove the flag so it doesn't show again
     }
   }, []);
 

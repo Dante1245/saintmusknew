@@ -69,7 +69,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: isLogin 
-      ? { email: "", password: "", rememberMe: false } 
+      ? { email: "support@elontradex.live", password: "", rememberMe: false } 
       : { name: "", email: "", phoneNumber: "", country: "", password: "", confirmPassword: "" },
   });
 
@@ -98,6 +98,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
         walletAddress: `0x${Math.random().toString(16).substr(2, 40)}`,
       };
       localStorage.setItem('loggedInUser', JSON.stringify(newUser));
+      localStorage.setItem('showBonusPopup', 'true'); // Flag to show popup
     } else {
       // For login, we can mock-find a user or use a default one if none exists from signup
       const storedUser = localStorage.getItem('loggedInUser');
