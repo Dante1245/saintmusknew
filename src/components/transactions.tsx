@@ -21,6 +21,7 @@ import type { Transaction } from "@/lib/types";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { usePathname } from 'next/navigation'
 
 const transactionsData: Transaction[] = [
   {
@@ -51,6 +52,7 @@ const transactionsData: Transaction[] = [
 
 export function Transactions() {
   const router = useRouter();
+  const pathname = usePathname();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,14 +78,14 @@ export function Transactions() {
   };
   
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString + 'T00:00:00'); // Add time to ensure correct date interpretation
-    const userTimezoneOffset = date.getTimezoneOffset() * 60000;
-    const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
-    return adjustedDate.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
+    // Treat the date string as UTC to prevent timezone shifts
+    const date = new Date(`${dateString}T00:00:00Z`);
+    return new Intl.DateTimeFormat('en-US', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit',
+        timeZone: 'UTC'
+    }).format(date);
   }
 
   const formatAmount = (amount: number, asset: string) => {
@@ -95,6 +97,7 @@ export function Transactions() {
     return formattedAmount;
   };
 
+  const isHistoryPage = pathname === '/history';
 
   return (
     <Card>
@@ -156,9 +159,11 @@ export function Transactions() {
           </Table>
         </div>
 
-        <div className="mt-6 text-center">
+        {!isHistoryPage && (
+          <div className="mt-6 text-center">
             <Button variant="outline" onClick={() => router.push('/history')}>View All Transactions</Button>
-        </div>
+          </div>
+        )}
        </CardContent>
        {isLoading && (
            <div className="px-6 pb-4 text-center text-sm text-muted-foreground">

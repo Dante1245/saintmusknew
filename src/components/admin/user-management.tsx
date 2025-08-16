@@ -92,28 +92,28 @@ export function UserManagement() {
            {/* Responsive List for Mobile */}
            <div className="md:hidden space-y-4">
               {filteredUsers.map((user) => (
-                <div key={user.id} className="border-b pb-4 last:border-0 last:pb-0 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+                <div key={user.id} className="border-b pb-4 last:border-0 last:pb-0 flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-4 overflow-hidden">
                         <Avatar>
                             <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <div>
-                            <p className="font-medium">{user.name}</p>
-                            <p className="text-sm text-muted-foreground">{user.email}</p>
+                        <div className="flex-1 min-w-0">
+                            <p className="font-medium truncate">{user.name}</p>
+                            <p className="text-sm text-muted-foreground truncate">{user.email}</p>
                             <p className="text-sm font-mono">${user.balance.toFixed(2)}</p>
                         </div>
                     </div>
-                     <div className="flex flex-col items-end gap-2">
+                     <div className="flex flex-col items-end gap-2 shrink-0">
                       <Button variant="outline" size="sm" onClick={() => setEditingUser(user)}>
-                        <Edit className="h-4 w-4 mr-2" />
-                        Edit
+                        <Edit className="h-4 w-4 md:mr-2" />
+                        <span className="hidden md:inline">Edit</span>
                       </Button>
                       <Button
                         variant="destructive"
                         size="sm"
                         onClick={() => handleDeleteUser(user.id)}
                         disabled={deletingUserId === user.id}>
-                        {deletingUserId === user.id ? "Deleting..." : "Delete"}
+                        {deletingUserId === user.id ? "..." : "Delete"}
                       </Button>
                     </div>
                 </div>

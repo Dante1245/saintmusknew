@@ -43,7 +43,7 @@ const reviews = [
     name: "Gavin A.",
     avatar: "GA",
     review: "I've tried many exchanges, but the speed and reliability of ElonTradeX are unmatched. My orders execute instantly, which is crucial in a volatile market.",
-    image: "https://placehold.co/100x100.png",
+    image: "https://randomuser.me/api/portraits/men/60.jpg",
     rating: 4,
   }
 ];

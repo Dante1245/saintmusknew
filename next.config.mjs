@@ -4,15 +4,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'assets.coingecko.com',
-      },
-       {
-        protocol: 'https',
         hostname: 'coin-images.coingecko.com',
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
+        hostname: 'resources.cryptocompare.com',
       },
       {
         protocol: 'https',
@@ -20,15 +16,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'placehold.co',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api.qrserver.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'resources.cryptocompare.com',
       },
     ],
   },
