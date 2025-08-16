@@ -33,6 +33,8 @@ export type User = {
     joinDate: string;
     walletAddress?: string;
     transactions?: Transaction[];
+    phoneNumber?: string;
+    country?: string;
 };
 
 export type CryptoNewsArticle = {

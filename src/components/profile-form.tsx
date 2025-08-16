@@ -26,12 +26,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "./ui/skeleton";
+import type { User } from "@/lib/types";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email."),
   phoneNumber: z.string().optional(),
-  age: z.coerce.number().positive("Age must be a positive number.").optional().or(z.literal('')),
   country: z.string().optional(),
 });
 
@@ -42,6 +42,7 @@ export function ProfileForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [avatarPreview, setAvatarPreview] = useState("/placeholder-avatar.png");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -51,27 +52,34 @@ export function ProfileForm() {
       name: "",
       email: "",
       phoneNumber: "",
-      age: '',
       country: ""
     },
   });
 
   useEffect(() => {
-    const fetchProfile = () => {
-      setIsLoading(true);
-      setError(null);
-      // Simulate fetching data
-      form.reset({
-        name: "Elon Musk",
-        email: "elon@tesla.com",
-        phoneNumber: "+1-202-555-0104",
-        age: 53,
-        country: "USA"
-      });
-      setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
+    setIsLoading(true);
+    try {
+      const storedUser = localStorage.getItem('loggedInUser');
+      if (storedUser) {
+        const userData: User = JSON.parse(storedUser);
+        setUser(userData);
+        form.reset({
+          name: userData.name,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
+          country: userData.country
+        });
+        // You might want a default avatar or a user-specific one
+        setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
+      } else {
+        setError("No user data found. Please log in.");
+      }
+    } catch (e) {
+      setError("Failed to load user data.");
+      console.error(e);
+    } finally {
       setIsLoading(false);
-    };
-    fetchProfile();
+    }
   }, [form]);
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,10 +102,18 @@ export function ProfileForm() {
     setError(null);
     console.log("Updating profile:", values);
     
-    toast({
-      title: "Profile Updated",
-      description: "Your profile information has been saved.",
-    });
+    if (user) {
+        const updatedUser = { ...user, ...values };
+        localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+        setUser(updatedUser);
+        toast({
+            title: "Profile Updated",
+            description: "Your profile information has been saved.",
+        });
+    } else {
+        setError("Could not update profile. No user loaded.");
+    }
+    
     setIsSubmitting(false);
   };
 
@@ -127,10 +143,6 @@ export function ProfileForm() {
               <Skeleton className="h-10 w-full" />
             </div>
              <div className="space-y-2">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-            <div className="space-y-2 md:col-span-2">
               <Skeleton className="h-4 w-16" />
               <Skeleton className="h-10 w-full" />
             </div>
@@ -224,22 +236,9 @@ export function ProfileForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="age"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Age</FormLabel>
-                      <FormControl>
-                        <Input type="number" placeholder="Your age" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
                   name="country"
                   render={({ field }) => (
-                    <FormItem className="md:col-span-2">
+                    <FormItem>
                       <FormLabel>Country</FormLabel>
                       <FormControl>
                         <Input placeholder="Your country" {...field} />

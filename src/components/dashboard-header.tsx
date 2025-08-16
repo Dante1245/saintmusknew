@@ -1,7 +1,9 @@
+
 "use client";
 
 import Link from "next/link";
 import { CircleUser, LogOut, Menu, Search, Settings, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +28,13 @@ const navLinks = [
 
 
 export function DashboardHeader() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem('loggedInUser');
+    router.push('/');
+  };
+
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border/50 bg-background/80 backdrop-blur-sm px-4 sm:px-8">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -112,11 +121,9 @@ export function DashboardHeader() {
             </DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/">
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Logout</span>
-              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

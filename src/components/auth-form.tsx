@@ -32,6 +32,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { countries } from "@/lib/countries";
 import { ScrollArea } from "./ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
+import type { User } from "@/lib/types";
 
 // Zod schema for login form validation
 const loginSchema = z.object({
@@ -78,10 +79,40 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   
   const onSubmit = (values: FormValues) => {
     setIsLoading(true);
-    setError(null); // Clear previous errors
+    setError(null);
     console.log("Form submitted with values:", values);
-    // In a real app, you would handle success/error from your API
-    // For this prototype, we'll assume success.
+    
+    if (!isLogin) {
+      const signupValues = values as z.infer<typeof signupSchema>;
+      const newUser: User = {
+        id: `usr_${Math.random().toString(36).substr(2, 9)}`,
+        name: signupValues.name,
+        email: signupValues.email,
+        phoneNumber: signupValues.phoneNumber,
+        country: signupValues.country,
+        balance: 200.00,
+        joinDate: new Date().toISOString().split('T')[0],
+        transactions: [
+          { id: "txn_bonus_001", type: "Bonus", asset: "USDT", amount: 200, status: "Completed", date: new Date().toISOString().split('T')[0] },
+        ],
+        walletAddress: `0x${Math.random().toString(16).substr(2, 40)}`,
+      };
+      localStorage.setItem('loggedInUser', JSON.stringify(newUser));
+    } else {
+      // For login, we can mock-find a user or use a default one if none exists from signup
+      const mockUser: User = { 
+        id: "usr_001", 
+        name: "Elon Musk", 
+        email: "elon@tesla.com", 
+        balance: 200.00, 
+        joinDate: "2024-07-29",
+        transactions: [
+          { id: "txn_001", type: "Bonus", asset: "USDT", amount: 200, status: "Completed", date: "2024-07-29" },
+        ]
+      };
+      localStorage.setItem('loggedInUser', JSON.stringify(mockUser));
+    }
+
     router.push("/dashboard");
   };
   

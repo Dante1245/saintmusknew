@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -25,7 +25,7 @@ import { EditUserDialog } from "./edit-user-dialog";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 
-const mockUsers: User[] = [
+const initialMockUsers: User[] = [
   { 
     id: "usr_001", 
     name: "Elon Musk", 
@@ -61,10 +61,24 @@ const mockUsers: User[] = [
 
 export function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState<User[]>(mockUsers);
+  const [users, setUsers] = useState<User[]>(initialMockUsers);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    // This is a mock way of checking for a new user from localStorage.
+    // In a real app, this would be fetched from a database.
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+      const newUser: User = JSON.parse(storedUser);
+      // Avoid adding the user if they already exist in the list
+      if (!users.find(u => u.id === newUser.id || u.email === newUser.email)) {
+         setUsers(prevUsers => [newUser, ...prevUsers]);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -78,7 +92,6 @@ export function UserManagement() {
 
   const handleDeleteUser = (userId: string) => {
     setDeletingUserId(userId);
-    // In a real app, this would be an API call.
     setUsers(currentUsers => currentUsers.filter(user => user.id !== userId));
     toast({
       title: "User Deleted",
