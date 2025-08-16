@@ -20,6 +20,12 @@ export function LandingHeader() {
             Features
           </Link>
           <Link
+            href="/markets"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            News
+          </Link>
+          <Link
             href="#"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
@@ -68,6 +74,9 @@ export function LandingHeader() {
                 </Link>
                 <Link href="/#features" className="text-muted-foreground hover:text-foreground">
                   Features
+                </Link>
+                <Link href="/markets" className="text-muted-foreground hover:text-foreground">
+                  News
                 </Link>
                 <Link href="#" className="text-muted-foreground hover:text-foreground">
                   Pricing
