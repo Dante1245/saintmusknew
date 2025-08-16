@@ -1,11 +1,19 @@
 
 
-
 export type CryptoData = {
   [key: string]: {
     usd: number;
     usd_24h_change: number;
   };
+};
+
+export type CryptoMarketData = {
+    id: string;
+    symbol: string;
+    name: string;
+    image: string;
+    current_price: number;
+    price_change_percentage_24h: number;
 };
 
 export type Transaction = {

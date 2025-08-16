@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Table,
   TableBody,
@@ -11,37 +12,16 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge";
-import type { CryptoData } from "@/lib/types";
+import type { CryptoMarketData } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import {
-  IconBitcoin,
-  IconCardano,
-  IconDogecoin,
-  IconEthereum,
-  IconRipple,
-  IconSolana,
-  IconTether,
-} from "./icons"
 import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react";
 
 const COIN_IDS = "bitcoin,ethereum,tether,ripple,cardano,solana,dogecoin";
 
-const cryptoDetails: {
-  [key: string]: { name: string; symbol: string; icon: React.ElementType };
-} = {
-  bitcoin: { name: "Bitcoin", symbol: "BTC", icon: IconBitcoin },
-  ethereum: { name: "Ethereum", symbol: "ETH", icon: IconEthereum },
-  tether: { name: "Tether", symbol: "USDT", icon: IconTether },
-  ripple: { name: "Ripple", symbol: "XRP", icon: IconRipple },
-  cardano: { name: "Cardano", symbol: "ADA", icon: IconCardano },
-  solana: { name: "Solana", symbol: "SOL", icon: IconSolana },
-  dogecoin: { name: "Dogecoin", symbol: "DOGE", icon: IconDogecoin },
-};
-
 export function MarketTable() {
-  const [data, setData] = useState<CryptoData | null>(null);
+  const [data, setData] = useState<CryptoMarketData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,12 +30,12 @@ export function MarketTable() {
       setLoading(true);
       setError(null);
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${COIN_IDS}&vs_currencies=usd&include_24hr_change=true`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${COIN_IDS}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const result: CryptoData = await response.json();
+      const result: CryptoMarketData[] = await response.json();
       setData(result);
     } catch (error) {
       console.error("Failed to fetch crypto data:", error);
@@ -130,28 +110,25 @@ export function MarketTable() {
         {!loading &&
           !error &&
           data &&
-          Object.keys(data).map((coinId) => {
-            const coin = data[coinId];
-            const details = cryptoDetails[coinId];
-            const Icon = details?.icon;
+          data.map((coin) => {
             return (
-              <TableRow key={coinId}>
+              <TableRow key={coin.id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    {Icon && <Icon className="h-6 w-6" />}
+                    <Image src={coin.image} alt={coin.name} width={24} height={24} />
                     <div>
-                      <div className="font-medium">{details?.name}</div>
+                      <div className="font-medium">{coin.name}</div>
                       <div className="text-sm text-muted-foreground">
-                        {details?.symbol}
+                        {coin.symbol.toUpperCase()}
                       </div>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell className="text-right font-medium py-4 px-2">
-                  ${coin.usd.toLocaleString()}
+                  ${coin.current_price.toLocaleString()}
                 </TableCell>
                 <TableCell className="text-right whitespace-nowrap py-4 px-2">
-                  {renderPriceChange(coin.usd_24h_change)}
+                  {renderPriceChange(coin.price_change_percentage_24h)}
                 </TableCell>
                 <TableCell className="text-right">
                   <Badge
