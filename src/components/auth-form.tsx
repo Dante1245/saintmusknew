@@ -104,7 +104,10 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
     setError(null);
     
     // Clear previous user data for this prototype's logic
-    localStorage.removeItem('loggedInUser');
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('loggedInUser');
+    }
+
 
     if (!isLogin) {
       const signupValues = values as z.infer<typeof signupSchema>;
@@ -122,6 +125,9 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
         walletAddress: `0x${Math.random().toString(16).substr(2, 40)}`,
       };
       
+      // Simulate sending a welcome email
+      console.log(`---> Welcome email sent to: ${newUser.email}`);
+
       const userJson = JSON.stringify(newUser);
       localStorage.setItem('loggedInUser', userJson);
       setCookie('loggedInUser', userJson, 7); // Set cookie for server-side access
