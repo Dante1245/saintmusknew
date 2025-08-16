@@ -28,7 +28,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
-            {children}
+            <div className="container">{children}</div>
             <Toaster />
         </ThemeProvider>
         <SupportBot />
