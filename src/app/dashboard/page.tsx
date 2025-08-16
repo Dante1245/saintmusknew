@@ -18,7 +18,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { CheckCircle2, Gift } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function PortfolioSkeleton() {
@@ -50,8 +50,8 @@ function TransactionsSkeleton() {
             <CardContent>
                 <div className="space-y-4">
                     {Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="flex items-center">
-                            <div className="ml-4 space-y-1">
+                        <div key={i} className="flex items-center py-2">
+                            <div className="ml-4 space-y-2">
                                 <Skeleton className="h-4 w-[250px]" />
                                 <Skeleton className="h-4 w-[200px]" />
                             </div>
@@ -108,7 +108,7 @@ export default function DashboardPage() {
           </div>
           
           <Suspense fallback={<TransactionsSkeleton />}>
-            <Transactions />
+            <Transactions onHistoryPage={false} />
           </Suspense>
         </main>
         <NotificationHandler />

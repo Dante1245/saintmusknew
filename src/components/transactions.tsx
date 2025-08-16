@@ -11,7 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -79,7 +78,7 @@ export async function Transactions({ onHistoryPage = false }: { onHistoryPage?: 
 
 
   return (
-    <Card>
+    <>
       <CardHeader>
         <CardTitle>Transaction History</CardTitle>
         <CardDescription>
@@ -154,6 +153,6 @@ export async function Transactions({ onHistoryPage = false }: { onHistoryPage?: 
             </>
         )}
        </CardContent>
-    </Card>
+    </>
   );
 }

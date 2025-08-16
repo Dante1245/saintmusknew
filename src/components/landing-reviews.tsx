@@ -69,7 +69,7 @@ export function LandingReviews() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {reviews.map((review, index) => (
-            <Card key={index}>
+            <Card key={index} className="transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <Avatar>

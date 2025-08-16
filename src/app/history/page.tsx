@@ -42,7 +42,11 @@ export default function HistoryPage() {
           </div>
           <Separator />
           <Suspense fallback={<TransactionsSkeleton />}>
-            <Transactions />
+            <Card>
+                <CardContent className="p-0">
+                    <Transactions onHistoryPage={true} />
+                </CardContent>
+            </Card>
           </Suspense>
         </div>
       </main>
