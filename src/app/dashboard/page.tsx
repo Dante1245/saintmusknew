@@ -21,25 +21,6 @@ import { CheckCircle2, Gift } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-function PortfolioSkeleton() {
-  return (
-    <Card className="h-full">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
-        <Skeleton className="h-4 w-4" />
-      </CardHeader>
-      <CardContent>
-        <Skeleton className="h-8 w-3/4 mb-1" />
-        <Skeleton className="h-4 w-1/2" />
-        <div className="mt-4 flex items-center gap-2">
-          <Skeleton className="h-4 w-4" />
-          <Skeleton className="h-4 w-1/3" />
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
 function TransactionsSkeleton() {
     return (
         <Card>
@@ -82,9 +63,7 @@ export default function DashboardPage() {
         <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 md:p-8">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-3">
             <div className="xl:col-span-2">
-              <Suspense fallback={<PortfolioSkeleton />}>
-                <Portfolio />
-              </Suspense>
+              <Portfolio />
             </div>
             <Card className="lg:col-span-1 h-full">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
