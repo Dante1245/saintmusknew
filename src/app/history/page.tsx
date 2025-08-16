@@ -1,32 +1,8 @@
+
+
 import { DashboardHeader } from "@/components/dashboard-header";
 import { Transactions } from "@/components/transactions";
 import { Separator } from "@/components/ui/separator";
-import { Suspense } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-
-function TransactionsSkeleton() {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Transaction History</CardTitle>
-                <CardDescription>A complete record of all your account activity.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                    {Array.from({ length: 10 }).map((_, i) => (
-                        <div key={i} className="flex items-center py-2">
-                            <div className="ml-4 space-y-2">
-                                <Skeleton className="h-4 w-[300px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
-    );
-}
 
 export default function HistoryPage() {
   return (
@@ -41,13 +17,7 @@ export default function HistoryPage() {
             </p>
           </div>
           <Separator />
-          <Suspense fallback={<TransactionsSkeleton />}>
-            <Card>
-                <CardContent className="p-0">
-                    <Transactions onHistoryPage={true} />
-                </CardContent>
-            </Card>
-          </Suspense>
+          <Transactions onHistoryPage={true} />
         </div>
       </main>
     </div>

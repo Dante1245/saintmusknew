@@ -4,6 +4,7 @@
 import { z } from "zod";
 import { generateMockPurchaseNotification } from "@/ai/flows/generate-mock-purchase-notifications";
 import { supportChat } from "@/ai/flows/support-chat-flow";
+import { sendWelcomeEmail } from "@/lib/email";
 
 const withdrawalSchema = z.object({
   amount: z.coerce.number().positive(),
@@ -25,8 +26,13 @@ export async function submitWithdrawal(values: z.infer<typeof withdrawalSchema>)
   // 4. Notify admins of the new withdrawal request
   console.log("New withdrawal request submitted:", parsed.data);
 
+  // Here, you could add the new pending transaction to the user's record in the database.
+  // For the prototype, we'll just return a success message. The transaction list
+  // in the UI is currently mock data.
+
   return { success: true, message: "Your withdrawal request has been submitted for processing." };
 }
+
 
 export async function getMockNotification() {
   try {

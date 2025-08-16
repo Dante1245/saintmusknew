@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { DashboardHeader } from '@/components/dashboard-header';
 import { Portfolio } from '@/components/portfolio';
 import { MarketView } from '@/components/market-view';
@@ -19,30 +19,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import { CheckCircle2, Gift } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-
-function TransactionsSkeleton() {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Transaction History</CardTitle>
-                <CardDescription>A log of your recent account activity.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="flex items-center py-2">
-                            <div className="ml-4 space-y-2">
-                                <Skeleton className="h-4 w-[250px]" />
-                                <Skeleton className="h-4 w-[200px]" />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
-    );
-}
 
 export default function DashboardPage() {
   const [showBonusPopup, setShowBonusPopup] = useState(false);
@@ -86,9 +62,7 @@ export default function DashboardPage() {
             </div>
           </div>
           
-          <Suspense fallback={<TransactionsSkeleton />}>
-            <Transactions onHistoryPage={false} />
-          </Suspense>
+          <Transactions onHistoryPage={false} />
         </main>
         <NotificationHandler />
       </div>
