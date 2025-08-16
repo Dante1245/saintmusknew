@@ -19,11 +19,11 @@ export function LandingContact() {
             <div className="space-y-6">
                 <div className="flex items-start gap-6">
                     <Image 
-                        src="/images/elon-musk-contact.png"
+                        src="https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTUxMjA4NjB8MA&ixlib=rb-4.1.0&q=80&w=1080"
                         alt="Elon Musk"
                         width={150}
                         height={150}
-                        className="rounded-full border-4 border-primary/20"
+                        className="rounded-full border-4 border-primary/20 object-cover"
                         data-ai-hint="man portrait"
                     />
                     <div>
