@@ -1,3 +1,4 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
@@ -5,8 +6,15 @@ import { SupportBot } from '@/components/support-bot';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'TradeSim',
-  description: 'The future of crypto trading.',
+  title: 'ElonTradeX',
+  description: 'The most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio.',
+  openGraph: {
+    title: 'ElonTradeX',
+    description: 'The most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio.',
+    url: 'https://elontradex.live',
+    siteName: 'ElonTradeX',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
