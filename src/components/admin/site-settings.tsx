@@ -38,22 +38,10 @@ export function SiteSettings() {
         // Simulate an API call
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        // Simulate success or error
-        const success = Math.random() > 0.2; // 80% success rate
-
-        if (success) {
-            toast({
-                title: "Settings Saved",
-                description: "The main wallet deposit address has been updated.",
-            });
-        } else {
-            setError("Failed to save settings. Please try again.");
-            toast({
-                title: "Error",
-                description: "Failed to save settings.",
-                variant: "destructive",
-            });
-        }
+        toast({
+            title: "Settings Saved",
+            description: "The main wallet deposit address has been updated.",
+        });
 
         setIsLoading(false);
     };
@@ -82,7 +70,9 @@ export function SiteSettings() {
                 This is the primary address displayed for all user deposits. Changing this will affect the entire site.
             </p>
         </div>
-        <Button onClick={handleSave}>Save Settings</Button>
+        <Button onClick={handleSave} disabled={isLoading}>
+            {isLoading ? "Saving..." : "Save Settings"}
+        </Button>
       </CardContent>
     </Card>
   );

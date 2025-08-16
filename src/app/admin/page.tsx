@@ -4,12 +4,14 @@ import { SiteSettings } from "@/components/admin/site-settings";
 import { DashboardMetrics } from "@/components/admin/dashboard-metrics";
 import { BroadcastMessages } from "@/components/admin/broadcast-messages";
 import { WithdrawalRequests } from "@/components/admin/withdrawal-requests";
+import { AdminAgent } from "@/components/admin/admin-agent";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 
 
 export default function AdminPage() {
@@ -24,7 +26,11 @@ export default function AdminPage() {
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="dashboard">
-            <DashboardMetrics />
+            <div className="space-y-6">
+              <DashboardMetrics />
+              <Separator />
+              <AdminAgent />
+            </div>
         </TabsContent>
         <TabsContent value="users">
           <UserManagement />

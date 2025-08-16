@@ -40,26 +40,16 @@ export function BroadcastMessages() {
         setIsSending(true);
         setError(null); // Clear previous errors
 
-        // Simulate sending delay and potential error
+        // Simulate sending delay
         await new Promise(resolve => setTimeout(resolve, 1500));
-
-        const success = Math.random() > 0.2; // 80% chance of success
 
         console.log("Sending broadcast:", message);
 
-        if (success) {
-            toast({
-                title: "Broadcast Sent",
-                description: "Your message has been sent to all users.",
-            });
-        } else {
-            setError("Failed to send broadcast message. Please try again.");
-            toast({
-                title: "Error",
-                description: "Failed to send broadcast message.",
-                variant: "destructive",
-            });
-        }
+        toast({
+            title: "Broadcast Sent",
+            description: "Your message has been sent to all users.",
+        });
+        
         setMessage("");
         setIsSending(false);
     }

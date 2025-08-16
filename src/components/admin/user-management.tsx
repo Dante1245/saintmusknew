@@ -23,6 +23,7 @@ import { Search, Edit, Trash2 } from "lucide-react";
 import type { User } from "@/lib/types";
 import { EditUserDialog } from "./edit-user-dialog";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { useToast } from "@/hooks/use-toast";
 
 const mockUsers: User[] = [
   { 
@@ -63,7 +64,7 @@ export function UserManagement() {
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -77,16 +78,14 @@ export function UserManagement() {
 
   const handleDeleteUser = (userId: string) => {
     setDeletingUserId(userId);
-    setError(null); // Clear previous errors
 
-    // Simulate a delay and potential error for demonstration
+    // Simulate a delay for demonstration
     setTimeout(() => {
-      const shouldError = Math.random() < 0.2; // 20% chance of error
-      if (shouldError) {
-        setError(`Failed to delete user ${userId}.`);
-      } else {
         setUsers(currentUsers => currentUsers.filter(user => user.id !== userId));
-      }
+        toast({
+          title: "User Deleted",
+          description: `User ${userId} has been successfully deleted.`,
+        });
       setDeletingUserId(null);
     }, 1000); // Simulate network request time
 
@@ -107,9 +106,6 @@ export function UserManagement() {
             />
           </div>
         </CardHeader>
-        {error && (
-          <div className="p-4 text-red-500">{error}</div>
-        )}
         <CardContent>
            {/* Responsive List for Mobile */}
            <div className="md:hidden space-y-4">
@@ -135,7 +131,7 @@ export function UserManagement() {
                         size="sm"
                         onClick={() => handleDeleteUser(user.id)}
                         disabled={deletingUserId === user.id}>
-                        Delete
+                        {deletingUserId === user.id ? "Deleting..." : "Delete"}
                       </Button>
                     </div>
                 </div>
@@ -173,7 +169,7 @@ export function UserManagement() {
                           size="icon"
                           onClick={() => handleDeleteUser(user.id)}
                           disabled={deletingUserId === user.id} >
-                            <Trash2 className="h-4 w-4" />
+                            {deletingUserId === user.id ? <Trash2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                         </Button>
                         </div>
                     </TableCell>

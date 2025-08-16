@@ -39,7 +39,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import Image from "next/image";
 
@@ -185,7 +185,7 @@ export function WalletCard() {
                   alt="QR Code"
                   width={200}
                   height={200}
- key={selectedDepositAsset} // Force re-render on asset change
+                  key={selectedDepositAsset} // Force re-render on asset change
                   className="rounded-md"
                 />
               </div>

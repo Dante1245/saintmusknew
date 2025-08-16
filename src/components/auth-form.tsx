@@ -83,11 +83,9 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
     console.log("Form submitted with values:", values);
     setTimeout(() => {
       setIsLoading(false);
-      if (Math.random() > 0.5) { // Simulate a 50% chance of error
-        setError(isLogin ? "Invalid credentials." : "Signup failed. Please try again.");
-      } else {
-        router.push("/dashboard");
-      }
+      // In a real app, you would handle success/error from your API
+      // For this prototype, we'll assume success.
+      router.push("/dashboard");
     }, 1500);
   };
   
