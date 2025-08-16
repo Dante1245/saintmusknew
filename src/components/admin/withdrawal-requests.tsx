@@ -29,20 +29,16 @@ import { useState } from "react";
   export function WithdrawalRequests() {
     const [withdrawalRequests, setWithdrawalRequests] = useState(mockWithdrawals);
     const [processingId, setProcessingId] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
 
     const updateRequestStatus = (id: string, status: "Approved" | "Declined") => {
-      setError(null);
       setProcessingId(id);
-      // Simulate API call
-      setTimeout(() => {
-        setWithdrawalRequests(currentRequests =>
-          currentRequests.map(req =>
-            req.id === id ? { ...req, status: status } : req
-          )
-        );
-        setProcessingId(null);
-      }, 1000);
+      // In a real app, this would be an API call.
+      setWithdrawalRequests(currentRequests =>
+        currentRequests.map(req =>
+          req.id === id ? { ...req, status: status } : req
+        )
+      );
+      setProcessingId(null);
     };
 
     const handleApprove = (id: string) => updateRequestStatus(id, "Approved");
@@ -55,7 +51,6 @@ import { useState } from "react";
           <CardDescription>Review and process pending withdrawal requests.</CardDescription>
         </CardHeader>
         <CardContent>
-          {error && <div className="text-red-500 mb-4">{error}</div>}
           {/* Responsive List for Mobile */}
           <div className="md:hidden space-y-4">
               {withdrawalRequests.map((req) => (

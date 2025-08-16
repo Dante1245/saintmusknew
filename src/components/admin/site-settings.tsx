@@ -18,10 +18,8 @@ export function SiteSettings() {
     const { toast } = useToast();
     const [depositAddress, setDepositAddress] = useState("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh");
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
     const handleSave = async () => {
-        setError(null); // Clear previous errors
 
         if (!depositAddress.trim()) {
             toast({
@@ -35,8 +33,8 @@ export function SiteSettings() {
         setIsLoading(true);
 
         console.log("Saving new deposit address:", depositAddress);
-        // Simulate an API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // In a real app, you'd save this to a database
+        await new Promise(resolve => setTimeout(resolve, 500)); // Simulate async operation
 
         toast({
             title: "Settings Saved",
@@ -55,9 +53,6 @@ export function SiteSettings() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {error && (
-            <div className="text-red-500 text-sm">{error}</div>
-        )}
         <div className="space-y-2">
             <Label htmlFor="deposit-address">Main Wallet Deposit Address (BTC)</Label>
             <Input 

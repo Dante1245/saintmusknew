@@ -79,14 +79,10 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   const onSubmit = (values: FormValues) => {
     setIsLoading(true);
     setError(null); // Clear previous errors
-    // Simulate API call
     console.log("Form submitted with values:", values);
-    setTimeout(() => {
-      setIsLoading(false);
-      // In a real app, you would handle success/error from your API
-      // For this prototype, we'll assume success.
-      router.push("/dashboard");
-    }, 1500);
+    // In a real app, you would handle success/error from your API
+    // For this prototype, we'll assume success.
+    router.push("/dashboard");
   };
   
   return (

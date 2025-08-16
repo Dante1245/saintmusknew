@@ -19,7 +19,6 @@ export function BroadcastMessages() {
     const { toast } = useToast();
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     const initiateSend = () => {
@@ -31,14 +30,12 @@ export function BroadcastMessages() {
             });
             return; // Prevent showing confirmation for empty message
         }
-        setError(null); // Clear previous errors
         setShowConfirmation(true);
     };
 
     const confirmSend = async () => {
         setShowConfirmation(false); // Close confirmation
         setIsSending(true);
-        setError(null); // Clear previous errors
 
         // Simulate sending delay
         await new Promise(resolve => setTimeout(resolve, 1500));
@@ -63,9 +60,6 @@ export function BroadcastMessages() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {error && (
-            <div className="text-red-500 text-sm">{error}</div>
-        )}
         <div className="space-y-2">
           <Label htmlFor="broadcast-message">Message</Label>
           <Textarea

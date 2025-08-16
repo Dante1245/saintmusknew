@@ -60,22 +60,18 @@ export function ProfileForm() {
     const fetchProfile = () => {
       setIsLoading(true);
       setError(null);
+      // Simulate fetching data
       setTimeout(() => {
-        const shouldError = Math.random() < 0.2;
-        if (shouldError) {
-          setError("Failed to load profile. Please try again.");
-        } else {
-          form.reset({
-            name: "Elon Musk",
-            email: "elon@tesla.com",
-            phoneNumber: "+1-202-555-0104",
-            age: 53,
-            country: "USA"
-          });
-          setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
-        }
+        form.reset({
+          name: "Elon Musk",
+          email: "elon@tesla.com",
+          phoneNumber: "+1-202-555-0104",
+          age: 53,
+          country: "USA"
+        });
+        setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
         setIsLoading(false);
-      }, 1500);
+      }, 500);
     };
     fetchProfile();
   }, [form]);
@@ -101,22 +97,12 @@ export function ProfileForm() {
     console.log("Updating profile:", values);
     
     setTimeout(() => {
-      const shouldError = Math.random() < 0.3;
-      if (shouldError) {
-        setError("Failed to save profile. Please try again.");
-        toast({
-          title: "Error",
-          description: "Failed to save profile.",
-          variant: "destructive",
-        });
-      } else {
         toast({
           title: "Profile Updated",
           description: "Your profile information has been saved.",
         });
-      }
       setIsSubmitting(false);
-    }, 1000);
+    }, 500);
   };
 
   if (isLoading) {

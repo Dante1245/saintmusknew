@@ -78,17 +78,13 @@ export function UserManagement() {
 
   const handleDeleteUser = (userId: string) => {
     setDeletingUserId(userId);
-
-    // Simulate a delay for demonstration
-    setTimeout(() => {
-        setUsers(currentUsers => currentUsers.filter(user => user.id !== userId));
-        toast({
-          title: "User Deleted",
-          description: `User ${userId} has been successfully deleted.`,
-        });
-      setDeletingUserId(null);
-    }, 1000); // Simulate network request time
-
+    // In a real app, this would be an API call.
+    setUsers(currentUsers => currentUsers.filter(user => user.id !== userId));
+    toast({
+      title: "User Deleted",
+      description: `User ${userId} has been successfully deleted.`,
+    });
+    setDeletingUserId(null);
   };
 
   return (

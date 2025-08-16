@@ -59,12 +59,7 @@ export function Transactions() {
     // In a real app, you'd fetch this data.
     // For now, we'll use the mock data.
     setTimeout(() => {
-      // Simulate a random error
-      if (Math.random() > 0.8) { // 20% chance of error
-        setError("Failed to fetch transactions.");
-      } else {
-        setTransactions(transactionsData);
-      }
+      setTransactions(transactionsData);
       setIsLoading(false); // Set loading to false regardless of success/failure
     }, 1000); // Simulate fetching delay
   }, []);
