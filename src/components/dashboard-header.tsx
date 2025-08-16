@@ -27,11 +27,17 @@ const navLinks = [
 ];
 
 
+function deleteCookie(name: string) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+
 export function DashboardHeader() {
   const router = useRouter();
 
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
+    deleteCookie('loggedInUser');
     router.push('/');
   };
 

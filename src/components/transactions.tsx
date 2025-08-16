@@ -109,7 +109,7 @@ export async function Transactions({ onHistoryPage = false }: { onHistoryPage?: 
                         <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
                         </div>
                         <div className="mt-2 text-right">
-                          <p className="font-mono text-lg">{formatAmount(tx.amount, tx.asset)}</p>
+                          <p className="font-mono text-lg">{tx.type !== "Bonus" && (tx.type === "Deposit" ? "+ " : "- ")}{formatAmount(tx.amount, tx.asset)}</p>
                         </div>
                     </div>
                     ))}
@@ -133,7 +133,7 @@ export async function Transactions({ onHistoryPage = false }: { onHistoryPage?: 
                         <TableRow key={tx.id}>
                         <TableCell className="font-medium">{tx.type}</TableCell>
                         <TableCell>{tx.asset}</TableCell>
-                        <TableCell className="text-right font-mono">{formatAmount(tx.amount, tx.asset)}</TableCell>
+                        <TableCell className="text-right font-mono">{tx.type !== "Bonus" && (tx.type === "Deposit" ? "+ " : "- ")}{formatAmount(tx.amount, tx.asset)}</TableCell>
                         <TableCell className="text-center">
                             <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
                         </TableCell>

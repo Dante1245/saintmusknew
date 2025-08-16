@@ -59,6 +59,28 @@ const signupSchema = z.object({
 });
 
 
+function setCookie(name: string, value: string, days: number) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function getCookie(name: string) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i=0;i < ca.length;i++) {
+        let c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+
 export function AuthForm({ type }: { type: "login" | "signup" }) {
   const router = useRouter();
   const isLogin = type === "login";
@@ -69,7 +91,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: isLogin 
-      ? { email: "support@elontradex.live", password: "", rememberMe: false } 
+      ? { email: "", password: "", rememberMe: false } 
       : { name: "", email: "", phoneNumber: "", country: "", password: "", confirmPassword: "" },
   });
 
@@ -80,8 +102,10 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
   const onSubmit = (values: FormValues) => {
     setIsLoading(true);
     setError(null);
-    console.log("Form submitted with values:", values);
     
+    // Clear previous user data for this prototype's logic
+    localStorage.removeItem('loggedInUser');
+
     if (!isLogin) {
       const signupValues = values as z.infer<typeof signupSchema>;
       const newUser: User = {
@@ -97,7 +121,10 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
         ],
         walletAddress: `0x${Math.random().toString(16).substr(2, 40)}`,
       };
-      localStorage.setItem('loggedInUser', JSON.stringify(newUser));
+      
+      const userJson = JSON.stringify(newUser);
+      localStorage.setItem('loggedInUser', userJson);
+      setCookie('loggedInUser', userJson, 7); // Set cookie for server-side access
       localStorage.setItem('showBonusPopup', 'true'); // Flag to show popup
     } else {
       // For login, we can mock-find a user or use a default one if none exists from signup
@@ -105,7 +132,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
       if (storedUser) {
         // In a real app, you would verify the password here.
         // For this prototype, we'll just log in the existing user.
-        console.log("Logging in existing user.");
+        setCookie('loggedInUser', storedUser, 7);
       } else {
         // No user found, show an error. In a real app, this would come from the server.
         setError("No account found with this email. Please sign up.");

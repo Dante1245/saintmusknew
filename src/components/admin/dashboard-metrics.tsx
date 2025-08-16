@@ -9,15 +9,17 @@ import {
 } from "@/components/ui/card";
 import { Users, BarChart, ExternalLink, Activity } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { User } from "@/lib/types";
-
 
 export function DashboardMetrics() {
     const [userCount, setUserCount] = useState(0);
 
     useEffect(() => {
+        // This is a mock way of getting user count. 
+        // In a real app, this would be a database query.
         const storedUser = localStorage.getItem('loggedInUser');
         if(storedUser) {
+            // For the prototype, we assume only one user might exist in localStorage.
+            // A real implementation would fetch all users.
             setUserCount(1);
         } else {
             setUserCount(0)
@@ -28,7 +30,7 @@ export function DashboardMetrics() {
         { title: "Total Users", value: userCount.toString(), icon: <Users className="h-6 w-6" /> },
         { title: "Total Signups (24h)", value: userCount.toString(), icon: <BarChart className="h-6 w-6" /> },
         { title: "Pending Withdrawals", value: "0", icon: <ExternalLink className="h-6 w-6" /> },
-        { title: "Total Transactions", value: userCount.toString(), icon: <Activity className="h-6 w-6" /> },
+        { title: "Total Transactions", value: userCount > 0 ? "1" : "0", icon: <Activity className="h-6 w-6" /> },
       ];
 
   return (
