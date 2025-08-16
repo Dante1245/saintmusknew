@@ -1,5 +1,6 @@
 
-"use client";
+
+"use server";
 
 import { DollarSign, Wallet } from "lucide-react";
 import {
@@ -9,18 +10,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "./ui/badge";
-import { useEffect, useState } from "react";
 import type { User } from "@/lib/types";
+import { cookies } from 'next/headers';
 
-export function Portfolio() {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('loggedInUser');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+async function getUser(): Promise<User | null> {
+  const userCookie = cookies().get('loggedInUser')?.value;
+  if (userCookie) {
+    try {
+      // In a real app, you would validate this against a secure session, not just parse a cookie.
+      return JSON.parse(userCookie);
+    } catch (e) {
+      console.error("Failed to parse user cookie", e);
+      return null;
     }
-  }, []);
+  }
+  return null;
+}
+
+export async function Portfolio() {
+  const user = await getUser();
 
   const balance = user?.balance ?? 0;
   const usdtBalance = user?.transactions?.find(tx => tx.asset === 'USDT' && tx.type === 'Bonus')?.amount ?? 0;

@@ -1,5 +1,6 @@
 
-"use client";
+
+"use server";
 
 import {
   Table,
@@ -18,33 +19,28 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Transaction, User } from "@/lib/types";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { usePathname } from 'next/navigation'
+import Link from "next/link";
+import { cookies } from "next/headers";
 
-export function Transactions() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setIsLoading(true);
-    try {
-      const storedUser = localStorage.getItem('loggedInUser');
-      if (storedUser) {
-        const userData: User = JSON.parse(storedUser);
-        setTransactions(userData.transactions ?? []);
-      }
-    } catch (e) {
-      setError("Failed to load transaction data.");
-      console.error(e);
-    } finally {
-      setIsLoading(false);
+async function getTransactions(): Promise<Transaction[]> {
+    const userCookie = cookies().get('loggedInUser')?.value;
+    if (userCookie) {
+        try {
+            const user: User = JSON.parse(userCookie);
+            return user.transactions ?? [];
+        } catch (e) {
+            console.error("Failed to parse user cookie for transactions", e);
+            return [];
+        }
     }
-  }, []);
+    return [];
+}
+
+
+export async function Transactions({ onHistoryPage = false }: { onHistoryPage?: boolean }) {
+  const transactions = await getTransactions();
 
   const getStatusColor = (status: Transaction["status"]) => {
     switch (status) {
@@ -79,8 +75,7 @@ export function Transactions() {
     return formattedAmount;
   };
 
-  const isHistoryPage = pathname === '/history';
-  const displayedTransactions = isHistoryPage ? transactions : transactions.slice(0, 5);
+  const displayedTransactions = onHistoryPage ? transactions : transactions.slice(0, 5);
 
 
   return (
@@ -88,30 +83,18 @@ export function Transactions() {
       <CardHeader>
         <CardTitle>Transaction History</CardTitle>
         <CardDescription>
-            {isHistoryPage 
+            {onHistoryPage 
                 ? "A complete record of all your account activity."
                 : "A log of your recent account activity."
             }
         </CardDescription>
       </CardHeader>
-      {error && (
-        <div className="px-6 pb-4 text-center text-sm text-red-500">
-          {error}
-        </div>
-      )}
       <CardContent>
-        {isLoading && (
-            <div className="py-10 text-center text-sm text-muted-foreground">
-                Loading transactions...
-            </div>
-        )}
-        {!isLoading && transactions.length === 0 && (
+        {transactions.length === 0 ? (
             <div className="py-10 text-center text-sm text-muted-foreground">
                 You have no transactions yet.
             </div>
-        )}
-
-        {!isLoading && transactions.length > 0 && (
+        ) : (
             <>
                 {/* Responsive view for mobile */}
                 <div className="md:hidden">
@@ -161,9 +144,11 @@ export function Transactions() {
                 </Table>
                 </div>
 
-                {!isHistoryPage && transactions.length > 5 && (
+                {!onHistoryPage && transactions.length > 5 && (
                 <div className="mt-6 text-center">
-                    <Button variant="outline" onClick={() => router.push('/history')}>View All Transactions</Button>
+                    <Button asChild variant="outline">
+                        <Link href="/history">View All Transactions</Link>
+                    </Button>
                 </div>
                 )}
             </>

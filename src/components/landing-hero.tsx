@@ -44,6 +44,7 @@ export function LandingHero() {
           src="https://images.unsplash.com/photo-1652017659242-2714397b42f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxlbG9uJTIwbXVza3xlbnwwfHx8fDE3NTQ5NTI4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
           alt="Elon Musk"
           fill
+          priority
           className="rounded-xl shadow-2xl relative z-10 border-2 border-primary/20 object-cover"
           data-ai-hint="futuristic crypto"
         />

@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -37,11 +38,23 @@ const profileSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
+async function getUser(): Promise<User | null> {
+    if (typeof window === 'undefined') return null;
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+        try {
+            return JSON.parse(storedUser);
+        } catch (e) {
+            console.error("Failed to parse user from localStorage", e);
+            return null;
+        }
+    }
+    return null;
+}
+
 export function ProfileForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [avatarPreview, setAvatarPreview] = useState("/placeholder-avatar.png");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,29 +70,20 @@ export function ProfileForm() {
   });
 
   useEffect(() => {
-    setIsLoading(true);
-    try {
-      const storedUser = localStorage.getItem('loggedInUser');
-      if (storedUser) {
-        const userData: User = JSON.parse(storedUser);
-        setUser(userData);
-        form.reset({
-          name: userData.name,
-          email: userData.email,
-          phoneNumber: userData.phoneNumber,
-          country: userData.country
-        });
-        // You might want a default avatar or a user-specific one
-        setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
-      } else {
-        setError("No user data found. Please log in.");
-      }
-    } catch (e) {
-      setError("Failed to load user data.");
-      console.error(e);
-    } finally {
-      setIsLoading(false);
+    async function loadUser() {
+        const userData = await getUser();
+        if (userData) {
+            setUser(userData);
+            form.reset({
+                name: userData.name,
+                email: userData.email,
+                phoneNumber: userData.phoneNumber,
+                country: userData.country
+            });
+            setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
+        }
     }
+    loadUser();
   }, [form]);
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +103,6 @@ export function ProfileForm() {
 
   const onSubmit = (values: ProfileFormValues) => {
     setIsSubmitting(true);
-    setError(null);
     console.log("Updating profile:", values);
     
     if (user) {
@@ -110,61 +113,10 @@ export function ProfileForm() {
             title: "Profile Updated",
             description: "Your profile information has been saved.",
         });
-    } else {
-        setError("Could not update profile. No user loaded.");
     }
     
     setIsSubmitting(false);
   };
-
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-8 w-1/4" />
-          <Skeleton className="h-4 w-2/4" />
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center gap-4 pt-6">
-            <Skeleton className="h-20 w-20 rounded-full" />
-            <Skeleton className="h-10 w-24" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-             <div className="space-y-2">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="border-t px-6 py-4 flex justify-end">
-          <Skeleton className="h-10 w-20" />
-        </CardFooter>
-      </Card>
-    );
-  }
-
-  if (error && !form.formState.isDirty) {
-      return (
-          <Card>
-              <CardContent className="py-10 text-center">
-                  <p className="text-destructive mb-4">{error}</p>
-                  <Button onClick={() => window.location.reload()}>Retry</Button>
-              </CardContent>
-          </Card>
-      )
-  }
 
   return (
     <Card>
@@ -177,9 +129,6 @@ export function ProfileForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="space-y-6">
-              {error && (
-                <div className="text-sm text-destructive">{error}</div>
-              )}
               <div className="flex items-center gap-4 pt-6">
                 <Avatar className="h-20 w-20 flex-shrink-0">
                   <AvatarImage src={avatarPreview} alt={form.watch('name')} data-ai-hint="man face" />
