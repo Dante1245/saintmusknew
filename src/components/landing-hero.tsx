@@ -42,7 +42,7 @@ export function LandingHero() {
       <div className="relative w-full aspect-[4/3]">
         <div className="absolute -inset-4 bg-gradient-to-r from-primary to-accent rounded-full blur-3xl opacity-30"></div>
         <Image
-          src="https://placehold.co/1080x810.png"
+          src="https://images.unsplash.com/photo-1652017659242-2714397b42f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxlbG9uJTIwbXVza3xlbnwwfHx8fDE3NTU1NDg2MDB8MA&ixlib=rb-4.1.0&q=80&w=1080"
           alt="Crypto Trader"
           fill
           priority
