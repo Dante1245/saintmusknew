@@ -134,6 +134,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                             width={150}
                             height={150}
                             className="rounded-md"
+                            key={walletAddress}
                         />
                     )}
                 </div>
