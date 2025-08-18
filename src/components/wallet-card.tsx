@@ -219,11 +219,11 @@ export function WalletCard() {
                 </p>
                 <div className="p-2 rounded-lg border bg-card shadow-sm">
                   <Image
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${activeWallet.address}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${depositWallets[selectedDepositAsset].address}`}
                     alt="QR Code"
                     width={200}
                     height={200}
-                    key={activeWallet.address} // Force re-render on asset change
+                    key={selectedDepositAsset}
                     className="rounded-md"
                   />
                 </div>

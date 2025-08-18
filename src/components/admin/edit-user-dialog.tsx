@@ -129,12 +129,11 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                 <div className="p-2 rounded-lg border bg-background shadow-sm">
                     {walletAddress && (
                         <Image
-                            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${walletAddress}`}
+                            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.walletAddress}`}
                             alt="User Wallet QR Code"
                             width={150}
                             height={150}
                             className="rounded-md"
-                            key={walletAddress}
                         />
                     )}
                 </div>
