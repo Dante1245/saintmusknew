@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   Card,
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "../ui/separator";
+import { Edit } from "lucide-react";
 
 const initialWallets: { [key: string]: { name: string; address: string } } = {
   btc: { name: "Bitcoin", address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
@@ -41,6 +42,7 @@ export function SiteSettings() {
     const { toast } = useToast();
     const [wallets, setWallets] = useState(initialWallets);
     const [isLoading, setIsLoading] = useState(false);
+    const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
     
     useEffect(() => {
         setWallets(getWalletsFromStorage());
@@ -51,6 +53,10 @@ export function SiteSettings() {
             ...prev,
             [asset]: { ...prev[asset], address: value }
         }));
+    };
+    
+    const handleFocusInput = (assetKey: string) => {
+        inputRefs.current[assetKey]?.focus();
     };
 
     const handleSave = async () => {
@@ -81,6 +87,7 @@ export function SiteSettings() {
                         <Label htmlFor={`deposit-address-${key}`} className="font-semibold text-base">{wallet.name} ({key.toUpperCase()})</Label>
                         <Input 
                             id={`deposit-address-${key}`}
+                            ref={(el) => inputRefs.current[key] = el}
                             value={wallet.address}
                             onChange={(e) => handleAddressChange(key, e.target.value)}
                             className="font-mono"
@@ -89,8 +96,8 @@ export function SiteSettings() {
                             This is the primary address displayed for all user deposits for {key.toUpperCase()}.
                         </p>
                     </div>
-                    <div className="flex flex-col items-center justify-center bg-muted/50 p-4 rounded-lg">
-                        <p className="text-xs font-semibold mb-2">Live QR Code</p>
+                    <div className="flex flex-col items-center justify-center bg-muted/50 p-4 rounded-lg space-y-3">
+                        <p className="text-xs font-semibold">Live QR Code</p>
                         <div className="p-2 rounded-lg border bg-background shadow-sm">
                         {wallet.address && (
                             <Image
@@ -102,6 +109,10 @@ export function SiteSettings() {
                             />
                         )}
                         </div>
+                        <Button variant="outline" size="sm" onClick={() => handleFocusInput(key)}>
+                           <Edit className="h-3 w-3 mr-2"/>
+                           Change QR Code
+                        </Button>
                     </div>
                 </div>
                 <Separator className="last:hidden"/>
