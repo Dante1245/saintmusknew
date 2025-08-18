@@ -122,7 +122,7 @@ export function WalletCard() {
   const form = useForm<WithdrawalFormValues>({
     resolver: zodResolver(withdrawalSchema),
     defaultValues: {
-      amount: undefined,
+      amount: "" as any,
       asset: "btc",
       address: "",
     },
