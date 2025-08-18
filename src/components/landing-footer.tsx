@@ -8,10 +8,10 @@ export function LandingFooter() {
         <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
           <Link href="/" className="flex items-center gap-2">
             <IconLogo className="h-8 w-8" />
-            <span className="font-bold text-lg">ElonTradeX</span>
+            <span className="font-bold text-lg">TradeSim</span>
           </Link>
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            © 2024 ElonTradeX.
+            © 2024 TradeSim.
           </p>
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm font-medium">

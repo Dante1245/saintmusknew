@@ -10,7 +10,7 @@ export function LandingHeader() {
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="flex items-center gap-2 mr-6">
           <IconLogo className="h-8 w-8" />
-          <span className="font-bold text-lg">ElonTradeX</span>
+          <span className="font-bold text-lg">TradeSim</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-base font-medium">
           <Link
@@ -70,7 +70,7 @@ export function LandingHeader() {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <IconLogo className="h-8 w-8" />
-                  <span className="font-bold">ElonTradeX</span>
+                  <span className="font-bold">TradeSim</span>
                 </Link>
                 <Link href="/#features" className="text-muted-foreground hover:text-foreground">
                   Features

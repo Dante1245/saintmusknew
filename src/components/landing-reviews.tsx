@@ -7,22 +7,15 @@ const reviews = [
   {
     name: "Vitalik B.",
     avatar: "VB",
-    review: "ElonTradeX made it ridiculously easy to get into crypto. The interface is clean and the fees are transparent. Two thumbs up!",
+    review: "TradeSim made it ridiculously easy to get into crypto. The interface is clean and the fees are transparent. Two thumbs up!",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
     rating: 5,
   },
   {
     name: "Satoshi N.",
     avatar: "SN",
-    review: "As someone who values security above all, ElonTradeX's multi-layered protection gives me peace of mind. A truly decentralized experience.",
+    review: "As someone who values security above all, TradeSim's multi-layered protection gives me peace of mind. A truly decentralized experience.",
     image: "https://randomuser.me/api/portraits/lego/1.jpg",
-    rating: 5,
-  },
-  {
-    name: "Elon M.",
-    avatar: "EM",
-    review: "To the moon! This platform is the future. Simple, powerful, and ready to take us to new financial heights. Highly recommended!",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
     rating: 5,
   },
   {
@@ -35,17 +28,24 @@ const reviews = [
   {
     name: "Cathie W.",
     avatar: "CW",
-    review: "ElonTradeX is disrupting the digital asset space. Their innovative features and commitment to user experience sets a new industry standard.",
+    review: "TradeSim is disrupting the digital asset space. Their innovative features and commitment to user experience sets a new industry standard.",
     image: "https://randomuser.me/api/portraits/women/44.jpg",
     rating: 5,
   },
   {
     name: "Gavin A.",
     avatar: "GA",
-    review: "I've tried many exchanges, but the speed and reliability of ElonTradeX are unmatched. My orders execute instantly, which is crucial in a volatile market.",
+    review: "I've tried many exchanges, but the speed and reliability of TradeSim are unmatched. My orders execute instantly, which is crucial in a volatile market.",
     image: "https://randomuser.me/api/portraits/men/60.jpg",
     rating: 4,
-  }
+  },
+   {
+    name: "Alex G.",
+    avatar: "AG",
+    review: "The mobile app is fantastic! It has all the features of the desktop site, allowing me to manage my assets on the go without any compromises.",
+    image: "https://randomuser.me/api/portraits/men/33.jpg",
+    rating: 5,
+  },
 ];
 
 function StarRating({ rating }: { rating: number }) {

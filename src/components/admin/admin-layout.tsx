@@ -8,7 +8,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto flex items-center justify-between p-4">
           <Link href="/admin" className="flex items-center gap-3 text-xl font-bold">
             <IconLogo className="h-8 w-8" />
-            <span>ElonTradeX Admin</span>
+            <span>TradeSim Admin</span>
           </Link>
           <nav>
             <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -23,7 +23,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
       <footer className="bg-background/80 border-t p-4">
-        <p className="text-center text-xs text-muted-foreground">© 2024 ElonTradeX Admin Panel. For authorized users only.</p>
+        <p className="text-center text-xs text-muted-foreground">© 2024 TradeSim Admin Panel. For authorized users only.</p>
       </footer>
     </div>
   );

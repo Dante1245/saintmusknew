@@ -20,17 +20,17 @@ export function LandingContact() {
                 <div className="flex items-start gap-6">
                     <Image 
                       src="https://images.unsplash.com/photo-1652017659242-2714397b42f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxlbG9uJTIwbXVza3xlbnwwfHx8fDE3NTQ5NTI4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                      alt="Elon Musk"
+                      alt="Founder"
                       width={80}
                       height={80}
                       className='rounded-full object-cover'
-                      data-ai-hint="elon musk"
+                      data-ai-hint="person portrait"
                       />
                     <div>
-                        <h3 className="text-2xl font-bold">Elon Musk</h3>
-                        <p className="text-primary font-medium">Visionary & Founder</p>
+                        <h3 className="text-2xl font-bold">Visionary Founder</h3>
+                        <p className="text-primary font-medium">Founder</p>
                         <p className="mt-2 text-muted-foreground">
-                            The driving force behind ElonTradeX, Elon's vision is to create a decentralized, transparent, and accessible financial future for everyone. His leadership guides our mission to innovate and push the boundaries of what's possible in the crypto space.
+                            The driving force behind TradeSim, our founder's vision is to create a decentralized, transparent, and accessible financial future for everyone. Their leadership guides our mission to innovate and push the boundaries of what's possible in the crypto space.
                         </p>
                     </div>
                 </div>
@@ -51,7 +51,7 @@ export function LandingContact() {
                             </div>
                             <div>
                                 <h4 className="font-semibold">Email Address</h4>
-                                <a href="mailto:support@elontradex.live" className="text-muted-foreground hover:text-primary transition-colors">support@elontradex.live</a>
+                                <a href="mailto:support@tradesim.live" className="text-muted-foreground hover:text-primary transition-colors">support@tradesim.live</a>
                             </div>
                         </div>
                     </CardContent>

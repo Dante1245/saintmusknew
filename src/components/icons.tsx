@@ -16,19 +16,24 @@ export const IconLogo = (props: SVGProps<SVGSVGElement>) => (
     </defs>
     <path
       d="M50 2.5C23.76 2.5 2.5 23.76 2.5 50C2.5 76.24 23.76 97.5 50 97.5C76.24 97.5 97.5 76.24 97.5 50C97.5 23.76 76.24 2.5 50 2.5Z"
-      stroke="url(#logo-gradient)"
+      stroke="hsl(var(--foreground))"
+      strokeOpacity="0.2"
       strokeWidth="5"
     />
-     <path d="M35 35 L45 35 L50 30 L50 20" stroke="hsl(var(--primary))" strokeWidth="4" />
-    <path d="M65 35 L55 35 L50 30" stroke="hsl(var(--primary))" strokeWidth="4" />
-    <path d="M35 65 L45 65 L50 70 L50 80" stroke="hsl(var(--accent))" strokeWidth="4" />
-    <path d="M65 65 L55 65 L50 70" stroke="hsl(var(--accent))" strokeWidth="4" />
-    
-    <path d="M25 50 L40 50" stroke="url(#logo-gradient)" strokeWidth="3" strokeDasharray="4 4" />
-    <path d="M75 50 L60 50" stroke="url(#logo-gradient)" strokeWidth="3" strokeDasharray="4 4" />
-    
-    <circle cx="50" cy="50" r="12" fill="url(#logo-gradient)" opacity="0.2" />
-    <circle cx="50" cy="50" r="8" stroke="white" strokeWidth="2" strokeOpacity="0.8" />
+    <path
+      d="M35 35 H 65 V 45 L 50 60 L 35 45 V 35"
+      stroke="url(#logo-gradient)"
+      strokeWidth="6"
+      strokeLinejoin="round"
+      strokeLinecap='round'
+    />
+     <path
+      d="M60 65 C 60 75, 40 75, 40 65"
+      stroke="url(#logo-gradient)"
+      strokeWidth="6"
+      strokeLinejoin="round"
+      strokeLinecap='round'
+    />
   </svg>
 );
 

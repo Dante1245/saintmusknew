@@ -43,7 +43,7 @@ export function LandingFeatures() {
             The Ultimate Crypto Trading Experience
           </h2>
           <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto">
-            ElonTradeX provides everything you need to navigate the world of digital assets with confidence.
+            TradeSim provides everything you need to navigate the world of digital assets with confidence.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">

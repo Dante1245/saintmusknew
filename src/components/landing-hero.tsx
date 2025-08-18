@@ -25,7 +25,7 @@ export function LandingHero() {
           </span>
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-          ElonTradeX is the most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio. We offer institutional-grade security, blazing-fast transactions, and a suite of advanced tools in a single, user-friendly interface. Join the revolution.
+          TradeSim is the most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio. We offer institutional-grade security, blazing-fast transactions, and a suite of advanced tools in a single, user-friendly interface. Join the revolution.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button asChild size="lg">
@@ -41,12 +41,12 @@ export function LandingHero() {
       <div className="relative w-full aspect-[4/3]">
         <div className="absolute -inset-4 bg-gradient-to-r from-primary to-accent rounded-full blur-3xl opacity-30"></div>
         <Image
-          src="https://images.unsplash.com/photo-1652017659242-2714397b42f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxlbG9uJTIwbXVza3xlbnwwfHx8fDE3NTQ5NTI4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Elon Musk"
+          src="https://images.unsplash.com/photo-1621452773413-8197369a4897?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjeWJlcnB1bmclMjB0cmFkZXJ8ZW58MHx8fHwxNzU1MDA2NjU1fDA&ixlib=rb-4.1.0&q=80&w=1080"
+          alt="Crypto Trader"
           fill
           priority
           className="rounded-xl shadow-2xl relative z-10 border-2 border-primary/20 object-cover"
-          data-ai-hint="elon musk"
+          data-ai-hint="cybperunk trader"
         />
       </div>
     </section>
