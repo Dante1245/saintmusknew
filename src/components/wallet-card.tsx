@@ -57,26 +57,31 @@ const withdrawalSchema = z.object({
 
 type WithdrawalFormValues = z.infer<typeof withdrawalSchema>;
 
-const depositWallets: { [key: string]: { name: string; address: string; warning: string } } = {
+type DepositWalletInfo = { name: string; address: string; warning: string };
+type DepositWallets = { [key: string]: DepositWalletInfo };
+
+
+const COIN_IDS = "bitcoin,ethereum,tether,ripple,solana,dogecoin";
+
+const initialDepositWallets: DepositWallets = {
   btc: { name: "Bitcoin", address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", warning: "Only send BTC to this address." },
   eth: { name: "Ethereum", address: "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B", warning: "Only send ETH (ERC-20) to this address." },
   usdt: { name: "Tether", address: "0xdAC17F958D2ee523a2206206994597C13D831ec7", warning: "Only send USDT (ERC-20) to this address." },
   xrp: { name: "Ripple", address: "rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh", warning: "Only send XRP to this address. Destination Tag may be required." },
-  ada: { name: "Cardano", address: "addr1q8s4s9xrmucrkqczf99ft6zgh2g2vcf5phpsg0jdc4r8gln5z7f0g2f7k5h2j...", warning: "Only send ADA to this address." },
   sol: { name: "Solana", address: "So11111111111111111111111111111111111111112", warning: "Only send SOL to this address." },
   doge: { name: "Dogecoin", address: "D7bA4w4zL1N7k1M3fQ5cZ6eP9aB8iGfT3k", warning: "Only send DOGE to this address." },
 };
-
-const COIN_IDS = "bitcoin,ethereum,tether,ripple,cardano,solana,dogecoin";
 
 export function WalletCard() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [cryptoData, setCryptoData] = useState<CryptoMarketData[]>([]);
-  const [selectedDepositAsset, setSelectedDepositAsset] = useState<string>("bitcoin");
+  const [depositWallets, setDepositWallets] = useState<DepositWallets>(initialDepositWallets);
+  const [selectedDepositAsset, setSelectedDepositAsset] = useState<string>("btc");
 
   useEffect(() => {
-    const fetchData = async () => {
+     // Fetch market data from CoinGecko
+    const fetchMarketData = async () => {
       try {
         const response = await fetch(
           `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${COIN_IDS}`
@@ -90,20 +95,41 @@ export function WalletCard() {
         console.error("Failed to fetch crypto data:", error);
       }
     };
-    fetchData();
+
+    // Fetch wallet addresses from localStorage (set by admin)
+    const loadWalletAddresses = () => {
+        if (typeof window !== 'undefined') {
+            const storedWalletsRaw = localStorage.getItem('siteDepositWallets');
+            if (storedWalletsRaw) {
+                const storedWallets = JSON.parse(storedWalletsRaw);
+                const updatedWallets: DepositWallets = { ...initialDepositWallets };
+                
+                for (const key in storedWallets) {
+                    if (updatedWallets[key]) {
+                        updatedWallets[key].address = storedWallets[key].address;
+                        updatedWallets[key].name = storedWallets[key].name;
+                    }
+                }
+                setDepositWallets(updatedWallets);
+            }
+        }
+    };
+    
+    fetchMarketData();
+    loadWalletAddresses();
   }, []);
 
   const form = useForm<WithdrawalFormValues>({
     resolver: zodResolver(withdrawalSchema),
     defaultValues: {
       amount: undefined,
-      asset: "bitcoin",
+      asset: "btc",
       address: "",
     },
   });
 
   const activeWallet = depositWallets[selectedDepositAsset];
-  const activeCoin = cryptoData.find(c => c.id === selectedDepositAsset);
+  const activeCoin = cryptoData.find(c => c.id.toLowerCase() === selectedDepositAsset.toLowerCase());
 
   const handleCopy = () => {
     if (activeWallet) {
@@ -137,7 +163,7 @@ export function WalletCard() {
   
   const renderSelectItem = (coin: CryptoMarketData) => {
     return (
-        <SelectItem value={coin.id} key={coin.id}>
+        <SelectItem value={coin.id.toLowerCase()} key={coin.id}>
             <div className="flex items-center gap-2">
                 <Image src={coin.image} alt={coin.name} width={20} height={20} />
                 <span>{coin.name} ({coin.symbol.toUpperCase()})</span>
@@ -145,6 +171,18 @@ export function WalletCard() {
         </SelectItem>
     );
   };
+  
+   const renderDepositSelectItem = (coinKey: string, coinName: string) => {
+    const coinData = cryptoData.find(c => c.id.toLowerCase() === coinKey.toLowerCase());
+    return (
+         <SelectItem value={coinKey} key={coinKey}>
+            <div className="flex items-center gap-2">
+                {coinData && <Image src={coinData.image} alt={coinData.name} width={20} height={20} />}
+                <span>{coinName} ({coinKey.toUpperCase()})</span>
+            </div>
+        </SelectItem>
+    )
+  }
 
   return (
     <Card>
@@ -169,15 +207,15 @@ export function WalletCard() {
                         <SelectValue placeholder="Select an asset" />
                     </SelectTrigger>
                     <SelectContent>
-                      {cryptoData.map(coin => renderSelectItem(coin))}
+                      {Object.entries(depositWallets).map(([key, wallet]) => renderDepositSelectItem(key, wallet.name))}
                     </SelectContent>
                 </Select>
              </div>
 
-            {activeWallet && activeCoin && (
+            {activeWallet && (
               <div className="flex flex-col items-center gap-4 text-center">
                 <p className="text-sm text-muted-foreground">
-                  Scan the QR code or copy the address below to deposit {activeWallet.name} ({activeCoin.symbol.toUpperCase()}).
+                  Scan the QR code or copy the address below to deposit {activeWallet.name} ({selectedDepositAsset.toUpperCase()}).
                 </p>
                 <div className="p-2 rounded-lg border bg-card shadow-sm">
                   <Image
