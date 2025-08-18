@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { DashboardHeader } from '@/components/dashboard-header';
 import { Portfolio } from '@/components/portfolio';
 import { MarketView } from '@/components/market-view';
@@ -19,6 +19,49 @@ import {
 } from "@/components/ui/alert-dialog"
 import { CheckCircle2, Gift } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+
+function PortfolioSkeleton() {
+  return (
+    <Card className="h-full">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
+            <Skeleton className="h-4 w-4" />
+        </CardHeader>
+        <CardContent>
+            <Skeleton className="h-8 w-3/4 mb-1" />
+            <Skeleton className="h-4 w-1/2" />
+        </CardContent>
+    </Card>
+  );
+}
+
+function MarketViewSkeleton() {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Market Overview</CardTitle>
+          <CardDescription>
+            Live prices and 24-hour change for top cryptocurrencies.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <div className="space-y-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                    <div key={i} className="flex items-center">
+                        <Skeleton className="h-8 w-8 rounded-full" />
+                        <div className="ml-4 space-y-2 flex-1">
+                            <Skeleton className="h-4 w-1/4" />
+                            <Skeleton className="h-3 w-1/6" />
+                        </div>
+                        <Skeleton className="h-6 w-1/4" />
+                    </div>
+                ))}
+            </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
 export default function DashboardPage() {
   const [showBonusPopup, setShowBonusPopup] = useState(false);
@@ -39,7 +82,9 @@ export default function DashboardPage() {
         <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 md:p-8">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-3">
             <div className="xl:col-span-2">
-              <Portfolio />
+                <Suspense fallback={<PortfolioSkeleton />}>
+                    <Portfolio />
+                </Suspense>
             </div>
             <Card className="lg:col-span-1 h-full">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -54,7 +99,9 @@ export default function DashboardPage() {
 
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
             <div className="xl:col-span-2">
-              <MarketView />
+              <Suspense fallback={<MarketViewSkeleton/>}>
+                <MarketView />
+              </Suspense>
             </div>
             <div className="row-start-1 xl:row-start-auto">
               <WalletCard />

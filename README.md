@@ -12,6 +12,9 @@ This project is a Next.js application designed as a starter kit for building fin
 
 1.  **Clone the repository:**
 
+2.  **Install dependencies:**
+
+
 
 To get started, take a look at src/app/page.tsx.
 # saintmusknew
