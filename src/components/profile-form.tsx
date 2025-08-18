@@ -55,7 +55,7 @@ export function ProfileForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState("/placeholder-avatar.png");
+  const [avatarPreview, setAvatarPreview] = useState("https://placehold.co/80x80.png");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<ProfileFormValues>({
