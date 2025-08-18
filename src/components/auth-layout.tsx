@@ -9,7 +9,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
         <div className="mb-8 flex justify-center">
           <Link href="/" className="flex items-center gap-3 text-2xl font-bold">
             <IconLogo className="h-10 w-10" />
-            <span>TradeSim</span>
+            <span>ElonTradeX</span>
           </Link>
         </div>
         {children}

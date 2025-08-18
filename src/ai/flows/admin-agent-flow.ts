@@ -1,7 +1,7 @@
 
 'use server';
 /**
- * @fileOverview An AI agent that can answer questions about the TradeSim admin panel.
+ * @fileOverview An AI agent that can answer questions about the ElonTradeX admin panel.
  *
  * - adminAgent - A function that handles conversational queries about the admin panel.
  * - AdminAgentInput - The input type for the adminAgent function.
@@ -27,16 +27,16 @@ const prompt = ai.definePrompt({
   name: 'adminAgentPrompt',
   input: {schema: AdminAgentInputSchema},
   output: {schema: AdminAgentOutputSchema.nullable()},
-  prompt: `You are a helpful AI assistant for the administrators of the "TradeSim" platform.
+  prompt: `You are a helpful AI assistant for the administrators of the "ElonTradeX" platform.
 
 Your role is to provide clear and concise answers about the functionalities of the admin panel based *only* on the information provided below. Do not invent features.
 
 ***
 
-## TradeSim Admin Panel Information
+## ElonTradeX Admin Panel Information
 
 **Core Purpose:**
-The admin panel is the central hub for managing the TradeSim platform, its users, and its core settings.
+The admin panel is the central hub for managing the ElonTradeX platform, its users, and its core settings.
 
 **Key Features:**
 

@@ -30,7 +30,7 @@ export function LandingContact() {
                         <h3 className="text-2xl font-bold">Visionary Founder</h3>
                         <p className="text-primary font-medium">Founder</p>
                         <p className="mt-2 text-muted-foreground">
-                            The driving force behind TradeSim, our founder's vision is to create a decentralized, transparent, and accessible financial future for everyone. Their leadership guides our mission to innovate and push the boundaries of what's possible in the crypto space.
+                            The driving force behind ElonTradeX, our founder's vision is to create a decentralized, transparent, and accessible financial future for everyone. Their leadership guides our mission to innovate and push the boundaries of what's possible in the crypto space.
                         </p>
                     </div>
                 </div>

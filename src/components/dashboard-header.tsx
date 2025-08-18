@@ -49,7 +49,7 @@ export function DashboardHeader() {
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <IconLogo className="h-8 w-8" />
-          <span className="font-bold">TradeSim</span>
+          <span className="font-bold">ElonTradeX</span>
         </Link>
         {navLinks.map(({ href, label }) => (
             <Link
@@ -78,7 +78,7 @@ export function DashboardHeader() {
               className="flex items-center gap-2 text-lg font-semibold"
             >
               <IconLogo className="h-8 w-8" />
-              <span className="font-bold">TradeSim</span>
+              <span className="font-bold">ElonTradeX</span>
             </Link>
             {navLinks.map(({ href, label }) => (
                 <Link

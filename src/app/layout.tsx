@@ -6,13 +6,13 @@ import { SupportBot } from '@/components/support-bot';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'TradeSim',
+  title: 'ElonTradeX',
   description: 'The most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio.',
   openGraph: {
-    title: 'TradeSim',
+    title: 'ElonTradeX',
     description: 'The most secure and intuitive platform to buy, sell, and manage your cryptocurrency portfolio.',
     url: 'https://elontradex.live',
-    siteName: 'TradeSim',
+    siteName: 'ElonTradeX',
     type: 'website',
   },
 };

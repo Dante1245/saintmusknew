@@ -1,7 +1,7 @@
 
 'use server';
 /**
- * @fileOverview A conversational AI flow for the TradeSim support bot.
+ * @fileOverview A conversational AI flow for the ElonTradeX support bot.
  *
  * - supportChat - A function that handles the conversational chat with the support bot.
  * - SupportChatInput - The input type for the supportChat function.
@@ -28,7 +28,7 @@ const prompt = ai.definePrompt({
   name: 'supportChatPrompt',
   input: {schema: SupportChatInputSchema},
   output: {schema: SupportChatOutputSchema.nullable()},
-  prompt: `You are "Xavier", the friendly and helpful AI support assistant for TradeSim, a cutting-edge cryptocurrency trading platform.
+  prompt: `You are "Xavier", the friendly and helpful AI support assistant for ElonTradeX, a cutting-edge cryptocurrency trading platform.
 
 **IMPORTANT:** First, detect the language of the user's question. You MUST respond in the same language.
 
@@ -38,10 +38,10 @@ Keep your answers brief and to the point.
 
 ***
 
-## TradeSim Platform Knowledge Base
+## ElonTradeX Platform Knowledge Base
 
 **1. Core Mission & Features:**
-*   **Mission:** TradeSim aims to provide the most secure and intuitive platform for crypto trading, creating a decentralized and transparent financial future.
+*   **Mission:** ElonTradeX aims to provide the most secure and intuitive platform for crypto trading, creating a decentralized and transparent financial future.
 *   **Key Features:**
     *   **Secure Wallet:** Store, send, and receive a wide range of cryptocurrencies.
     *   **Advanced Trading Tools:** Real-time market data and charting.
