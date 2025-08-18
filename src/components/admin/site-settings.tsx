@@ -106,6 +106,7 @@ export function SiteSettings() {
                                 width={150}
                                 height={150}
                                 className="rounded-md"
+                                key={wallet.address}
                             />
                         )}
                         </div>

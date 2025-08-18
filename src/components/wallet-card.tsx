@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { submitWithdrawal } from "@/lib/actions";
 import {
   Form,
   FormControl,
@@ -42,7 +41,7 @@ import {
 } from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import Image from "next/image";
-import type { CryptoMarketData } from "@/lib/types";
+import type { CryptoMarketData, User, Transaction } from "@/lib/types";
 
 const withdrawalSchema = z.object({
   amount: z.coerce
@@ -59,7 +58,6 @@ type WithdrawalFormValues = z.infer<typeof withdrawalSchema>;
 
 type DepositWalletInfo = { name: string; address: string; warning: string };
 type DepositWallets = { [key: string]: DepositWalletInfo };
-
 
 const COIN_IDS = "bitcoin,ethereum,tether,ripple,solana,dogecoin";
 
@@ -80,15 +78,10 @@ export function WalletCard() {
   const [selectedDepositAsset, setSelectedDepositAsset] = useState<string>("btc");
 
   useEffect(() => {
-     // Fetch market data from CoinGecko
     const fetchMarketData = async () => {
       try {
-        const response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${COIN_IDS}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        const response = await fetch(`/api/market-data`);
+        if (!response.ok) throw new Error("Network response was not ok");
         const result: CryptoMarketData[] = await response.json();
         setCryptoData(result);
       } catch (error) {
@@ -96,14 +89,12 @@ export function WalletCard() {
       }
     };
 
-    // Fetch wallet addresses from localStorage (set by admin)
     const loadWalletAddresses = () => {
         if (typeof window !== 'undefined') {
             const storedWalletsRaw = localStorage.getItem('siteDepositWallets');
             if (storedWalletsRaw) {
                 const storedWallets = JSON.parse(storedWalletsRaw);
                 const updatedWallets: DepositWallets = { ...initialDepositWallets };
-                
                 for (const key in storedWallets) {
                     if (updatedWallets[key]) {
                         updatedWallets[key].address = storedWallets[key].address;
@@ -122,14 +113,13 @@ export function WalletCard() {
   const form = useForm<WithdrawalFormValues>({
     resolver: zodResolver(withdrawalSchema),
     defaultValues: {
-      amount: "" as any,
+      amount: '',
       asset: "btc",
       address: "",
     },
   });
 
   const activeWallet = depositWallets[selectedDepositAsset];
-  const activeCoin = cryptoData.find(c => c.id.toLowerCase() === selectedDepositAsset.toLowerCase());
 
   const handleCopy = () => {
     if (activeWallet) {
@@ -142,22 +132,48 @@ export function WalletCard() {
   };
 
   const onSubmit = (values: WithdrawalFormValues) => {
-    startTransition(async () => {
-      const result = await submitWithdrawal(values);
-      if (result.success) {
-        toast({
-          title: "Success",
-          description: result.message,
-          variant: "default",
-        });
-        form.reset();
-      } else {
-        toast({
-          title: "Error",
-          description: result.error,
-          variant: "destructive",
-        });
-      }
+    startTransition(() => {
+        try {
+            // In a real app, this would be a server action.
+            // For this prototype, we simulate the DB update via localStorage.
+            const loggedInUserJson = localStorage.getItem('loggedInUser');
+            if (!loggedInUserJson) throw new Error("You must be logged in to make a withdrawal.");
+            const currentUser: User = JSON.parse(loggedInUserJson);
+            
+            const allUsersJson = localStorage.getItem('users');
+            let allUsers: User[] = allUsersJson ? JSON.parse(allUsersJson) : [];
+
+            const newTransaction: Transaction = {
+                id: `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                type: 'Withdrawal',
+                status: 'Pending',
+                date: new Date().toISOString().split('T')[0],
+                asset: values.asset.toUpperCase(),
+                amount: values.amount,
+                address: values.address,
+            };
+
+            const userIndex = allUsers.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                allUsers[userIndex].transactions = [newTransaction, ...(allUsers[userIndex].transactions || [])];
+                localStorage.setItem('users', JSON.stringify(allUsers));
+                localStorage.setItem('loggedInUser', JSON.stringify(allUsers[userIndex]));
+                
+                toast({
+                  title: "Success",
+                  description: "Your withdrawal request has been submitted for processing.",
+                });
+                form.reset();
+            } else {
+                throw new Error("Could not find user to update.");
+            }
+        } catch (error: any) {
+            toast({
+              title: "Error",
+              description: error.message || "An unexpected error occurred.",
+              variant: "destructive",
+            });
+        }
     });
   };
   
@@ -173,7 +189,7 @@ export function WalletCard() {
   };
   
    const renderDepositSelectItem = (coinKey: string, coinName: string) => {
-    const coinData = cryptoData.find(c => c.id.toLowerCase() === coinKey.toLowerCase());
+    const coinData = cryptoData.find(c => c.symbol.toLowerCase() === coinKey.toLowerCase());
     return (
          <SelectItem value={coinKey} key={coinKey}>
             <div className="flex items-center gap-2">

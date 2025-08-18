@@ -21,8 +21,9 @@ export type Transaction = {
   type: "Deposit" | "Withdrawal" | "Bonus";
   asset: string;
   amount: number;
-  status: "Completed" | "Pending" | "Processing";
+  status: "Completed" | "Pending" | "Processing" | "Approved" | "Declined";
   date: string;
+  address?: string; // Optional field for withdrawal address
 };
 
 export type User = {

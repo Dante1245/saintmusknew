@@ -9,28 +9,36 @@ import {
 } from "@/components/ui/card";
 import { Users, BarChart, ExternalLink, Activity } from "lucide-react";
 import { useEffect, useState } from "react";
+import type { User, Transaction } from "@/lib/types";
+
+const getUsersFromStorage = (): User[] => {
+  if (typeof window === 'undefined') return [];
+  const usersJson = localStorage.getItem('users');
+  return usersJson ? JSON.parse(usersJson) : [];
+};
+
+const getAllTransactions = (users: User[]): Transaction[] => {
+    return users.flatMap(user => user.transactions || []);
+}
 
 export function DashboardMetrics() {
-    const [userCount, setUserCount] = useState(0);
-
+    const [users, setUsers] = useState<User[]>([]);
+    
     useEffect(() => {
-        // This is a mock way of getting user count. 
-        // In a real app, this would be a database query.
-        const storedUser = localStorage.getItem('loggedInUser');
-        if(storedUser) {
-            // For the prototype, we assume only one user might exist in localStorage.
-            // A real implementation would fetch all users.
-            setUserCount(1);
-        } else {
-            setUserCount(0)
-        }
+        setUsers(getUsersFromStorage());
     }, [])
+
+    const userCount = users.length;
+    const signupsToday = users.filter(u => u.joinDate === new Date().toISOString().split('T')[0]).length;
+    const allTransactions = getAllTransactions(users);
+    const pendingWithdrawals = allTransactions.filter(tx => tx.type === 'Withdrawal' && tx.status === 'Pending').length;
+    const totalTransactions = allTransactions.length;
 
     const metrics = [
         { title: "Total Users", value: userCount.toString(), icon: <Users className="h-6 w-6" /> },
-        { title: "Total Signups (24h)", value: userCount.toString(), icon: <BarChart className="h-6 w-6" /> },
-        { title: "Pending Withdrawals", value: "0", icon: <ExternalLink className="h-6 w-6" /> },
-        { title: "Total Transactions", value: userCount > 0 ? "1" : "0", icon: <Activity className="h-6 w-6" /> },
+        { title: "Total Signups (24h)", value: signupsToday.toString(), icon: <BarChart className="h-6 w-6" /> },
+        { title: "Pending Withdrawals", value: pendingWithdrawals.toString(), icon: <ExternalLink className="h-6 w-6" /> },
+        { title: "Total Transactions", value: totalTransactions.toString(), icon: <Activity className="h-6 w-6" /> },
       ];
 
   return (

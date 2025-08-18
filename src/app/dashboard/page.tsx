@@ -91,7 +91,7 @@ export default function DashboardPage() {
                 <CardTitle className="text-sm font-medium">Referral Bonus</CardTitle>
                 <Gift className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
-              <CardContent className="flex flex-col justify-center h-full py-4">
+              <CardContent>
                 <p className="text-sm text-muted-foreground">Invite friends and earn rewards!</p>
               </CardContent>
             </Card>
