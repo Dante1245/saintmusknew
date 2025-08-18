@@ -19,7 +19,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { IconLogo } from "./icons";
 
 const navLinks = [
-    { href: "/dashboard", label: "Dashboard" },
+    { href: "/", label: "Home" },
     { href: "/markets", label: "Markets" },
     { href: "/history", label: "History" },
     { href: "/profile", label: "Profile" },
