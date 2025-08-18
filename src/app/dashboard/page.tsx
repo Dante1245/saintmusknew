@@ -80,8 +80,8 @@ export default function DashboardPage() {
       <div className="flex min-h-screen w-full flex-col bg-background">
         <DashboardHeader />
         <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 md:p-8">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-3">
-            <div className="xl:col-span-2">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="lg:col-span-2">
                 <Suspense fallback={<PortfolioSkeleton />}>
                     <Portfolio />
                 </Suspense>

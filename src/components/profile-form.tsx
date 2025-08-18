@@ -79,7 +79,11 @@ export function ProfileForm() {
                 phoneNumber: userData.phoneNumber,
                 country: userData.country
             });
-            setAvatarPreview("https://randomuser.me/api/portraits/men/75.jpg");
+             if (userData.avatar) {
+              setAvatarPreview(userData.avatar);
+            } else {
+              setAvatarPreview(`https://i.pravatar.cc/80?u=${userData.id}`);
+            }
         }
     }
     loadUser();
@@ -105,8 +109,18 @@ export function ProfileForm() {
     console.log("Updating profile:", values);
     
     if (user) {
-        const updatedUser = { ...user, ...values };
+        const updatedUser = { ...user, ...values, avatar: avatarPreview };
         localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+        
+        // Also update the master user list
+        const usersJson = localStorage.getItem('users');
+        let allUsers: User[] = usersJson ? JSON.parse(usersJson) : [];
+        const userIndex = allUsers.findIndex(u => u.id === user.id);
+        if (userIndex !== -1) {
+          allUsers[userIndex] = updatedUser;
+          localStorage.setItem('users', JSON.stringify(allUsers));
+        }
+
         setUser(updatedUser);
         toast({
             title: "Profile Updated",
@@ -130,7 +144,7 @@ export function ProfileForm() {
           <CardContent className="space-y-8">
               <div className="flex items-center gap-4 pt-2">
                 <Avatar className="h-20 w-20 flex-shrink-0">
-                  <AvatarImage src={avatarPreview} alt={form.watch('name')} data-ai-hint="man face" />
+                  <AvatarImage src={avatarPreview} alt={form.watch('name')} data-ai-hint="person face" />
                   <AvatarFallback>{form.watch('name')?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
                 </Avatar>
                 <input
