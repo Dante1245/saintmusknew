@@ -18,8 +18,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { AlertTriangle } from "lucide-react";
 
-const COIN_IDS = "bitcoin,ethereum,tether,ripple,cardano,solana,dogecoin";
-
 export function MarketTable() {
   const [data, setData] = useState<CryptoMarketData[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,7 +28,7 @@ export function MarketTable() {
       setLoading(true);
       setError(null);
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${COIN_IDS}`
+        `/api/market-data`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
