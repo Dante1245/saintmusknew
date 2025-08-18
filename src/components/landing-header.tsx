@@ -1,3 +1,7 @@
+
+"use client";
+
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
@@ -5,6 +9,17 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/co
 import { IconLogo } from "./icons";
 
 export function LandingHeader() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // In a real app, you would have a more robust auth check.
+    // For this prototype, we check localStorage.
+    if (typeof window !== 'undefined') {
+      const user = localStorage.getItem('loggedInUser');
+      setIsLoggedIn(!!user);
+    }
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
@@ -46,12 +61,20 @@ export function LandingHeader() {
         </nav>
         <div className="flex flex-1 items-center justify-end gap-4">
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="outline" asChild>
-              <Link href="/login">Log In</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/signup">Sign Up</Link>
-            </Button>
+            {isLoggedIn ? (
+              <Button asChild>
+                <Link href="/dashboard">Dashboard</Link>
+              </Button>
+            ) : (
+              <>
+                <Button variant="outline" asChild>
+                  <Link href="/login">Log In</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/signup">Sign Up</Link>
+                </Button>
+              </>
+            )}
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -88,12 +111,20 @@ export function LandingHeader() {
                   Contact
                 </Link>
                 <div className="flex flex-col gap-4 mt-4">
-                  <Button variant="outline" asChild>
-                    <Link href="/login">Log In</Link>
-                  </Button>
-                  <Button asChild>
-                    <Link href="/signup">Sign Up</Link>
-                  </Button>
+                  {isLoggedIn ? (
+                     <Button asChild>
+                        <Link href="/dashboard">Dashboard</Link>
+                      </Button>
+                  ) : (
+                    <>
+                      <Button variant="outline" asChild>
+                        <Link href="/login">Log In</Link>
+                      </Button>
+                      <Button asChild>
+                        <Link href="/signup">Sign Up</Link>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </nav>
             </SheetContent>
