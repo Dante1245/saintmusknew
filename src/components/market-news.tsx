@@ -48,6 +48,8 @@ export function MarketNews() {
 
     const fetchNews = async () => {
         try {
+            setLoading(true);
+            setError(null);
             // No need to set loading to true on refetch, to avoid UI flicker
             const response = await fetch(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&_=${new Date().getTime()}`);
             if (!response.ok) {
@@ -64,7 +66,6 @@ export function MarketNews() {
     };
 
     useEffect(() => {
-        setLoading(true);
         fetchNews();
 
         // Set up an interval to refetch news every 60 seconds

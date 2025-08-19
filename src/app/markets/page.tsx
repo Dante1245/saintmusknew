@@ -7,10 +7,13 @@ import { LandingHeader } from "@/components/landing-header";
 import { LandingFooter } from "@/components/landing-footer";
 import { MarketNews } from "@/components/market-news";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
 
 export default function MarketsPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     // In a real app, you would have a more robust auth check.
@@ -38,7 +41,13 @@ export default function MarketsPage() {
             </p>
           </div>
           <Separator />
-          <MarketNews />
+          <MarketNews key={refreshKey} />
+           <div className="text-center mt-8">
+            <Button onClick={() => setRefreshKey(prev => prev + 1)}>
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Refresh News
+            </Button>
+          </div>
         </div>
       </main>
       {!isLoggedIn && <LandingFooter />}
