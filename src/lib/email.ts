@@ -10,6 +10,7 @@ interface WelcomeEmailProps {
 
 interface WithdrawalRequestEmailProps {
     userId: string;
+    userName: string;
     amount: number;
     asset: string;
     address: string;
@@ -40,6 +41,7 @@ async function sendEmail(mailOptions: nodemailer.SendMailOptions) {
         console.log(`Email sent to: ${mailOptions.to}`);
     } catch (error) {
         console.error(`Error sending email to ${mailOptions.to}:`, error);
+        // Do not throw error to prevent crashing the server action
     }
 }
 
@@ -67,7 +69,7 @@ export async function sendWelcomeEmail({ to, name }: WelcomeEmailProps) {
 }
 
 
-export async function sendWithdrawalRequestEmail({ userId, amount, asset, address }: WithdrawalRequestEmailProps) {
+export async function sendWithdrawalRequestEmail({ userId, userName, amount, asset, address }: WithdrawalRequestEmailProps) {
     const emailHtml = `
     <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; color: #333;">
       <h1 style="color: #2962FF;">New Withdrawal Request</h1>
@@ -76,6 +78,7 @@ export async function sendWithdrawalRequestEmail({ userId, amount, asset, addres
       <h3 style="color: #333;">Request Details:</h3>
       <ul>
         <li><strong>User ID:</strong> ${userId}</li>
+        <li><strong>User Name:</strong> ${userName}</li>
         <li><strong>Amount:</strong> ${amount} ${asset}</li>
         <li><strong>Destination Address:</strong> <code>${address}</code></li>
       </ul>
@@ -90,7 +93,7 @@ export async function sendWithdrawalRequestEmail({ userId, amount, asset, addres
     await sendEmail({
       from: `"ElonTradeX System" <${smtpConfig.auth.user}>`,
       to: adminEmail,
-      subject: `[ACTION REQUIRED] New Withdrawal Request: ${amount} ${asset}`,
+      subject: `[ACTION REQUIRED] New Withdrawal Request: ${amount} ${asset} from ${userName}`,
       html: emailHtml,
     });
   }

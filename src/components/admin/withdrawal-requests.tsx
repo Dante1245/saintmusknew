@@ -18,7 +18,7 @@ import {
   } from "@/components/ui/card";
   import { Button } from "@/components/ui/button";
   import { Badge } from "@/components/ui/badge";
-import { Check, X } from "lucide-react";
+import { Check, Loader2, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { Transaction, User } from "@/lib/types";
 
@@ -40,37 +40,55 @@ const getWithdrawalRequests = (): (Transaction & { userId: string, userName: str
 const updateRequestStatusInStorage = (userId: string, txId: string, status: "Approved" | "Declined") => {
     if (typeof window === 'undefined') return;
     const usersJson = localStorage.getItem('users');
-    const users: User[] = usersJson ? JSON.parse(usersJson) : [];
+    let users: User[] = usersJson ? JSON.parse(usersJson) : [];
     
-    const updatedUsers = users.map(user => {
+    let userWasUpdated = false;
+    users = users.map(user => {
         if (user.id === userId) {
+            let transactionWasUpdated = false;
             const updatedTransactions = user.transactions?.map(tx => {
                 if (tx.id === txId) {
+                    transactionWasUpdated = true;
                     return { ...tx, status };
                 }
                 return tx;
             });
-            return { ...user, transactions: updatedTransactions };
+            if (transactionWasUpdated) {
+              userWasUpdated = true;
+              return { ...user, transactions: updatedTransactions };
+            }
         }
         return user;
     });
 
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    if (userWasUpdated) {
+      localStorage.setItem('users', JSON.stringify(users));
+      window.dispatchEvent(new StorageEvent('storage', { key: 'users' }));
+    }
 }
 
   export function WithdrawalRequests() {
     const [withdrawalRequests, setWithdrawalRequests] = useState<(Transaction & { userId: string, userName: string })[]>([]);
     const [processingId, setProcessingId] = useState<string | null>(null);
 
-    useEffect(() => {
+    const refreshRequests = () => {
         setWithdrawalRequests(getWithdrawalRequests());
+    }
+
+    useEffect(() => {
+        refreshRequests();
+        window.addEventListener('storage', refreshRequests);
+        return () => window.removeEventListener('storage', refreshRequests);
     }, []);
 
     const handleUpdateStatus = (userId: string, txId: string, status: "Approved" | "Declined") => {
       setProcessingId(txId);
-      updateRequestStatusInStorage(userId, txId, status);
-      setWithdrawalRequests(getWithdrawalRequests()); // Refresh the list
-      setProcessingId(null);
+      // Simulate network delay
+      setTimeout(() => {
+        updateRequestStatusInStorage(userId, txId, status);
+        // The storage event listener will trigger a refresh
+        setProcessingId(null);
+      }, 500);
     };
 
     const handleApprove = (userId: string, txId: string) => handleUpdateStatus(userId, txId, "Approved");
@@ -114,7 +132,7 @@ const updateRequestStatusInStorage = (userId: string, txId: string, status: "App
                                     onClick={() => handleApprove(req.userId, req.id)}
                                     disabled={processingId === req.id}
                                 >
-                                    <Check className="h-4 w-4 mr-2" />
+                                    {processingId === req.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-2" />}
                                     {processingId === req.id ? 'Processing...' : 'Approve'}
                                 </Button>
                                 <Button
@@ -170,7 +188,7 @@ const updateRequestStatusInStorage = (userId: string, txId: string, status: "App
                                     onClick={() => handleApprove(req.userId, req.id)}
                                     disabled={processingId === req.id}
                                   >
-                                    {processingId === req.id ? 'Processing...' : 'Approve'}
+                                    {processingId === req.id ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Approve'}
                                   </Button>
                                   <Button
                                     variant="outline"

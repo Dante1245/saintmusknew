@@ -30,7 +30,8 @@ function getTransactionsFromClient(): Transaction[] {
   if (storedUser) {
     try {
       const user: User = JSON.parse(storedUser);
-      return user.transactions ?? [];
+      // Sort transactions by date descending
+      return user.transactions?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) ?? [];
     } catch (e) {
       console.error("Failed to parse user from localStorage for transactions", e);
       return [];
@@ -43,19 +44,31 @@ export function Transactions({ onHistoryPage = false }: { onHistoryPage?: boolea
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const updateTransactions = () => {
     setTransactions(getTransactionsFromClient());
+  }
+  
+  useEffect(() => {
+    updateTransactions();
     setLoading(false);
+
+    window.addEventListener('storage', updateTransactions);
+    return () => {
+      window.removeEventListener('storage', updateTransactions);
+    }
   }, []);
 
   const getStatusColor = (status: Transaction["status"]) => {
     switch (status) {
       case "Completed":
+      case "Approved":
         return "bg-green-500/20 text-green-700 dark:text-green-400";
       case "Pending":
         return "bg-yellow-500/20 text-yellow-700 dark:text-yellow-400";
       case "Processing":
         return "bg-blue-500/20 text-blue-700 dark:text-blue-400";
+      case "Declined":
+        return "bg-red-500/20 text-red-700 dark:text-red-400";
       default:
         return "bg-gray-500/20 text-gray-700 dark:text-gray-400";
     }
@@ -138,7 +151,7 @@ export function Transactions({ onHistoryPage = false }: { onHistoryPage?: boolea
                       <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
                     </div>
                     <div className="mt-2 text-right">
-                      <p className="font-mono text-lg">{tx.type !== "Bonus" && (tx.type === "Deposit" ? "+ " : "- ")}{formatAmount(tx.amount, tx.asset)}</p>
+                      <p className="font-mono text-lg">{tx.type !== "Bonus" && (tx.type === "Deposit" || tx.status === "Declined") ? "+ " : "- "}{formatAmount(tx.amount, tx.asset)}</p>
                     </div>
                   </div>
                 ))}
@@ -162,7 +175,7 @@ export function Transactions({ onHistoryPage = false }: { onHistoryPage?: boolea
                     <TableRow key={tx.id}>
                       <TableCell className="font-medium">{tx.type}</TableCell>
                       <TableCell>{tx.asset}</TableCell>
-                      <TableCell className="text-right font-mono">{tx.type !== "Bonus" && (tx.type === "Deposit" ? "+ " : "- ")}{formatAmount(tx.amount, tx.asset)}</TableCell>
+                      <TableCell className="text-right font-mono">{tx.type !== "Bonus" && (tx.type === "Deposit" || tx.status === 'Declined') ? "+ " : "- "}{formatAmount(tx.amount, tx.asset)}</TableCell>
                       <TableCell className="text-center">
                         <Badge variant="outline" className={getStatusColor(tx.status)}>{tx.status}</Badge>
                       </TableCell>

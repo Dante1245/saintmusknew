@@ -37,7 +37,8 @@ export function BroadcastMessages() {
         setShowConfirmation(false); // Close confirmation
         setIsSending(true);
 
-        console.log("Sending broadcast:", message);
+        // In a real app, this would call a server action to send the message.
+        // For this prototype, we simulate the action.
 
         toast({
             title: "Broadcast Sent",

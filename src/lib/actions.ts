@@ -15,24 +15,8 @@ const withdrawalSchema = z.object({
 
 type WithdrawalFormValues = z.infer<typeof withdrawalSchema>;
 
-// This is a server-side representation of database access.
-// In a real app, you would replace these with actual database calls.
-const db = {
-  getUsers: (): User[] => {
-    // In a real scenario, this would be a database query.
-    // For this prototype, we just return an empty array if no users are in "storage".
-    return [];
-  },
-  saveUsers: (users: User[]) => {
-    // This would be a DB write operation.
-  },
-  getLoggedInUser: () => {
-    // This would fetch the user from a session or token.
-    return null;
-  }
-};
 
-export async function submitWithdrawalRequest(values: WithdrawalFormValues, userId: string) {
+export async function submitWithdrawalRequest(values: WithdrawalFormValues, user: User) {
     const parsed = withdrawalSchema.safeParse(values);
 
     if (!parsed.success) {
@@ -40,15 +24,12 @@ export async function submitWithdrawalRequest(values: WithdrawalFormValues, user
     }
 
     try {
-      // In a real app, you'd find the user by their ID from the session
-      // const user = await db.getUserById(userId);
-      // Here we simulate it, but this part is conceptual
-      
       const withdrawalData = parsed.data;
 
-      // Send email to admin
+      // In a real app, you would use the authenticated user's ID.
       await sendWithdrawalRequestEmail({
-          userId: userId,
+          userId: user.id,
+          userName: user.name,
           amount: withdrawalData.amount,
           asset: withdrawalData.asset.toUpperCase(),
           address: withdrawalData.address

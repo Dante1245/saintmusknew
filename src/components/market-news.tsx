@@ -58,8 +58,8 @@ export function MarketNews({ refreshKey }: { refreshKey: number }) {
                 throw new Error(errorData.Message || `API Error: ${response.statusText}`);
             }
             const data = await response.json();
-            if (data.Type !== 100) {
-                 throw new Error(data.Message || "Failed to fetch news from API.");
+            if (data.Type !== 100 || !Array.isArray(data.Data)) {
+                 throw new Error(data.Message || "Failed to fetch news from API due to an invalid response format.");
             }
             setNews(data.Data.slice(0, 12));
         } catch (err: any) {
