@@ -9,42 +9,42 @@ const reviews = [
     name: "Vitalik B.",
     avatar: "VB",
     review: "ElonTradeX made it ridiculously easy to get into crypto. The interface is clean and the fees are transparent. Two thumbs up!",
-    imageSeed: "men/32",
+    imageSeed: "150?u=vitalik",
     rating: 5,
   },
   {
     name: "Satoshi N.",
     avatar: "SN",
     review: "As someone who values security above all, ElonTradeX's multi-layered protection gives me peace of mind. A truly decentralized experience.",
-    imageSeed: "lego/1",
+    imageSeed: "150?u=satoshi",
     rating: 5,
   },
   {
     name: "Michael S.",
     avatar: "MS",
     review: "The analytics tools are top-notch. I can track my portfolio and market trends with incredible detail. It's a game-changer for serious traders.",
-    imageSeed: "men/50",
+    imageSeed: "150?u=michael",
     rating: 4,
   },
   {
     name: "Cathie W.",
     avatar: "CW",
     review: "ElonTradeX is disrupting the digital asset space. Their innovative features and commitment to user experience sets a new industry standard.",
-    imageSeed: "women/44",
+    imageSeed: "150?u=cathie",
     rating: 5,
   },
   {
     name: "Gavin A.",
     avatar: "GA",
     review: "I've tried many exchanges, but the speed and reliability of ElonTradeX are unmatched. My orders execute instantly, which is crucial in a volatile market.",
-    imageSeed: "men/60",
+    imageSeed: "150?u=gavin",
     rating: 4,
   },
    {
     name: "Alex G.",
     avatar: "AG",
     review: "The mobile app is fantastic! It has all the features of the desktop site, allowing me to manage my assets on the go without any compromises.",
-    imageSeed: "men/33",
+    imageSeed: "150?u=alex",
     rating: 5,
   },
 ];
@@ -74,7 +74,7 @@ export function LandingReviews() {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <Avatar>
-                    <AvatarImage src={`https://randomuser.me/api/portraits/${review.imageSeed}.jpg`} alt={`${review.name}'s avatar`} />
+                    <AvatarImage src={`https://i.pravatar.cc/${review.imageSeed}`} alt={`${review.name}'s avatar`} />
                     <AvatarFallback>{review.avatar}</AvatarFallback>
                   </Avatar>
                   <div>
