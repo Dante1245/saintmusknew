@@ -33,7 +33,6 @@ export type User = {
     email: string;
     balance: number;
     joinDate: string;
-    walletAddress?: string;
     transactions?: Transaction[];
     phoneNumber?: string;
     country?: string;

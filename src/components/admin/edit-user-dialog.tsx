@@ -15,9 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import type { User, Transaction } from "@/lib/types";
-import { Copy, Trash2 } from "lucide-react";
-import Image from "next/image";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Trash2 } from "lucide-react";
 import { AddTransactionForm } from "./add-transaction-form";
 import {
   Table,
@@ -39,25 +37,14 @@ interface EditUserDialogProps {
 export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDialogProps) {
   const { toast } = useToast();
   const [balance, setBalance] = useState(user.balance);
-  const [walletAddress, setWalletAddress] = useState(user.walletAddress ?? `0x${Math.random().toString(16).substr(2, 40)}`);
   const [transactions, setTransactions] = useState<Transaction[]>(user.transactions ?? []);
 
   const handleSave = () => {
-    onUpdate({ ...user, balance: Number(balance), walletAddress, transactions });
+    onUpdate({ ...user, balance: Number(balance), transactions });
     toast({
       title: "User Updated",
       description: `${user.name}'s details have been updated.`,
     });
-  };
-
-  const handleCopy = () => {
-    if (walletAddress) {
-      navigator.clipboard.writeText(walletAddress);
-      toast({
-        title: "Copied to clipboard!",
-        description: "Wallet address has been copied.",
-      });
-    }
   };
   
   const handleAddTransaction = (newTx: Omit<Transaction, 'id' | 'date'>) => {
@@ -90,7 +77,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
           
           <div className="space-y-4 p-4 rounded-lg border bg-card/50">
             <h4 className="font-medium text-foreground">User Details</h4>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-1 gap-6">
                 <div className="grid flex-1 gap-2">
                     <Label htmlFor="balance">Balance (USD)</Label>
                     <Input
@@ -100,54 +87,9 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                         onChange={(e) => setBalance(parseFloat(e.target.value) || 0)}
                     />
                 </div>
-                <div className="grid flex-1 gap-2">
-                    <Label htmlFor="walletAddress">Wallet Address</Label>
-                    <div className="relative">
-                        <Input
-                            id="walletAddress"
-                            type="text"
-                            value={walletAddress}
-                            onChange={(e) => setWalletAddress(e.target.value)}
-                            className="font-mono text-xs pr-10"
-                        />
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground"
-                            onClick={handleCopy}
-                            >
-                            <Copy className="h-4 w-4" />
-                        </Button>
-                    </div>
-                </div>
             </div>
           </div>
           
-          <div className="space-y-4 p-4 rounded-lg border bg-card/50">
-             <h4 className="font-medium text-foreground">Wallet QR Code</h4>
-             <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div className="p-2 rounded-lg border bg-background shadow-sm">
-                    {walletAddress && (
-                        <Image
-                            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.walletAddress}`}
-                            alt="User Wallet QR Code"
-                            width={150}
-                            height={150}
-                            className="rounded-md"
-                        />
-                    )}
-                </div>
-                <div className="flex-1">
-                    <Alert>
-                        <AlertTitle>Notice</AlertTitle>
-                        <AlertDescription>
-                            This QR code is generated dynamically from the user's wallet address. Updating the address will automatically update the QR code.
-                        </AlertDescription>
-                    </Alert>
-                </div>
-             </div>
-          </div>
-
            <div className="space-y-4 p-4 rounded-lg border bg-card/50">
             <h4 className="font-medium text-foreground">Manage Transactions</h4>
              <AddTransactionForm onSubmit={handleAddTransaction} />

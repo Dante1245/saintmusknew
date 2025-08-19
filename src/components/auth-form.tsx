@@ -162,7 +162,6 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
         transactions: [
           { id: "txn_bonus_001", type: "Bonus", asset: "USDT", amount: 200, status: "Completed", date: new Date().toISOString().split('T')[0] },
         ],
-        walletAddress: `0x${Math.random().toString(16).substr(2, 40)}`,
         // In a real app, you MUST hash the password before saving.
         // For this prototype, we are omitting the password field for security.
       };
