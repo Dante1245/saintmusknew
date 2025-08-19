@@ -23,7 +23,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
       <footer className="bg-background/80 border-t p-4">
-        <p className="text-center text-xs text-muted-foreground">© 2024 ElonTradeX. All rights reserved. Admin Panel.</p>
+        <p className="text-center text-xs text-muted-foreground">© 2024 ElonTradeX Administration Panel. All rights reserved.</p>
       </footer>
     </div>
   );

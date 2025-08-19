@@ -42,6 +42,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import Image from "next/image";
 import type { CryptoMarketData, User, Transaction } from "@/lib/types";
+import { submitWithdrawalRequest } from "@/lib/actions";
 
 const withdrawalSchema = z.object({
   amount: z.coerce
@@ -136,49 +137,20 @@ export function WalletCard() {
   };
 
   const onSubmit = (values: WithdrawalFormValues) => {
-    startTransition(() => {
-        try {
-            // In a real app, this would be a server action.
-            // For this prototype, we simulate the DB update via localStorage.
-            const loggedInUserJson = localStorage.getItem('loggedInUser');
-            if (!loggedInUserJson) throw new Error("You must be logged in to make a withdrawal.");
-            const currentUser: User = JSON.parse(loggedInUserJson);
-            
-            const allUsersJson = localStorage.getItem('users');
-            let allUsers: User[] = allUsersJson ? JSON.parse(allUsersJson) : [];
+    startTransition(async () => {
+        const result = await submitWithdrawalRequest(values);
 
-            const assetInfo = cryptoData.find(c => c.id === values.asset);
-
-            const newTransaction: Transaction = {
-                id: `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                type: 'Withdrawal',
-                status: 'Pending',
-                date: new Date().toISOString().split('T')[0],
-                asset: assetInfo ? assetInfo.symbol.toUpperCase() : values.asset,
-                amount: values.amount,
-                address: values.address,
-            };
-
-            const userIndex = allUsers.findIndex(u => u.id === currentUser.id);
-            if (userIndex !== -1) {
-                allUsers[userIndex].transactions = [newTransaction, ...(allUsers[userIndex].transactions || [])];
-                localStorage.setItem('users', JSON.stringify(allUsers));
-                localStorage.setItem('loggedInUser', JSON.stringify(allUsers[userIndex]));
-                
-                toast({
-                  title: "Success",
-                  description: "Your withdrawal request has been submitted for processing.",
-                });
-                form.reset();
-                 // Dispatch event to notify other components
-                window.dispatchEvent(new Event('storage'));
-            } else {
-                throw new Error("Could not find user to update.");
-            }
-        } catch (error: any) {
+        if (result.success) {
+            toast({
+              title: "Success",
+              description: "Your withdrawal request has been submitted for processing.",
+            });
+            form.reset();
+            window.dispatchEvent(new Event('storage'));
+        } else {
             toast({
               title: "Error",
-              description: error.message || "An unexpected error occurred.",
+              description: result.error || "An unexpected error occurred.",
               variant: "destructive",
             });
         }

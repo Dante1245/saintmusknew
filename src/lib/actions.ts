@@ -4,7 +4,7 @@
 import { z } from "zod";
 import { generateMockPurchaseNotification } from "@/ai/flows/generate-mock-purchase-notifications";
 import { supportChat } from "@/ai/flows/support-chat-flow";
-import { sendWelcomeEmail } from "@/lib/email";
+import { sendWelcomeEmail, sendWithdrawalRequestEmail } from "@/lib/email";
 import type { User, Transaction } from "@/lib/types";
 
 const withdrawalSchema = z.object({
@@ -13,74 +13,53 @@ const withdrawalSchema = z.object({
   address: z.string().min(10),
 });
 
-export async function submitWithdrawal(values: z.infer<typeof withdrawalSchema>) {
-  const parsed = withdrawalSchema.safeParse(values);
+type WithdrawalFormValues = z.infer<typeof withdrawalSchema>;
 
-  if (!parsed.success) {
-    return { success: false, error: "Invalid data provided." };
+// This is a server-side representation of database access.
+// In a real app, you would replace these with actual database calls.
+const db = {
+  getUsers: (): User[] => {
+    // In a real scenario, this would be a database query.
+    // For this prototype, we just return an empty array if no users are in "storage".
+    return [];
+  },
+  saveUsers: (users: User[]) => {
+    // This would be a DB write operation.
+  },
+  getLoggedInUser: () => {
+    // This would fetch the user from a session or token.
+    return null;
   }
+};
 
-  // This function would run on the server.
-  // We are simulating database access using localStorage for this prototype.
-  // In a real app, you would interact with a database here.
-  const updateUserWithWithdrawal = (newTx: Omit<Transaction, 'id' | 'date'>) => {
-    const loggedInUserJson = localStorage.getItem('loggedInUser');
-    if (!loggedInUserJson) {
-      throw new Error("User not found");
+export async function submitWithdrawalRequest(values: WithdrawalFormValues, userId: string) {
+    const parsed = withdrawalSchema.safeParse(values);
+
+    if (!parsed.success) {
+      return { success: false, error: "Invalid data provided." };
     }
-    const loggedInUser: User = JSON.parse(loggedInUserJson);
 
-    const usersJson = localStorage.getItem('users');
-    let users: User[] = usersJson ? JSON.parse(usersJson) : [];
+    try {
+      // In a real app, you'd find the user by their ID from the session
+      // const user = await db.getUserById(userId);
+      // Here we simulate it, but this part is conceptual
+      
+      const withdrawalData = parsed.data;
 
-    let userFound = false;
-    users = users.map(user => {
-      if (user.id === loggedInUser.id) {
-        userFound = true;
-        const transactionToAdd: Transaction = {
-          ...newTx,
-          id: `txn_${Math.random().toString(36).substr(2, 9)}`,
-          date: new Date().toISOString().split('T')[0],
-          status: 'Pending',
-        };
-        if (!user.transactions) {
-            user.transactions = [];
-        }
-        user.transactions.unshift(transactionToAdd);
-      }
-      return user;
-    });
+      // Send email to admin
+      await sendWithdrawalRequestEmail({
+          userId: userId,
+          amount: withdrawalData.amount,
+          asset: withdrawalData.asset.toUpperCase(),
+          address: withdrawalData.address
+      });
+      
+      return { success: true, message: "Withdrawal request submitted." };
 
-    if (userFound) {
-      localStorage.setItem('users', JSON.stringify(users));
-      // Also update the loggedInUser in localStorage to reflect the new transaction
-      const updatedLoggedInUser = users.find(u => u.id === loggedInUser.id);
-      if (updatedLoggedInUser) {
-        localStorage.setItem('loggedInUser', JSON.stringify(updatedLoggedInUser));
-      }
-    } else {
-      throw new Error("Could not find user to update transactions.");
+    } catch (error: any) {
+        console.error("Error submitting withdrawal request:", error);
+        return { success: false, error: "An unexpected error occurred." };
     }
-  };
-  
-  try {
-    // This is where you would call the function to update the user's data
-    // For the prototype, we are calling a function that uses localStorage.
-    // In a real app, this server action would not have direct access to localStorage.
-    // You would instead fetch the user from your DB by their ID (from session).
-    
-    // Note: The below call will not work as written because server actions cannot
-    // directly access client-side localStorage. This is a conceptual demonstration.
-    // updateUserWithWithdrawal(parsed.data);
-    console.log("New withdrawal request submitted:", parsed.data);
-
-
-  } catch (error: any) {
-    return { success: false, error: error.message };
-  }
-
-
-  return { success: true, message: "Your withdrawal request has been submitted for processing." };
 }
 
 
@@ -89,7 +68,8 @@ export async function getMockNotification() {
     const notification = await generateMockPurchaseNotification();
     return { success: true, notification };
   } catch (error) {
-    console.error("Error generating mock notification:", error);
+    // Silently fail if Genkit isn't running or rate-limited
+    // console.error("Error generating mock notification:", error);
     return { success: false, error: "Failed to generate notification." };
   }
 }
