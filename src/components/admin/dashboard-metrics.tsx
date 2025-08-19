@@ -24,8 +24,24 @@ const getAllTransactions = (users: User[]): Transaction[] => {
 export function DashboardMetrics() {
     const [users, setUsers] = useState<User[]>([]);
     
+    const updateMetrics = () => {
+      setUsers(getUsersFromStorage());
+    }
+
     useEffect(() => {
-        setUsers(getUsersFromStorage());
+        updateMetrics();
+
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === 'users') {
+                updateMetrics();
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
     }, [])
 
     const userCount = users.length;

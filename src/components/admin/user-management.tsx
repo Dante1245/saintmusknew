@@ -45,6 +45,8 @@ const getUsersFromStorage = (): User[] => {
 const saveUsersToStorage = (users: User[]) => {
     if (typeof window !== 'undefined') {
         localStorage.setItem('users', JSON.stringify(users));
+        // Dispatch a storage event to notify other tabs
+        window.dispatchEvent(new Event('storage'));
     }
 };
 
@@ -56,7 +58,24 @@ export function UserManagement() {
   const { toast } = useToast();
 
   useEffect(() => {
-    setUsers(getUsersFromStorage());
+    const updateUserList = () => {
+        setUsers(getUsersFromStorage());
+    }
+    
+    updateUserList();
+
+    const handleStorageChange = (e: StorageEvent) => {
+        // Check if the event is for the 'users' key or if it's a generic storage event
+        if (e.key === 'users' || e.key === null) {
+            updateUserList();
+        }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+        window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   const filteredUsers = users.filter(user =>
