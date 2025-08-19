@@ -19,7 +19,7 @@ export function LandingContact() {
             <div className="space-y-6">
                 <div className="flex items-start gap-6">
                     <Image 
-                      src="https://images.unsplash.com/photo-1652017659242-2714397b42f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxlbG9uJTIwbXVza3xlbnwwfHx8fDE3NTQ5NTI4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                      src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTk4NDQwMDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
                       alt="Founder"
                       width={80}
                       height={80}

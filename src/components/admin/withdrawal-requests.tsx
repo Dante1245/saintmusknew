@@ -92,37 +92,43 @@ const updateRequestStatusInStorage = (userId: string, txId: string, status: "App
                 {/* Responsive List for Mobile */}
                 <div className="md:hidden space-y-4">
                     {withdrawalRequests.map((req) => (
-                      <div key={req.id} className="border-b pb-4 last:border-0 last:pb-0">
-                          <div className="flex justify-between items-center mb-2">
-                              <span className="font-mono text-xs text-muted-foreground">{req.id}</span>
+                      <div key={req.id} className="border-b pb-4 last:border-0 last:pb-0 space-y-2">
+                          <div className="flex justify-between items-center">
+                            <div>
+                                <span className="font-semibold">{req.amount} {req.asset}</span>
+                                <span className="text-xs text-muted-foreground ml-2">to {req.userName}</span>
+                            </div>
                               <Badge variant={req.status === 'Pending' ? 'default' : 'outline'} className={req.status === 'Pending' ? "bg-yellow-400/10 text-yellow-400 border-yellow-400/30" : ""}>{req.status}</Badge>
                           </div>
-                          <p className="font-semibold">{req.amount} {req.asset}</p>
-                          <p className="text-sm text-muted-foreground font-mono truncate">{req.address}</p>
-                          <p className="text-xs text-muted-foreground">User: {req.userName}</p>
-                          <p className="text-xs text-muted-foreground">Date: {req.date}</p>
-                          <div className="flex justify-end gap-2 mt-4">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="bg-green-400/10 text-green-400 border-green-400/30 hover:bg-green-400/20"
-                                onClick={() => handleApprove(req.userId, req.id)}
-                                disabled={req.status !== 'Pending' || processingId === req.id}
-                              >
-                                  <Check className="h-4 w-4 mr-2" />
-                                  {processingId === req.id ? 'Processing...' : 'Approve'}
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="bg-red-400/10 text-red-400 border-red-400/30 hover:bg-red-400/20"
-                                onClick={() => handleDecline(req.userId, req.id)}
-                                disabled={req.status !== 'Pending' || processingId === req.id}
-                              >
-                                  <X className="h-4 w-4 mr-2" />
-                                  Decline
-                              </Button>
+                          <p className="text-sm text-muted-foreground font-mono truncate" title={req.address}>{req.address}</p>
+                          <div className="flex justify-between items-center text-xs text-muted-foreground">
+                              <span>{req.date}</span>
+                              <span className="font-mono">{req.id}</span>
                           </div>
+                          {req.status === 'Pending' && (
+                            <div className="flex justify-end gap-2 pt-2">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="bg-green-400/10 text-green-400 border-green-400/30 hover:bg-green-400/20"
+                                    onClick={() => handleApprove(req.userId, req.id)}
+                                    disabled={processingId === req.id}
+                                >
+                                    <Check className="h-4 w-4 mr-2" />
+                                    {processingId === req.id ? 'Processing...' : 'Approve'}
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="bg-red-400/10 text-red-400 border-red-400/30 hover:bg-red-400/20"
+                                    onClick={() => handleDecline(req.userId, req.id)}
+                                    disabled={processingId === req.id}
+                                >
+                                    <X className="h-4 w-4 mr-2" />
+                                    Decline
+                                </Button>
+                            </div>
+                          )}
                       </div>
                     ))}
                 </div>
@@ -155,13 +161,14 @@ const updateRequestStatusInStorage = (userId: string, txId: string, status: "App
                           </TableCell>
                           <TableCell>{req.date}</TableCell>
                           <TableCell className="text-right">
+                          {req.status === 'Pending' && (
                             <div className="flex justify-end gap-2">
                                   <Button
                                     variant="outline"
                                     size="sm"
                                     className="bg-green-400/10 text-green-400 border-green-400/30 hover:bg-green-400/20"
                                     onClick={() => handleApprove(req.userId, req.id)}
-                                    disabled={req.status !== 'Pending' || processingId === req.id}
+                                    disabled={processingId === req.id}
                                   >
                                     {processingId === req.id ? 'Processing...' : 'Approve'}
                                   </Button>
@@ -170,11 +177,12 @@ const updateRequestStatusInStorage = (userId: string, txId: string, status: "App
                                     size="sm"
                                     className="bg-red-400/10 text-red-400 border-red-400/30 hover:bg-red-400/20"
                                     onClick={() => handleDecline(req.userId, req.id)}
-                                    disabled={req.status !== 'Pending' || processingId === req.id}
+                                    disabled={processingId === req.id}
                                   >
                                     Decline
                                   </Button>
                               </div>
+                            )}
                           </TableCell>
                           </TableRow>
                       ))}

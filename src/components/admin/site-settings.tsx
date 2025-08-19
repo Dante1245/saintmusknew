@@ -112,7 +112,7 @@ export function SiteSettings() {
                         </div>
                         <Button variant="outline" size="sm" onClick={() => handleFocusInput(key)}>
                            <Edit className="h-3 w-3 mr-2"/>
-                           Change QR Code
+                           Change Address
                         </Button>
                     </div>
                 </div>

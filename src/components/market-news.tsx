@@ -8,9 +8,11 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { CryptoNewsArticle } from "@/lib/types";
 import { Skeleton } from "./ui/skeleton";
+import { Button } from "./ui/button";
+import { AlertTriangle } from "lucide-react";
 
 
 function timeAgo(timestamp: number): string {
@@ -46,30 +48,28 @@ export function MarketNews({ refreshKey }: { refreshKey: number }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchNews = async () => {
+    const fetchNews = useCallback(async () => {
+        setLoading(true);
+        setError(null);
         try {
-            // No need to set loading to true on refetch, to avoid UI flicker
-            if (news.length === 0) {
-                setLoading(true);
-            }
-            setError(null);
             const response = await fetch(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&lTs=${Math.floor(Date.now() / 1000)}`);
             if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.Message || `Error: ${response.status}`);
             }
             const data = await response.json();
-            setNews(data.Data.slice(0, 12)); // Get first 12 articles
+            setNews(data.Data.slice(0, 12));
         } catch (err: any) {
             setError(err.message);
             console.error("Failed to fetch news:", err);
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchNews();
-    }, [refreshKey]); // Refetch when the key changes
+    }, [fetchNews, refreshKey]);
 
     if (loading) {
       return (
@@ -77,10 +77,10 @@ export function MarketNews({ refreshKey }: { refreshKey: number }) {
               {Array.from({ length: 6 }).map((_, index) => (
                   <Card key={index} className="flex flex-col">
                       <Skeleton className="aspect-video w-full" />
-                      <CardHeader className="flex flex-col flex-1">
-                          <Skeleton className="h-5 w-5/6 mb-3" />
-                          <Skeleton className="h-5 w-4/6" />
-                           <div className="flex items-center justify-between pt-6 text-xs text-muted-foreground mt-auto">
+                      <CardHeader className="flex flex-col flex-1 p-4">
+                          <Skeleton className="h-4 w-5/6 mb-2" />
+                          <Skeleton className="h-4 w-4/6" />
+                           <div className="flex items-center justify-between pt-4 text-xs text-muted-foreground mt-auto">
                              <Skeleton className="h-4 w-1/4" />
                              <Skeleton className="h-4 w-1/4" />
                           </div>
@@ -94,12 +94,11 @@ export function MarketNews({ refreshKey }: { refreshKey: number }) {
 
     if (error) {
         return (
-            <div className="flex flex-col items-center justify-center py-10 text-red-500 dark:text-red-400">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+            <div className="flex flex-col items-center justify-center py-10 text-destructive dark:text-red-400 bg-card rounded-lg border border-destructive/50">
+                <AlertTriangle className="h-12 w-12 mb-4" />
                 <p className="text-xl font-semibold mb-2">Failed to load news</p>
-                <p className="text-sm text-muted-foreground">Error: {error}</p>
+                <p className="text-sm text-muted-foreground">{error}</p>
+                <Button onClick={fetchNews} variant="outline" className="mt-4">Try Again</Button>
             </div>
         );
 
@@ -112,15 +111,16 @@ export function MarketNews({ refreshKey }: { refreshKey: number }) {
             <Card className="overflow-hidden h-full flex flex-col">
                 <div className="aspect-video relative">
                     <Image 
-                        src={article.source_info.img} 
+                        src={article.imageurl} 
                         alt={article.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover"
                     />
                 </div>
-                <CardHeader className="flex-1">
+                <CardHeader className="flex-1 p-4">
                     <CardTitle className="text-base leading-tight mb-2">{article.title}</CardTitle>
-                    <CardDescription className="flex items-center justify-between pt-2 text-xs">
+                    <CardDescription className="flex items-center justify-between pt-2 text-xs mt-auto">
                         <span>{article.source_info.name}</span>
                         <span>{timeAgo(article.published_on)}</span>
                     </CardDescription>

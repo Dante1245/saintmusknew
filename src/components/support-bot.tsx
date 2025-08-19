@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { ScrollArea } from "./ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 import { supportChat } from "@/ai/flows/support-chat-flow";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +21,7 @@ export function SupportBot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const scrollAreaViewportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -32,14 +32,9 @@ export function SupportBot() {
   }, [isOpen, messages.length]);
 
   useEffect(() => {
-    // Scroll to the bottom when a new message is added
-    if (scrollAreaRef.current) {
-        setTimeout(() => {
-            const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-            if (viewport) {
-                viewport.scrollTop = viewport.scrollHeight;
-            }
-        }, 100);
+    const viewport = scrollAreaViewportRef.current;
+    if (viewport) {
+      viewport.scrollTop = viewport.scrollHeight;
     }
   }, [messages]);
 
@@ -93,8 +88,8 @@ export function SupportBot() {
              </Button>
           </DialogHeader>
 
-          <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-            <div className="space-y-6">
+          <ScrollArea className="flex-1" viewportRef={scrollAreaViewportRef}>
+            <div className="space-y-6 p-4">
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -146,7 +141,7 @@ export function SupportBot() {
                 disabled={isLoading}
                 autoComplete="off"
               />
-              <Button type="submit" size="icon" disabled={isLoading}>
+              <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
                 {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                 <span className="sr-only">Send</span>
               </Button>

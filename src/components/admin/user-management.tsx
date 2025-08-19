@@ -24,6 +24,17 @@ import type { User } from "@/lib/types";
 import { EditUserDialog } from "./edit-user-dialog";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const getUsersFromStorage = (): User[] => {
   if (typeof window === 'undefined') return [];
@@ -41,7 +52,7 @@ export function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
-  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -55,20 +66,18 @@ export function UserManagement() {
   );
   
   const handleUpdateUser = (updatedUser: User) => {
-    if (typeof window === 'undefined') return;
-
-    // Update the master user list
     const updatedUsers = users.map(u => u.id === updatedUser.id ? updatedUser : u);
     setUsers(updatedUsers);
     saveUsersToStorage(updatedUsers);
 
-    // Check if the updated user is the currently logged-in user
-    const loggedInUserJson = localStorage.getItem('loggedInUser');
-    if (loggedInUserJson) {
-        const loggedInUser = JSON.parse(loggedInUserJson);
-        if (loggedInUser.id === updatedUser.id) {
-            localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
-            // This will trigger the 'storage' event listener in the portfolio component
+    if (typeof window !== 'undefined') {
+        const loggedInUserJson = localStorage.getItem('loggedInUser');
+        if (loggedInUserJson) {
+            const loggedInUser = JSON.parse(loggedInUserJson);
+            if (loggedInUser.id === updatedUser.id) {
+                localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+                window.dispatchEvent(new Event('storage'));
+            }
         }
     }
     
@@ -76,15 +85,23 @@ export function UserManagement() {
   };
 
   const handleDeleteUser = (userId: string) => {
-    setDeletingUserId(userId);
+    setIsDeleting(true);
+    const userToDelete = users.find(user => user.id === userId);
+    if (!userToDelete) {
+        toast({ title: "Error", description: "User not found.", variant: "destructive" });
+        setIsDeleting(false);
+        return;
+    }
+
     const updatedUsers = users.filter(user => user.id !== userId);
     setUsers(updatedUsers);
     saveUsersToStorage(updatedUsers);
+    
     toast({
       title: "User Deleted",
-      description: `User ${userId} has been successfully deleted.`,
+      description: `User ${userToDelete.name} has been successfully deleted.`,
     });
-    setDeletingUserId(null);
+    setIsDeleting(false);
   };
 
   return (
@@ -127,14 +144,25 @@ export function UserManagement() {
                                 <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setEditingUser(user)}>
                                     <Edit className="h-4 w-4" />
                                 </Button>
-                                <Button
-                                    variant="destructive"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={() => handleDeleteUser(user.id)}
-                                    disabled={deletingUserId === user.id}>
-                                    {deletingUserId === user.id ? "..." : <Trash2 className="h-4 w-4" />}
-                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button variant="destructive" size="icon" className="h-8 w-8"><Trash2 className="h-4 w-4" /></Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete the user account for {user.name}.
+                                        </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={() => handleDeleteUser(user.id)} disabled={isDeleting}>
+                                            {isDeleting ? "Deleting..." : "Delete"}
+                                        </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                                 </div>
                             </div>
                         ))}
@@ -168,13 +196,25 @@ export function UserManagement() {
                                     <Button variant="outline" size="icon" onClick={() => setEditingUser(user)}>
                                         <Edit className="h-4 w-4" />
                                     </Button>
-                                    <Button
-                                    variant="destructive"
-                                    size="icon"
-                                    onClick={() => handleDeleteUser(user.id)}
-                                    disabled={deletingUserId === user.id} >
-                                        {deletingUserId === user.id ? <Trash2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                                    </Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button variant="destructive" size="icon"><Trash2 className="h-4 w-4" /></Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete the user account for {user.name}.
+                                            </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={() => handleDeleteUser(user.id)} disabled={isDeleting}>
+                                                {isDeleting ? "Deleting..." : "Delete"}
+                                            </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                     </div>
                                 </TableCell>
                                 </TableRow>

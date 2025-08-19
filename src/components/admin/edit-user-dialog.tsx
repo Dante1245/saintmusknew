@@ -34,13 +34,12 @@ interface EditUserDialogProps {
   onUpdate: (user: User) => void;
 }
 
-export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDialogProps) {
+export function EditUserDialog({ user: initialUser, isOpen, onClose, onUpdate }: EditUserDialogProps) {
   const { toast } = useToast();
-  const [balance, setBalance] = useState(user.balance);
-  const [transactions, setTransactions] = useState<Transaction[]>(user.transactions ?? []);
+  const [user, setUser] = useState(initialUser);
 
   const handleSave = () => {
-    onUpdate({ ...user, balance: Number(balance), transactions });
+    onUpdate(user);
     toast({
       title: "User Updated",
       description: `${user.name}'s details have been updated.`,
@@ -53,11 +52,17 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
       id: `txn_${Math.random().toString(36).substr(2, 9)}`,
       date: new Date().toISOString().split('T')[0],
     };
-    setTransactions(prev => [transactionToAdd, ...prev]);
+    setUser(prevUser => ({
+        ...prevUser,
+        transactions: [transactionToAdd, ...(prevUser.transactions ?? [])]
+    }))
   };
 
   const handleRemoveTransaction = (txId: string) => {
-    setTransactions(prev => prev.filter(tx => tx.id !== txId));
+    setUser(prevUser => ({
+        ...prevUser,
+        transactions: prevUser.transactions?.filter(tx => tx.id !== txId)
+    }))
   };
 
 
@@ -69,7 +74,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
         <DialogHeader>
           <DialogTitle>Edit User: {user.name}</DialogTitle>
           <DialogDescription>
-            Modify user details for {user.email}. Changes are applied immediately.
+            Modify user details for {user.email}. Changes are applied immediately upon saving.
           </DialogDescription>
         </DialogHeader>
         
@@ -83,8 +88,8 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                     <Input
                         id="balance"
                         type="number"
-                        value={balance}
-                        onChange={(e) => setBalance(parseFloat(e.target.value) || 0)}
+                        value={user.balance}
+                        onChange={(e) => setUser(prev => ({...prev, balance: parseFloat(e.target.value) || 0}))}
                     />
                 </div>
             </div>
@@ -108,7 +113,7 @@ export function EditUserDialog({ user, isOpen, onClose, onUpdate }: EditUserDial
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {transactions.map((tx) => (
+                      {user.transactions?.map((tx) => (
                         <TableRow key={tx.id}>
                           <TableCell>{tx.type}</TableCell>
                           <TableCell>{tx.asset}</TableCell>
