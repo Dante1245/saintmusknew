@@ -20,8 +20,8 @@ import { IconLogo } from "./icons";
 
 const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/markets", label: "Markets" },
     { href: "/history", label: "History" },
+    { href: "/markets", label: "Markets" },
     { href: "/profile", label: "Profile" },
     { href: "/settings", label: "Settings" },
 ];
