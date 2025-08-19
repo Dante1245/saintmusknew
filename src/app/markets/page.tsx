@@ -41,7 +41,7 @@ export default function MarketsPage() {
             </p>
           </div>
           <Separator />
-          <MarketNews key={refreshKey} />
+          <MarketNews refreshKey={refreshKey} />
            <div className="text-center mt-8">
             <Button onClick={() => setRefreshKey(prev => prev + 1)}>
                 <RefreshCw className="mr-2 h-4 w-4" />

@@ -41,16 +41,18 @@ function timeAgo(timestamp: number): string {
 }
 
 
-export function MarketNews() {
+export function MarketNews({ refreshKey }: { refreshKey: number }) {
     const [news, setNews] = useState<CryptoNewsArticle[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const fetchNews = async () => {
         try {
-            setLoading(true);
-            setError(null);
             // No need to set loading to true on refetch, to avoid UI flicker
+            if (news.length === 0) {
+                setLoading(true);
+            }
+            setError(null);
             const response = await fetch(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&_=${new Date().getTime()}`);
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
@@ -67,13 +69,7 @@ export function MarketNews() {
 
     useEffect(() => {
         fetchNews();
-
-        // Set up an interval to refetch news every 60 seconds
-        const intervalId = setInterval(fetchNews, 60000);
-
-        // Clean up the interval on component unmount
-        return () => clearInterval(intervalId);
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, [refreshKey]); // Refetch when the key changes
 
     if (loading) {
       return (
