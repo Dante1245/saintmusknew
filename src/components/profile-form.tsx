@@ -29,6 +29,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { User } from "@/lib/types";
 
 const profileSchema = z.object({
+  username: z.string(),
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email."),
   phoneNumber: z.string().optional(),
@@ -61,6 +62,7 @@ export function ProfileForm() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
+      username: "",
       name: "",
       email: "",
       phoneNumber: "",
@@ -74,6 +76,7 @@ export function ProfileForm() {
         if (userData) {
             setUser(userData);
             form.reset({
+                username: userData.username,
                 name: userData.name,
                 email: userData.email,
                 phoneNumber: userData.phoneNumber,
@@ -81,8 +84,6 @@ export function ProfileForm() {
             });
              if (userData.avatar) {
               setAvatarPreview(userData.avatar);
-            } else {
-              setAvatarPreview(undefined);
             }
         }
     }
@@ -106,7 +107,6 @@ export function ProfileForm() {
 
   const onSubmit = (values: ProfileFormValues) => {
     setIsSubmitting(true);
-    console.log("Updating profile:", values);
     
     if (user) {
         const updatedUser = { ...user, ...values, avatar: avatarPreview };
@@ -157,6 +157,19 @@ export function ProfileForm() {
                 <Button variant="outline" type="button" onClick={handleAvatarButtonClick}>Change Avatar</Button>
               </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your username" {...field} readOnly disabled />
+                      </FormControl>
+                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
               <FormField
                   control={form.control}
                   name="name"

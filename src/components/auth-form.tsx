@@ -47,6 +47,7 @@ const loginSchema = z.object({
 // Zod schema for signup form validation
 const signupSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  username: z.string().min(3, { message: "Username must be at least 3 characters." }).regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores."),
   email: z.string().email({ message: "Please enter a valid email address." }),
   phoneNumber: z.string().min(1, { message: "Phone number is required." }),
   country: z.string().min(1, { message: "Please select a country." }),
@@ -93,7 +94,7 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
     resolver: zodResolver(schema),
     defaultValues: isLogin 
       ? { email: "", password: "", rememberMe: false } 
-      : { name: "", email: "", phoneNumber: "", country: "", password: "", confirmPassword: "" },
+      : { name: "", username: "", email: "", phoneNumber: "", country: "", password: "", confirmPassword: "" },
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -141,10 +142,18 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
         setIsLoading(false);
         return;
       }
+      
+      // Check if username already exists
+      if (users.some(u => u.username.toLowerCase() === signupValues.username.toLowerCase())) {
+        setError("This username is already taken. Please choose another one.");
+        setIsLoading(false);
+        return;
+      }
 
       const newUser: User = {
         id: `usr_${Math.random().toString(36).substr(2, 9)}`,
         name: signupValues.name,
+        username: signupValues.username,
         email: signupValues.email,
         phoneNumber: signupValues.phoneNumber,
         country: signupValues.country,
@@ -197,19 +206,34 @@ export function AuthForm({ type }: { type: "login" | "signup" }) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               {!isLogin && (
                 <>
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Elon Musk" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Elon Musk" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="username"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Username</FormLabel>
+                          <FormControl>
+                            <Input placeholder="elon" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      <FormField
                         control={form.control}

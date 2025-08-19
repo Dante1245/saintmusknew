@@ -50,7 +50,8 @@ export function UserManagement() {
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
   
   const handleUpdateUser = (updatedUser: User) => {
@@ -94,7 +95,7 @@ export function UserManagement() {
           <div className="relative mt-4">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search by name or email..."
+              placeholder="Search by name, username, or email..."
               className="pl-8 w-full sm:w-1/3"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -117,7 +118,7 @@ export function UserManagement() {
                                         <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-medium truncate">{user.name}</p>
+                                        <p className="font-medium truncate">{user.name} <span className="text-muted-foreground">(@{user.username})</span></p>
                                         <p className="text-sm text-muted-foreground truncate">{user.email}</p>
                                         <p className="text-sm font-mono">${user.balance.toFixed(2)}</p>
                                     </div>
@@ -146,6 +147,7 @@ export function UserManagement() {
                             <TableRow>
                                 <TableHead>User ID</TableHead>
                                 <TableHead>Name</TableHead>
+                                <TableHead>Username</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead className="text-right">Balance</TableHead>
                                 <TableHead>Join Date</TableHead>
@@ -157,6 +159,7 @@ export function UserManagement() {
                                 <TableRow key={user.id}>
                                 <TableCell className="font-mono text-xs text-muted-foreground">{user.id}</TableCell>
                                 <TableCell className="font-medium">{user.name}</TableCell>
+                                <TableCell>@{user.username}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell className="text-right">${user.balance.toFixed(2)}</TableCell>
                                 <TableCell>{user.joinDate}</TableCell>
