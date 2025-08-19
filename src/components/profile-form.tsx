@@ -55,7 +55,7 @@ export function ProfileForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState("https://placehold.co/80x80.png");
+  const [avatarPreview, setAvatarPreview] = useState<string | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<ProfileFormValues>({
@@ -82,7 +82,7 @@ export function ProfileForm() {
              if (userData.avatar) {
               setAvatarPreview(userData.avatar);
             } else {
-              setAvatarPreview(`https://i.pravatar.cc/80?u=${userData.id}`);
+              setAvatarPreview(undefined);
             }
         }
     }

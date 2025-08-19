@@ -36,6 +36,7 @@ export type User = {
     transactions?: Transaction[];
     phoneNumber?: string;
     country?: string;
+    avatar?: string;
 };
 
 export type CryptoNewsArticle = {
