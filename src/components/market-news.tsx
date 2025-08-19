@@ -49,7 +49,7 @@ export function MarketNews() {
     const fetchNews = async () => {
         try {
             // No need to set loading to true on refetch, to avoid UI flicker
-            const response = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+            const response = await fetch(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&_=${new Date().getTime()}`);
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
