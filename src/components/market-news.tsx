@@ -115,7 +115,7 @@ export function MarketNews() {
             <Card className="overflow-hidden h-full flex flex-col">
                 <div className="aspect-video relative">
                     <Image 
-                        src={article.imageurl} 
+                        src={article.source_info.img} 
                         alt={article.title}
                         fill
                         className="object-cover"
