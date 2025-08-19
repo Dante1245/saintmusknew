@@ -63,7 +63,7 @@ export function LandingHeader() {
           <div className="hidden md:flex items-center gap-4">
             {isLoggedIn ? (
               <Button asChild>
-                <Link href="/dashboard">Dashboard</Link>
+                <Link href="/dashboard">Portfolio</Link>
               </Button>
             ) : (
               <>
@@ -113,7 +113,7 @@ export function LandingHeader() {
                 <div className="flex flex-col gap-4 mt-4">
                   {isLoggedIn ? (
                      <Button asChild>
-                        <Link href="/dashboard">Dashboard</Link>
+                        <Link href="/dashboard">Portfolio</Link>
                       </Button>
                   ) : (
                     <>
