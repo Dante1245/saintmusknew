@@ -2,6 +2,8 @@
 import { LandingHeader } from "@/components/landing-header";
 import { LandingHero } from "@/components/landing-hero";
 import { LandingFeatures } from "@/components/landing-features";
+import { LandingPricing } from "@/components/landing-pricing";
+import { LandingFaq } from "@/components/landing-faq";
 import { LandingReviews } from "@/components/landing-reviews";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingMarketView } from "@/components/landing-market-view";
@@ -15,6 +17,8 @@ export default function LandingPage() {
         <LandingHero />
         <LandingFeatures />
         <LandingMarketView />
+        <LandingPricing />
+        <LandingFaq />
         <LandingReviews />
         <LandingContact />
       </main>
