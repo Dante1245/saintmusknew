@@ -55,9 +55,12 @@ export function MarketNews({ refreshKey }: { refreshKey: number }) {
             const response = await fetch(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&lTs=${Math.floor(Date.now() / 1000)}`);
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.Message || `Error: ${response.status}`);
+                throw new Error(errorData.Message || `API Error: ${response.statusText}`);
             }
             const data = await response.json();
+            if (data.Type !== 100) {
+                 throw new Error(data.Message || "Failed to fetch news from API.");
+            }
             setNews(data.Data.slice(0, 12));
         } catch (err: any) {
             setError(err.message);
@@ -96,12 +99,11 @@ export function MarketNews({ refreshKey }: { refreshKey: number }) {
         return (
             <div className="flex flex-col items-center justify-center py-10 text-destructive dark:text-red-400 bg-card rounded-lg border border-destructive/50">
                 <AlertTriangle className="h-12 w-12 mb-4" />
-                <p className="text-xl font-semibold mb-2">Failed to load news</p>
-                <p className="text-sm text-muted-foreground">{error}</p>
+                <p className="text-xl font-semibold mb-2">Failed to Load News</p>
+                <p className="text-sm text-center text-muted-foreground max-w-sm">{error}</p>
                 <Button onClick={fetchNews} variant="outline" className="mt-4">Try Again</Button>
             </div>
         );
-
     }
 
   return (

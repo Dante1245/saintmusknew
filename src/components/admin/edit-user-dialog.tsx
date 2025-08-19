@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -38,12 +38,17 @@ export function EditUserDialog({ user: initialUser, isOpen, onClose, onUpdate }:
   const { toast } = useToast();
   const [user, setUser] = useState(initialUser);
 
+  useEffect(() => {
+    setUser(initialUser);
+  }, [initialUser]);
+
   const handleSave = () => {
     onUpdate(user);
     toast({
       title: "User Updated",
       description: `${user.name}'s details have been updated.`,
     });
+    onClose();
   };
   
   const handleAddTransaction = (newTx: Omit<Transaction, 'id' | 'date'>) => {
@@ -113,6 +118,11 @@ export function EditUserDialog({ user: initialUser, isOpen, onClose, onUpdate }:
                       </TableRow>
                     </TableHeader>
                     <TableBody>
+                      {user.transactions?.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={6} className="text-center text-muted-foreground">No transactions found.</TableCell>
+                        </TableRow>
+                      )}
                       {user.transactions?.map((tx) => (
                         <TableRow key={tx.id}>
                           <TableCell>{tx.type}</TableCell>

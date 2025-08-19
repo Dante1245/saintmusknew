@@ -21,7 +21,7 @@ export function SupportBot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const scrollAreaViewportRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -32,11 +32,10 @@ export function SupportBot() {
   }, [isOpen, messages.length]);
 
   useEffect(() => {
-    const viewport = scrollAreaViewportRef.current;
-    if (viewport) {
-      viewport.scrollTop = viewport.scrollHeight;
+    if (scrollAreaRef.current) {
+        scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +87,7 @@ export function SupportBot() {
              </Button>
           </DialogHeader>
 
-          <ScrollArea className="flex-1" viewportRef={scrollAreaViewportRef}>
+          <ScrollArea className="flex-1" viewportRef={scrollAreaRef}>
             <div className="space-y-6 p-4">
               {messages.map((message, index) => (
                 <div

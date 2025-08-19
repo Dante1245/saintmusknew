@@ -93,15 +93,19 @@ export function WalletCard() {
         if (typeof window !== 'undefined') {
             const storedWalletsRaw = localStorage.getItem('siteDepositWallets');
             if (storedWalletsRaw) {
-                const storedWallets = JSON.parse(storedWalletsRaw);
-                const updatedWallets: DepositWallets = { ...initialDepositWallets };
-                for (const key in storedWallets) {
-                    if (updatedWallets[key]) {
-                        updatedWallets[key].address = storedWallets[key].address;
-                        updatedWallets[key].name = storedWallets[key].name;
-                    }
+                try {
+                  const storedWallets = JSON.parse(storedWalletsRaw);
+                  const updatedWallets: DepositWallets = { ...initialDepositWallets };
+                  for (const key in storedWallets) {
+                      if (updatedWallets[key]) {
+                          updatedWallets[key].address = storedWallets[key].address;
+                          updatedWallets[key].name = storedWallets[key].name;
+                      }
+                  }
+                  setDepositWallets(updatedWallets);
+                } catch (e) {
+                  console.error("Failed to parse wallet addresses from storage", e)
                 }
-                setDepositWallets(updatedWallets);
             }
         }
     };
@@ -114,7 +118,7 @@ export function WalletCard() {
     resolver: zodResolver(withdrawalSchema),
     defaultValues: {
       amount: '',
-      asset: "btc",
+      asset: "bitcoin",
       address: "",
     },
   });
@@ -143,12 +147,14 @@ export function WalletCard() {
             const allUsersJson = localStorage.getItem('users');
             let allUsers: User[] = allUsersJson ? JSON.parse(allUsersJson) : [];
 
+            const assetInfo = cryptoData.find(c => c.id === values.asset);
+
             const newTransaction: Transaction = {
                 id: `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 type: 'Withdrawal',
                 status: 'Pending',
                 date: new Date().toISOString().split('T')[0],
-                asset: values.asset.toUpperCase(),
+                asset: assetInfo ? assetInfo.symbol.toUpperCase() : values.asset,
                 amount: values.amount,
                 address: values.address,
             };
@@ -164,6 +170,8 @@ export function WalletCard() {
                   description: "Your withdrawal request has been submitted for processing.",
                 });
                 form.reset();
+                 // Dispatch event to notify other components
+                window.dispatchEvent(new Event('storage'));
             } else {
                 throw new Error("Could not find user to update.");
             }

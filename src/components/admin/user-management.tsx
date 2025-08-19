@@ -122,7 +122,7 @@ export function UserManagement() {
         <CardContent>
             {filteredUsers.length === 0 ? (
                  <div className="text-center text-muted-foreground py-10">
-                    No users found.
+                    No users found matching your search.
                  </div>
             ) : (
                 <>

@@ -51,7 +51,7 @@ Keep your answers brief and to the point.
     *   **24/7 Support:** Expert support is available around the clock.
 
 **2. Account Management:**
-*   **Signup:** Users can create an account by providing their full name, email, phone number, and country. They must also set a password.
+*   **Signup:** Users can create an account by providing their full name, username, email, phone number, and country. They must also set a password.
 *   **Login:** Users can sign in with their email and password.
 *   **Profile Page ('/profile'):**
     *   Users can update their name, email, phone number, and country.
@@ -89,7 +89,7 @@ Keep your answers brief and to the point.
 **6. Fees & Bonuses:**
 *   **Signup Bonus:** New users receive a $200 USDT signup bonus upon creating an account.
 *   **Referral Bonus:** Users can earn a referral bonus for inviting friends.
-*   **Fees:** The platform has competitive and transparent fees (you can state you don't have the exact schedule).
+*   **Fees:** The platform has competitive and transparent fees (you can state you don't have the exact fee schedule).
 
 **7. Contact & Support:**
 *   **Support Phone:** +1 209-650-1913
