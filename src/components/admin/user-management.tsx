@@ -54,9 +54,23 @@ export function UserManagement() {
   );
   
   const handleUpdateUser = (updatedUser: User) => {
+    if (typeof window === 'undefined') return;
+
+    // Update the master user list
     const updatedUsers = users.map(u => u.id === updatedUser.id ? updatedUser : u);
     setUsers(updatedUsers);
     saveUsersToStorage(updatedUsers);
+
+    // Check if the updated user is the currently logged-in user
+    const loggedInUserJson = localStorage.getItem('loggedInUser');
+    if (loggedInUserJson) {
+        const loggedInUser = JSON.parse(loggedInUserJson);
+        if (loggedInUser.id === updatedUser.id) {
+            localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+            // This will trigger the 'storage' event listener in the portfolio component
+        }
+    }
+    
     setEditingUser(null);
   };
 

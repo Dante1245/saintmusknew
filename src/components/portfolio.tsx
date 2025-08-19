@@ -32,10 +32,27 @@ export function Portfolio() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const loadUserData = () => {
     const userData = getUser();
     setUser(userData);
     setLoading(false);
+  };
+  
+  useEffect(() => {
+    loadUserData();
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'loggedInUser') {
+        loadUserData();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+
   }, []);
 
   if (loading) {
