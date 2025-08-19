@@ -51,7 +51,7 @@ export function LandingContact() {
                             </div>
                             <div>
                                 <h4 className="font-semibold">Email Address</h4>
-                                <a href="mailto:support@tradesim.live" className="text-muted-foreground hover:text-primary transition-colors">support@tradesim.live</a>
+                                <a href="mailto:support@elontradex.live" className="text-muted-foreground hover:text-primary transition-colors">support@elontradex.live</a>
                             </div>
                         </div>
                     </CardContent>

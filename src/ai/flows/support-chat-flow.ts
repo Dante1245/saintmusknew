@@ -93,7 +93,7 @@ Keep your answers brief and to the point.
 
 **7. Contact & Support:**
 *   **Support Phone:** +1 209-650-1913
-*   **Support Email:** support@tradesim.live
+*   **Support Email:** support@elontradex.live
 
 ***
 
